@@ -1,0 +1,45 @@
+.setting-drwer {
+  left: 30px;
+  right: auto;
+}
+
+.ant-page-header-heading {
+  margin-top: 0;
+}
+.ant-page-header-heading .ant-page-header-heading-title {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  margin-top: 4px;
+}
+
+.header-control {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.user-avatar {
+  width: 25px;
+  height: 26px;
+  background-color: transparent;
+  margin-left: 3px;
+  margin-top: 3px;
+}
+.header-container {
+  width: 100%;
+}
+.header-icon-box {
+  font-size: 25px;
+
+  margin: 0 5px;
+}
+.header-breadcrumb {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+.user-button-header svg {
+  cursor: pointer;
+}

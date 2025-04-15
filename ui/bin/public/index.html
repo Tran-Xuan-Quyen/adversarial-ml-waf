@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <meta httpEquiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="renderer" content="webkit" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo.png" />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+
+    <title>React App</title>
+    <script>
+      var CONTEXT_NAME = "ui-context";
+      var baseEnv = {
+        sso: {
+          refreshTokenUrl: "$sso-refresh-token$",
+          redirectUrl: "$sso-redirect-url$",
+        },
+      };
+      var context;
+      try {
+        context = $context$;
+      } catch {}
+      try {
+        if (context) {
+          localStorage[CONTEXT_NAME] = JSON.stringify(context);
+        } else if (localStorage[CONTEXT_NAME]) {
+          context = JSON.parse(localStorage[CONTEXT_NAME]);
+          console.log(context.expiredTime);
+          if (context.expiredTime < Date.now()) {
+            localStorage.clear();
+            context = undefined;
+          }
+        }
+      } catch (e) {
+        context = undefined;
+      }
+      if (!context) {
+        if (baseEnv.sso.redirectUrl.indexOf("$") < 0)
+          window.localStorage.clear();
+          document.cookie = `expired_time=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+          window.location.href = baseEnv.sso.redirectUrl;
+      } else {
+        window.context = context;
+      }
+    </script>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  </body>
+</html>

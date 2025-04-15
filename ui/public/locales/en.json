@@ -1,0 +1,90 @@
+{
+    "page": {
+        "side-bar": {
+            "home": "Home",
+            "management": "Management",
+            "user-info": "User Information",
+            "device-info": "Device Information",
+            "record-info": "Record Information",
+            "assignment-doctor": "Assignment Patient To Doctor",
+            "account-info": "Account Information",
+            "register-info": "Register Information",
+            "account-management": "Account Management",
+            "about-us": "About us",
+            "setting": "Settings"
+        },
+        "breadcrumb": {
+            "pages": "Pages"
+        }
+    },
+    "column": {
+        "user-name": "User name",
+        "sex": "Gender",
+        "birth": "Birth",
+        "phone-number": "Phone Number",
+        "role": "Role",
+        "status": "Status",
+        "note": "Note",
+        "password": "Password",
+        "device-name": "Device Name",
+        "device-type": "Device Type",
+        "device-info": "Device Information",
+        "date-started": "Date Started",
+        "date-finished": "Date Finished",
+        "record-type": "Record Type",
+        "record-name": "Record Name",
+        "patient-name": "Patient Name",
+        "doctor-name": "Doctor Name",
+        "frequency": "Frequency",
+        "connection": "Connection Method",
+        "storage": "Data Storage"
+    },
+    "button": {
+        "delete": "Delete",
+        "edit": "Edit",
+        "add": "Add",
+        "graph": "Graph",
+        "cancel": "Cancel",
+        "save": "Save",
+        "add-device": "Add Device",
+        "search": "Search",
+        "refresh": "Refresh"
+    },
+    "modal": {
+        "record-graph": "Record Graph"
+    },
+    "homepage": {
+        "number-of-users-are-using": "Number of Users are Using",
+        "paragraph": "Total number of users including patients and doctors and the time they started using the system",
+        "number-of-new-recordings": "Number of new records"
+    },
+    "title": {
+        "user-info": "User Information",
+        "device-info": "Device Information",
+        "record-info": "Medical Record",
+        "assignment-doctor": "Doctor and Patient Assignment Management",
+        "register-info": "User Registration Information"
+    },
+    "status":{
+        "is-active":"Active",
+        "is-empty":"Empty",
+        "is-off": "Off"
+    },
+    "sex":{
+        "Male": "Male",
+        "Female": "Female"
+    },
+    "label":{
+        "device-info": "Device Information",
+        "sampling-frequency": "Sampling Frequency (Hz)",
+        "sensor": "Sensor",
+        "capacity": "Capacity",
+        "delay": "Delay",
+        "note": "Note",
+        "record-count": "Record Count",
+        "doctor": "Doctor",
+        "patient": "Patient",
+        "device": "Device",
+        "record": "Record"
+    }
+}

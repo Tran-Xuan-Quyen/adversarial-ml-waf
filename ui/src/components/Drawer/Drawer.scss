@@ -1,0 +1,32 @@
+.ant-drawer-body {
+  p.site-description-item-profile-p {
+    display: block;
+    margin-bottom: 16px;
+    color: rgba(0, 0, 0, 0.85);
+    font-size: 16px;
+    line-height: 1.5715;
+    font-weight: 600;
+    margin-top: 0;
+  }
+
+  .ant-avatar {
+    margin-bottom: 12px;
+  }
+
+  .site-description-item-profile-wrapper {
+    color: rgba(0, 0, 0, 0.65);
+    font-size: 14px;
+    line-height: 1.5715;
+    margin-top: 0;
+  }
+
+  .ant-descriptions-item-container:has(.ant-table-wrapper) {
+    flex-direction: column;
+
+    .ant-table-content {
+      table {
+        border: 1px solid #e5e5e5;
+      }
+    }
+  }
+}

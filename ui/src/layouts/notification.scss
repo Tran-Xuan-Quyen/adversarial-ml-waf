@@ -1,0 +1,60 @@
+.ant-card {
+  border-radius: 8px;
+}
+
+.ant-list-item:hover {
+  background-color: #f0f0f0 !important;
+}
+
+.ant-list-item-meta-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ant-card-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
+}
+
+div[style*="overflow-y: auto"] {
+  scrollbar-width: thin;
+}
+
+div[style*="overflow-y: auto"]::-webkit-scrollbar {
+  width: 6px;
+}
+
+div[style*="overflow-y: auto"]::-webkit-scrollbar-thumb {
+  background: #bfbfbf;
+  border-radius: 4px;
+}
+
+div[style*="overflow-y: auto"]::-webkit-scrollbar-thumb:hover {
+  background: #8c8c8c;
+}
+
+.event-details {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin-left: 80px;
+  font-size: 15px;
+}
+
+.event-row {
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.event-label {
+  font-weight: 600;
+  color: #555555;
+}
+
+.event-value {
+  font-weight: 400;
+  color: #333333;
+}

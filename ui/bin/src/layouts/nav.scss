@@ -1,0 +1,23 @@
+.brand img {
+  height: 100px;
+}
+.brand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu-sidebar {
+  border: none !important;
+  .ant-menu-item {
+    padding-inline: 0;
+  }
+}
+
+.menu-item-header {
+  font-weight: 700;
+}
+
+.menu-item-box-icon {
+  margin-right: 6px;
+}

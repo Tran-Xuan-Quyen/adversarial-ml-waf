@@ -1,0 +1,105 @@
+{
+    "page": {
+        "side-bar": {
+            "home": "Trang Chủ",
+            "management": "Quản lý",
+            "user-info": "Thông Tin Người Dùng",
+            "device-info": "Thông Tin Thiết Bị",
+            "record-info": "Thông Tin Bản Ghi",
+            "assignment-doctor": "Phân Công Bác Sĩ",
+            "account-info": "Thông Tin Tài Khoản",
+            "register-info": "Xét Duyệt Tài Khoản",
+            "account-management": "Tài Khoản",
+            "about-us": "About us",
+            "setting": "Cài Đặt"
+        },
+        "breadcrumb": {
+            "pages": "Trang"
+        }
+    },
+    "column": {
+        "user-name": "Tên người dùng",
+        "sex": "Giới tính",
+        "birth": "Ngày Sinh",
+        "phone-number": "Số Điện Thoại",
+        "role": "Vai Trò",
+        "password": "Mật khẩu",
+        "status": "Trạng Thái",
+        "note": "Ghi chú",
+        "device-name": "Tên Thiết Bị",
+        "device-type": "Loại Thiết Bị",
+        "device-info": "Thông Tin Thiết Bị",
+        "date-started": "Ngày Bắt Đầu",
+        "date-finished": "Ngày Kết Thúc",
+        "record-type": "Loại Bản Ghi",
+        "record-name": "Tên Bản Ghi",
+        "patient-name": "Tên Bệnh Nhân",
+        "doctor-name": "Tên Bác Sĩ",
+        "storage": "Lưu trữ thiết bị",
+        "frequency": "Tần số thiết bị",
+        "connection": "Phương thức kết nối"
+    },
+    "button": {
+        "delete": "Xóa",
+        "edit": "Chỉnh sửa",
+        "add": "Tạo",
+        "graph": "Đồ thị",
+        "cancel": "Hủy bỏ",
+        "save": "Lưu",
+        "add-device": "Thêm thiết bị",
+        "search": "Tìm kiếm",
+        "refresh": "Làm mới"
+    },
+    "modal": {
+        "record-graph": "Đồ thị dữ liệu phiên đo"
+    },
+    "homepage": {
+        "number-of-users-are-using": "Số lượng người dùng đang hoạt động",
+        "paragraph": "Tổng hợp số lượng người dùng bao gồm bệnh nhân và bác sĩ và thời gian bắt đầu sủ dụng hệ thống",
+        "number-of-new-recordings": "Số lượng bản ghi mới"
+    },
+    "title":{
+        "user-info": "Thông tin người dùng",
+        "device-info":"Thông tin thiết bị",
+        "record-info": "Dữ liệu y tế",
+        "assignment-doctor": "Bảng quản lý phân công bác sĩ, bệnh nhân",
+        "register-info": "Thông tin người dùng đăng ký"
+    },
+    "status":{
+        "is-active":"Đang hoạt động",
+        "is-empty":"Đang trống",
+        "is-off": "Đã nghỉ"
+    },
+    "sex":{
+        "Male": "Nam",
+        "Female": "Nữ"
+    },
+    "label":{
+        "device-info": "Thông tin thiết bị",
+        "sampling-frequency": "Tần số lấy mẫu (Hz)",
+        "sensor": "Cảm biến",
+        "capacity": "Dung lượng",
+        "delay": "Độ trễ",
+        "note": "Ghi chú",
+        "record-count": "Số lượng bản ghi",
+        "doctor": "Bác sĩ",
+        "patient": "Bệnh nhân",
+        "device": "Thiết bị",
+        "record": "Bản ghi",
+        "storage": {
+            "detail_name": "Lưu trữ trong",
+            "value": "Dung lượng",
+            "information": "Thông tin"
+        },
+        "connection": {
+            "detail_name": "Phương thức",
+            "value": "Tần số",
+            "information": "Ghi chú"
+        },
+        "frequency": {
+            "detail_name": "Cảm biến",
+            "value": "Tần số lấy mẫu",
+            "information": "Thông tin"
+        }
+    }
+}

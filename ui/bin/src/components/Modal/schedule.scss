@@ -1,0 +1,46 @@
+.events {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.events .ant-badge-status {
+  white-space: pre-line;
+  width: 100%;
+  overflow: hidden;
+  font-size: 12px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.notes-month {
+  font-size: 28px;
+  text-align: center;
+}
+.notes-month section {
+  font-size: 28px;
+}
+.event-details {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+.event-row {
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.event-label {
+  font-weight: 600;
+  color: #555555;
+}
+
+.event-value {
+  font-weight: 400;
+  color: #333333;
+}
+
+.card-filter {
+  margin-bottom: 5px;
+}
