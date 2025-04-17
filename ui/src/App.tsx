@@ -13,7 +13,7 @@ function App() {
    <ReduxProvider store={store}>
      <HashRouter>
       <ErrorBoundary>
-        {Context.loginResult !== true ? "" : <DefaultLayout />}
+         <DefaultLayout />
       </ErrorBoundary>
     </HashRouter>
    </ReduxProvider>
