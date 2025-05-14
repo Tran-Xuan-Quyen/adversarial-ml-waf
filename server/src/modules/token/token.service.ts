@@ -71,7 +71,7 @@ export class TokenService {
     const tokenPair = this.renderTokenPair(payload);
     
     const addTokenResult = await this.addToken({
-      userId: payload.userId.toString(),
+      userId: payload.userId,
       refreshToken: tokenPair.refreshToken,
       expiredAt: Date.now() + 15 * 60 * 1000
     });
@@ -83,7 +83,7 @@ export class TokenService {
   public async addToken(tokenData: CreateTokenModel): Promise<boolean> {
     try {
       const token = this.tokenRepository.create({
-        userId: parseInt(tokenData.userId),
+        userId: tokenData.userId,
         refreshToken: tokenData.refreshToken,
         expiredAt: new Date(tokenData.expiredAt ?? Date.now() + 15 * 60 * 1000)
       });

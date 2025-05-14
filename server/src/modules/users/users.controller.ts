@@ -12,8 +12,8 @@ export class UsersController {
   }
 
   @Get('search')
-  async findByUsernameOrEmail(@Query('query') query: string): Promise<User> {
-    return this.usersService.findByUsernameOrEmail(query);
+  async findByEmail(@Query('email') email: string): Promise<User> {
+    return this.usersService.findByEmail(email);
   }
 
   @Get(':id')
