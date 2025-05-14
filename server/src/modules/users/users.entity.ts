@@ -24,8 +24,8 @@ export class User {
   @Column({ name: 'project_id', nullable: true })
   projectId: number;
 
-  @Column({ name: 'gender', length: 255, nullable: true })
-  gender: string;
+  @Column({ name: 'gender', nullable: true })
+  gender: number;
 
   @Column({ name: 'birth', type: 'timestamp', nullable: true })
   birth: Date;

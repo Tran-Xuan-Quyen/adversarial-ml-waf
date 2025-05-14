@@ -18,15 +18,12 @@ import { useTranslation } from "react-i18next";
 import { getUserById } from "../../redux/reducer/userSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { ApiLoadingStatus } from "../../utils/loadingStatus";
-import { UserResponse } from "../../api";
 import { Context } from "../../utils/context";
 
 export function Detail() {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-  const [accountData, setData] = React.useState<UserResponse>(
-    {} as UserResponse
-  );
+  const [accountData, setData] = React.useState();
   const dataState = useAppSelector((state) => state.user);
 
   React.useEffect(() => {
