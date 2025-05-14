@@ -2,14 +2,12 @@ import { Module } from '@nestjs/common';
 import { AuthenticationController } from './authentication.controller';
 import { AuthenticationService } from './authentication.service';
 import { TokenModule } from '../token/token.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-
-import { User } from '../users/users.entity';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
     TokenModule,
-    TypeOrmModule.forFeature([User]),
+    UsersModule,
   ],
   controllers: [AuthenticationController],
   providers: [AuthenticationService],

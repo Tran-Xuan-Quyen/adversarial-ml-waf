@@ -2,10 +2,10 @@ import { IsOptional, IsString, IsNotEmpty, IsDate } from 'class-validator';
 export class CreateTokenModel {
   @IsNotEmpty()
   @IsString()
-  user_id: string;
+  userId: number;
   @IsNotEmpty()
   @IsString()
-  refresh_token: string;
+  refreshToken: string;
   @IsOptional()
   @IsDate()
   expiredAt?: number;

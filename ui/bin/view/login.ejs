@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login admin server</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+  </head>
+  <style>
+    :root {
+      --primary-color: #579cfd;
+      --secondary-color: #62ace4;
+      --black: #000000;
+      --white: #ffffff;
+      --gray: #efefef;
+      --gray-2: #757575;
+
+      --facebook-color: #4267b2;
+      --google-color: #db4437;
+      --twitter-color: #1da1f2;
+      --insta-color: #e1306c;
+    }
+
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap");
+
+    * {
+      font-family: sans-serif;
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      z-index: 0;
+      position: relative;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      height: 100vh;
+    }
+
+    .col {
+      width: 50%;
+    }
+
+    .align-items-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .align-center {
+      text-align: center;
+      margin-bottom: 0% !important;
+    }
+
+    .form-wrapper {
+      width: 100%;
+      max-width: 27rem;
+    }
+
+    .form {
+      padding: 1rem;
+      background-color: var(--white);
+      border-radius: 1.5rem;
+      width: 100%;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+      transform: scale(0);
+      transition: 0.5s ease-in-out;
+      transition-delay: 1s;
+    }
+
+    .sign-up-form {
+      max-height: 90vh;
+      overflow: auto;
+    }
+
+    select {
+      background: url("data:image/svg+xml,<svg height='10px' width='10px' viewBox='0 0 16 16' fill='%23000000' xmlns='http://www.w3.org/2000/svg'><path d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/></svg>")
+        no-repeat;
+      background-position: calc(100% - 1.2rem) center !important;
+      -moz-appearance: none !important;
+      appearance: none !important;
+    }
+
+    .sign-up-form::-webkit-scrollbar {
+      display: none;
+    }
+
+    .fa-eye {
+      right: 4%;
+      margin-top: 2.5%;
+      font-size: 1.1em !important;
+    }
+
+    .fa-eye-slash {
+      right: 4%;
+      margin-top: 2.5%;
+      font-size: 1.1em !important;
+    }
+
+    .input-group {
+      position: relative;
+      width: 100%;
+      margin: 0.3rem 0;
+    }
+
+    .input-group i {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.4rem;
+      color: var(--gray-2);
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 0.9rem;
+      font-size: 1rem;
+      background-color: var(--gray);
+      border-radius: 0.5rem;
+      border: 0.125rem solid var(--white);
+      outline: none;
+      margin-top: 0.5%;
+      margin-bottom: 1%;
+    }
+
+    .input-group select {
+      width: 100%;
+      padding: 0.9rem;
+      font-size: 1rem;
+      background-color: var(--gray);
+      border-radius: 0.5rem;
+      border: 0.125rem solid var(--white);
+      outline: none;
+      margin-top: 0.5%;
+      margin-bottom: 1%;
+    }
+
+    .input-group input:focus {
+      border: 0.125rem solid var(--primary-color);
+    }
+
+    .form button {
+      cursor: pointer;
+      width: 100%;
+      padding: 0.7rem 0;
+      border-radius: 0.5rem;
+      border: none;
+      background-color: var(--primary-color);
+      color: var(--white);
+      font-size: 1.2rem;
+      outline: none;
+      margin-top: 2%;
+    }
+
+    .form p {
+      margin: 1rem 0;
+      font-size: 0.7rem;
+    }
+
+    .flex-col {
+      flex-direction: column;
+    }
+
+    .pointer {
+      cursor: pointer;
+    }
+
+    .container.sign-in .form.sign-in,
+    .container.sign-in .social-list.sign-in,
+    .container.sign-in .social-list.sign-in > div,
+    .container.sign-up .form.sign-up,
+    .container.sign-up .social-list.sign-up,
+    .container.sign-up .social-list.sign-up > div {
+      transform: scale(1);
+    }
+
+    .content-row {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 6;
+      width: 100%;
+    }
+
+    .text {
+      margin: 4rem;
+      color: var(--white);
+    }
+
+    .text h2 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin: 2rem 0;
+      transition: 1s ease-in-out;
+    }
+
+    .text p {
+      font-weight: 600;
+      transition: 1s ease-in-out;
+      transition-delay: 0.2s;
+    }
+
+    .img img {
+      width: 30vw;
+      transition: 1s ease-in-out;
+      transition-delay: 0.4s;
+    }
+
+    .text.sign-in h2,
+    .text.sign-in p,
+    .img.sign-in img {
+      transform: translateX(-250%);
+    }
+
+    .text.sign-up h2,
+    .text.sign-up p,
+    .img.sign-up img {
+      transform: translateX(250%);
+    }
+
+    .container.sign-in .text.sign-in h2,
+    .container.sign-in .text.sign-in p,
+    .container.sign-in .img.sign-in img,
+    .container.sign-up .text.sign-up h2,
+    .container.sign-up .text.sign-up p,
+    .container.sign-up .img.sign-up img {
+      transform: translateX(0);
+    }
+
+    /* BACKGROUND */
+
+    .container::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100vh;
+      width: 300vw;
+      transform: translate(35%, 0);
+      background-image: linear-gradient(
+        -45deg,
+        var(--primary-color) 0%,
+        var(--secondary-color) 100%
+      );
+      transition: 1s ease-in-out;
+      z-index: 6;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+      border-bottom-right-radius: max(50vw, 50vh);
+      border-top-left-radius: max(50vw, 50vh);
+    }
+
+    .container.sign-in::before {
+      transform: translate(0, 0);
+      right: 50%;
+    }
+
+    .container.sign-up::before {
+      transform: translate(100%, 0);
+      right: 50%;
+    }
+
+    /* RESPONSIVE */
+
+    @media only screen and (max-width: 425px) {
+      .container::before,
+      .container.sign-in::before,
+      .container.sign-up::before {
+        height: 100vh;
+        border-bottom-right-radius: 0;
+        border-top-left-radius: 0;
+        z-index: 0;
+        transform: none;
+        right: 0;
+      }
+
+      /* .container.sign-in .col.sign-up {
+  transform: translateY(100%);
+} */
+
+      .container.sign-in .col.sign-in,
+      .container.sign-up .col.sign-up {
+        transform: translateY(0);
+      }
+
+      .content-row {
+        align-items: flex-start !important;
+      }
+
+      .content-row .col {
+        transform: translateY(0);
+        background-color: unset;
+      }
+
+      .col {
+        width: 100%;
+        position: absolute;
+        padding: 2rem;
+        background-color: var(--white);
+        border-top-left-radius: 2rem;
+        border-top-right-radius: 2rem;
+        transform: translateY(100%);
+        transition: 1s ease-in-out;
+      }
+
+      .row {
+        align-items: flex-end;
+        justify-content: flex-end;
+      }
+
+      .form,
+      .social-list {
+        box-shadow: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .text {
+        margin: 0;
+      }
+
+      .text p {
+        display: none;
+      }
+
+      .text h2 {
+        margin: 0.5rem;
+        font-size: 2rem;
+      }
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+      place-items: center;
+    }
+
+    .loading-spinner {
+      border: 16px solid #f3f3f3; /* Light grey border */
+      border-top: 16px solid var(--secondary-color); /* Blue border on top */
+      border-radius: 50%; /* Make it a circle */
+      width: 120px;
+      height: 120px;
+      animation: spin 2s linear infinite; /* Rotate animation */
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+  <body>
+    <div id="container" class="container">
+      <!-- FORM SECTION -->
+      <div class="row">
+        <!-- SIGN UP -->
+        <div class="col align-items-center sign-up">
+          <div class="form-wrapper">
+            <div class="form sign-up sign-up-form">
+              <div class="input-group">
+                <i class="bx bxs-user"></i>
+                <label for="username-label">Họ và tên </label>
+                <input
+                  type="text"
+                  placeholder="Họ và tên"
+                  id="sign-up-username"
+                  class="sign-up-input"
+                  required
+                />
+              </div>
+              <div class="input-group">
+                <i class="bx bx-mail-send"></i>
+                <label for="email-label">Email </label>
+                <input
+                  type="email"
+                  placeholder="Email"
+                  id="sign-up-email"
+                  class="sign-up-input"
+                  required
+                />
+              </div>
+              <div class="input-group">
+                <i class="bx bxs-lock-alt"></i>
+                <label for="passwor-label">Mật khẩu </label>
+                <input
+                  type="password"
+                  placeholder="Mật khẩu"
+                  id="sign-up-password"
+                  class="sign-up-input"
+                  required
+                />
+                <i class="fa-solid fa-eye" id="show-password"></i>
+              </div>
+              <div class="input-group">
+                <i class="bx bxs-lock-alt"></i>
+                <label for="cf-password-label">Xác nhận mật khẩu </label>
+                <input
+                  type="password"
+                  placeholder="Xác nhận mật khẩu"
+                  id="confirm-password"
+                  class="sign-up-input"
+                  required
+                />
+                <i class="fa-solid fa-eye" id="show-confirm-password"></i>
+              </div>
+              <div class="input-group">
+                <i class="bx bxs-gender"></i>
+                <label for="gender-label">Giới tính </label>
+                <select id="sign-up-gender">
+                  <option value="3">Chọn giới tính</option>
+                  <option value="1">Nam</option>
+                  <option value="2">Nữ</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <i class="bx bxs-role"></i>
+                <label for="role-label">Chức vụ </label>
+                <select id="sign-up-role" required>
+                  <option value="0">Chọn chức vụ</option>
+                  <option value="2">Bác sĩ</option>
+                  <option value="3">Bệnh nhân</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <i class="bx bxs-birth"></i>
+                <label for="birthday-label">Ngày sinh </label>
+                <input
+                  type="date"
+                  id="sign-up-birth"
+                  class="sign-up-input"
+                  required
+                />
+              </div>
+              <div class="input-group">
+                <i class="bx bxs-phone"></i>
+                <label for="phone-number-label">Số điện thoại </label>
+                <input
+                  type="text"
+                  placeholder="Số điện thoại"
+                  class="sign-up-input"
+                  id="sign-up-phone-number"
+                />
+              </div>
+              <div class="input-group">
+                <i class="bx bx-info"></i>
+                <label for="info-label">Thông tin người dùng</label>
+                <input
+                  type="text"
+                  placeholder="Thông tin người dùng"
+                  id="sign-up-info"
+                  class="sign-up-input"
+                  required
+                />
+              </div>
+              <div class="input-group">
+                <i class="bx bx-img"></i>
+                <label for="img-label">Chọn ảnh đại diện </label>
+                <input
+                  type="file"
+                  id="sign-up-img"
+                  class="sign-up-input"
+                  name="file"
+                  required
+                />
+              </div>
+              <button onclick="signupFunction()">Đăng ký</button>
+              <p class="align-center">
+                <span> Bạn đã có tài khoản? </span>
+                <b onclick="toggle()" class="pointer"> Đâng nhập tại đây </b>
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- END SIGN UP -->
+        <!-- SIGN IN -->
+        <div class="col align-items-center flex-col sign-in">
+          <div class="form-wrapper">
+            <div class="form sign-in">
+              <div class="input-group">
+                <i class="bx bxs-user"></i>
+                <label for="username-login">Tên đăng nhập</label>
+                <input
+                  type="text"
+                  placeholder="Tên đăng nhập"
+                  id="input-user-name"
+                  class="sign-in-input"
+                />
+              </div>
+              <div class="input-group">
+                <i class="bx bxs-lock-alt"></i>
+                <label for="password-login">Mật khẩu</label>
+                <input
+                  type="password"
+                  placeholder="Mật khẩu"
+                  id="input-password"
+                  class="sign-in-input"
+                />
+                <i class="fa-solid fa-eye" id="show-password-sign-in"></i>
+              </div>
+              <button onclick="loginFunction()">Đăng nhập</button>
+              <p class="align-center">
+                <b> Quên mật khẩu? </b>
+              </p>
+              <p class="align-center">
+                <span> Bạn chưa có tài khoản? </span>
+                <b onclick="toggle()" class="pointer"> Đăng ký tại đây </b>
+              </p>
+            </div>
+          </div>
+          <div class="form-wrapper"></div>
+        </div>
+        <!-- END SIGN IN -->
+      </div>
+      <!-- END FORM SECTION -->
+      <!-- CONTENT SECTION -->
+      <div class="row content-row">
+        <!-- SIGN IN CONTENT -->
+        <div class="col align-items-center flex-col">
+          <div class="text sign-in">
+            <h2>Welcome</h2>
+          </div>
+          <div class="img sign-in"></div>
+        </div>
+
+        <div class="col align-items-center flex-col">
+          <div class="img sign-up"></div>
+          <div class="text sign-up">
+            <h2>Join with us</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="myModal" class="modal">
+      <div class="loading-spinner"></div>
+    </div>
+
+    <script>
+      // show/hide password in sign up
+      const showPassword = document.querySelector("#show-password");
+      const passwordField = document.querySelector("#sign-up-password");
+      showPassword.addEventListener("click", () => {
+        const type =
+          passwordField.getAttribute("type") === "password"
+            ? "text"
+            : "password";
+        passwordField.setAttribute("type", type);
+        if (
+          showPassword.classList.contains("fa-eye") &&
+          passwordField.getAttribute("type") === "text"
+        ) {
+          showPassword.classList.remove("fa-eye");
+          showPassword.classList.add("fa-eye-slash");
+        }
+        if (
+          showPassword.classList.contains("fa-eye-slash") &&
+          passwordField.getAttribute("type") === "password"
+        ) {
+          showPassword.classList.remove("fa-eye-slash");
+          showPassword.classList.add("fa-eye");
+        }
+      });
+
+      const showConfirmPassword = document.querySelector(
+        "#show-confirm-password"
+      );
+      const confirmPassword = document.querySelector("#confirm-password");
+      showConfirmPassword.addEventListener("click", () => {
+        const type =
+          confirmPassword.getAttribute("type") === "password"
+            ? "text"
+            : "password";
+        confirmPassword.setAttribute("type", type);
+        if (
+          showConfirmPassword.classList.contains("fa-eye") &&
+          confirmPassword.getAttribute("type") === "text"
+        ) {
+          showConfirmPassword.classList.remove("fa-eye");
+          showConfirmPassword.classList.add("fa-eye-slash");
+        }
+        if (
+          showConfirmPassword.classList.contains("fa-eye-slash") &&
+          confirmPassword.getAttribute("type") === "password"
+        ) {
+          showConfirmPassword.classList.remove("fa-eye-slash");
+          showConfirmPassword.classList.add("fa-eye");
+        }
+      });
+
+      //show/hide password in sign in
+      const showPassSignIn = document.querySelector("#show-password-sign-in");
+      const passwordSignIn = document.querySelector("#input-password");
+      showPassSignIn.addEventListener("click", () => {
+        const type =
+          passwordSignIn.getAttribute("type") === "password"
+            ? "text"
+            : "password";
+        passwordSignIn.setAttribute("type", type);
+        if (
+          showPassSignIn.classList.contains("fa-eye") &&
+          passwordSignIn.getAttribute("type") === "text"
+        ) {
+          showPassSignIn.classList.remove("fa-eye");
+          showPassSignIn.classList.add("fa-eye-slash");
+        }
+        if (
+          showPassSignIn.classList.contains("fa-eye-slash") &&
+          passwordSignIn.getAttribute("type") === "password"
+        ) {
+          showPassSignIn.classList.remove("fa-eye-slash");
+          showPassSignIn.classList.add("fa-eye");
+        }
+      });
+
+      let container = document.getElementById("container");
+
+      const toggle = () => {
+        container.classList.toggle("sign-in");
+        container.classList.toggle("sign-up");
+      };
+      setTimeout(() => {
+        container.classList.add("sign-in");
+      }, 200);
+
+      //sign in
+
+      var ssoUrl = `<%= ssourl %>`;
+      console.log(ssoUrl);
+      const loginFunction = async () => {
+        const username = document.querySelector("#input-user-name").value;
+        const password = document.querySelector("#input-password").value;
+        // if (username && password) {
+        document.getElementById("myModal").style.display = "grid";
+        try {
+          await fetch(ssoUrl, {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            redirect: "follow",
+            referrerPolicy: "no-referrer",
+            body: JSON.stringify({
+              email: username,
+              password: password,
+            }),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                return Promise.reject(`Error: ${response.status}`);
+              }
+              return response.json();
+            })
+            .then((data) => {
+              // Replace the current page content with the HTML received from the server
+              const form = document.createElement("form");
+              form.method = "POST";
+              form.mode = "cors";
+              form.cache = "no-cache";
+              form.action = "/";
+              const fields = {
+                access_token: data.access_token,
+                refresh_token: data.refresh_token,
+                expired_time: data.expired_time,
+                role: data.role,
+              };
+
+              for (const [name, value] of Object.entries(fields)) {
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = name;
+                input.value = value;
+                form.appendChild(input);
+              }
+              document.body.appendChild(form);
+              form.submit();
+            })
+            .catch((error) => {
+              window.alert("wrong username or password", error);
+              document.getElementById("myModal").style.display = "none";
+            });
+        } catch (err) {
+          console.log(err);
+          document.getElementById("myModal").style.display = "none";
+          window.alert("error login");
+        }
+        // } else {
+        //   window.alert("input username and password");
+        // }
+      };
+
+      //sign up
+      var signupUrl = `<%= registerurl %>`;
+      console.log(signupUrl);
+      //var uploadImg = "http://127.0.0.1:3000/api/register/upload-img";
+      const signupFunction = async () => {
+        const username = document.querySelector("#sign-up-username").value;
+        const email = document.querySelector("#sign-up-email").value;
+        const password = document.querySelector("#sign-up-password").value;
+
+        const birthConvert = document.querySelector("#sign-up-birth").value;
+        const birth = Date.parse(birthConvert) / 1000;
+
+        const role_id = Number(document.querySelector("#sign-up-role").value);
+        const confirmPassword =
+          document.querySelector("#confirm-password").value;
+        const phone_number = document.querySelector(
+          "#sign-up-phone-number"
+        ).value;
+
+        const gender = Number(document.querySelector("#sign-up-gender").value);
+        const information = document.querySelector("#sign-up-info").value;
+
+        //const image = document.querySelector("#sign-up-img").files[0];
+        // let upload = new FormData();
+        // upload.append("file", image);
+        // upload.append("email", email);
+        if (confirmPassword && confirmPassword === password) {
+          try {
+            const signupResult = await fetch(signupUrl, {
+              method: "POST",
+              mode: "cors",
+              cache: "no-cache",
+              credentials: "same-origin",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              redirect: "follow",
+              referrerPolicy: "no-referrer",
+              body: JSON.stringify({
+                username: username,
+                email: email,
+                password: password,
+                role_id: role_id,
+                gender: gender,
+                birth: birth,
+                phone_number: phone_number,
+                image: "",
+                status_id: 1,
+                information: information,
+              }),
+            });
+            console.log(signupResult);
+            if (signupResult.ok) {
+              // console.log(image);
+              // if (image == undefined) {
+              //   window.alert("Sign up successful!");
+              //   window.location.reload();
+              // }
+              // if (
+              //   image != undefined &&
+              //   (image.type == "image/jpeg" || image.type == "image/png")
+              // ) {
+              //   const uploadResult = await fetch(uploadImg, {
+              //     method: "POST",
+              //     mode: "cors",
+              //     cache: "no-cache",
+              //     credentials: "same-origin",
+              //     redirect: "follow",
+              //     referrerPolicy: "no-referrer",
+              //     body: upload,
+              //   });
+              //   if (uploadResult.ok) {
+              //     window.alert("Sign up successful!");
+              //     window.location.reload();
+              //   } else {
+              //     let data = await signupResult.json();
+              //     console.log(data.message);
+              //     window.alert(data.message);
+              //   }
+              // }
+              //   if (
+              //     image != undefined &&
+              //     image.type != "image/jpeg" &&
+              //     image.type != "image/png"
+              //   ) {
+              //     window.alert("Wrong image format, please try again");
+              //   }
+              // } else {
+              // let data = await signupResult.json();
+              // window.alert(data.message);
+              window.alert("sign up successful!");
+              window.location.reload();
+            } else {
+              let data = await signupResult.json();
+              if (Array.isArray(data.message)) {
+                for (const message of data.message) {
+                  window.alert(message);
+                }
+              } else window.alert(data.message);
+            }
+          } catch (err) {
+            console.log(err);
+            window.alert("error when sign up!");
+          }
+        }
+        if (!confirmPassword) {
+          window.alert("confirm password should not be empty");
+        }
+        if (confirmPassword && confirmPassword !== password) {
+          window.alert("confirm password is wrong, please try again");
+        }
+      };
+
+      // Detect Enter key
+      const loginInputs = document.querySelectorAll(".sign-in-input");
+      loginInputs.forEach((input) => {
+        input.addEventListener("keyup", function (event) {
+          if (event.key === "Enter") {
+            loginFunction();
+          }
+        });
+      });
+      const signUpInputs = document.querySelectorAll(".sign-up-input");
+      signUpInputs.forEach((input) => {
+        input.addEventListener("keyup", function (event) {
+          if (event.key === "Enter") {
+            signupFunction();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

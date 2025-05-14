@@ -34,9 +34,9 @@ export class TokenService {
     const expiredRefreshToken = 30 * 24 * 60 * 60 * 1000; // 30 days
 
     return {
-      access_token: this.renderToken(payload, expiredTime),
-      refresh_token: this.renderToken(payload, expiredRefreshToken),
-      expired_time: Date.now() + expiredTime,
+      accessToken: this.renderToken(payload, expiredTime),
+      refreshToken: this.renderToken(payload, expiredRefreshToken),
+      expiredTime: Date.now() + expiredTime,
       role: payload.role
     };
   }
@@ -71,8 +71,8 @@ export class TokenService {
     const tokenPair = this.renderTokenPair(payload);
     
     const addTokenResult = await this.addToken({
-      user_id: payload.userId.toString(),
-      refresh_token: tokenPair.refresh_token,
+      userId: payload.userId.toString(),
+      refreshToken: tokenPair.refreshToken,
       expiredAt: Date.now() + 15 * 60 * 1000
     });
 
@@ -83,8 +83,8 @@ export class TokenService {
   public async addToken(tokenData: CreateTokenModel): Promise<boolean> {
     try {
       const token = this.tokenRepository.create({
-        userId: parseInt(tokenData.user_id),
-        refreshToken: tokenData.refresh_token,
+        userId: parseInt(tokenData.userId),
+        refreshToken: tokenData.refreshToken,
         expiredAt: new Date(tokenData.expiredAt ?? Date.now() + 15 * 60 * 1000)
       });
       await this.tokenRepository.save(token);

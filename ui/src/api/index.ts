@@ -3,7 +3,7 @@ import * as ApiClientFactory from "./api-generated";
 
 export * from "./api-generated";
 
-const api_url: string =  "http://localhost:3000";
+const api_url: string = Context.apiUrl ?? "http://localhost:3000";
 
 // define authorize common function, we also can config interceptors here
 const authorizedFetchFunction = (

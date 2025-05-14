@@ -16,7 +16,7 @@ export const DefaultLayout = () => {
   ];
   return (
     <div className="App">
-      {/* {isFullPage.includes(pathname) ? (
+      {isFullPage.includes(pathname) ? (
         <>
           {" "}
           <Routes />{" "}
@@ -39,8 +39,7 @@ export const DefaultLayout = () => {
             </Layout>
           </Layout>
         </Layout>
-      )} */}
-      "hello world"
+      )}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 export class TokensResponseModel {
-  access_token: string;
-  refresh_token: string;
-  expired_time?: number;
+  accessToken: string;
+  refreshToken: string;
+  expiredTime?: number;
   role?: number;
 }

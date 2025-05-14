@@ -23,39 +23,39 @@
 
     <title>React App</title>
     <script>
-      // var CONTEXT_NAME = "ui-context";
-      // var baseEnv = {
-      //   sso: {
-      //     refreshTokenUrl: "$sso-refresh-token$",
-      //     redirectUrl: "$sso-redirect-url$",
-      //   },
-      // };
-      // var context;
-      // try {
-      //   context = $context$;
-      // } catch {}
-      // try {
-      //   if (context) {
-      //     localStorage[CONTEXT_NAME] = JSON.stringify(context);
-      //   } else if (localStorage[CONTEXT_NAME]) {
-      //     context = JSON.parse(localStorage[CONTEXT_NAME]);
-      //     console.log(context.expiredTime);
-      //     if (context.expiredTime < Date.now()) {
-      //       localStorage.clear();
-      //       context = undefined;
-      //     }
-      //   }
-      // } catch (e) {
-      //   context = undefined;
-      // }
-      // if (!context) {
-      //   if (baseEnv.sso.redirectUrl.indexOf("$") < 0)
-      //     window.localStorage.clear();
-      //     document.cookie = `expired_time=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-      //     window.location.href = baseEnv.sso.redirectUrl;
-      // } else {
-      //   window.context = context;
-      // }
+      var CONTEXT_NAME = "ui-context";
+      var baseEnv = {
+        sso: {
+          refreshTokenUrl: "$sso-refresh-token$",
+          redirectUrl: "$sso-redirect-url$",
+        },
+      };
+      var context;
+      try {
+        context = $context$;
+      } catch {}
+      try {
+        if (context) {
+          localStorage[CONTEXT_NAME] = JSON.stringify(context);
+        } else if (localStorage[CONTEXT_NAME]) {
+          context = JSON.parse(localStorage[CONTEXT_NAME]);
+          console.log(context.expiredTime);
+          if (context.expiredTime < Date.now()) {
+            localStorage.clear();
+            context = undefined;
+          }
+        }
+      } catch (e) {
+        context = undefined;
+      }
+      if (!context) {
+        if (baseEnv.sso.redirectUrl.indexOf("$") < 0)
+          window.localStorage.clear();
+          document.cookie = `expired_time=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+          window.location.href = baseEnv.sso.redirectUrl;
+      } else {
+        window.context = context;
+      }
     </script>
   </head>
   <body>

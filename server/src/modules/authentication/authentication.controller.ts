@@ -27,15 +27,15 @@ export class AuthenticationController {
   //   await this.authService.register(register);
   //   return res.status(HttpStatus.CREATED).json('register successfully');
   // }
-  // @Post('login')
-  // async login(@Body() login: LoginRequest, @Res() res: Response) {
-  //   const loginResult = await this.authService.login(login);
-  //   if (!loginResult) {
-  //     throw new NotFoundException('Login failed');
-  //   }
-  //   const result = plainToInstance(TokensResponseModel, loginResult);
-  //   return res.status(HttpStatus.OK).json(result);
-  // }
+  @Post('login')
+  async login(@Body() login: LoginRequest, @Res() res: Response) {
+    const loginResult = await this.authService.login(login);
+    if (!loginResult) {
+      throw new NotFoundException('Login failed');
+    }
+    const result = plainToInstance(TokensResponseModel, loginResult);
+    return res.status(HttpStatus.OK).json(result);
+  }
   @Get('validate')
   @ApiBearerAuth() // Chỉ ra rằng API này yêu cầu Bearer token
   async validateToken(
