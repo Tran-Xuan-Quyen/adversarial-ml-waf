@@ -1,23 +1,61 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Role } from '../roles/role.entity';
+import { Project } from '../projects/projects.entity';
+import { AccessLog } from '../access-logs/access-logs.entity';
+import { Token } from '../token/token.entity';
 
-@Entity() // Đánh dấu lớp là một entity
+@Entity('users')
 export class User {
-  @PrimaryGeneratedColumn()  // Đánh dấu khóa chính tự động tăng
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column()  // Đánh dấu trường dữ liệu
-  name: string;
-
-  @Column()
+  @Column({ name: 'email', length: 255, unique: true })
   email: string;
 
-  @Column()
-  password: string;
+  @Column({ name: 'password_hash', length: 255 })
+  passwordHash: string;
 
-  @Column()
-  phone: string;
+  @Column({ name: 'full_name', length: 255 })
+  fullName: string;
 
-  @Column()
-  address: string;
+  @Column({ name: 'role_id', nullable: true })
+  roleId: number;
 
+  @Column({ name: 'project_id', nullable: true })
+  projectId: number;
+
+  @Column({ name: 'gender', length: 255, nullable: true })
+  gender: string;
+
+  @Column({ name: 'birth', type: 'timestamp', nullable: true })
+  birth: Date;
+
+  @Column({ name: 'image', length: 500, nullable: true })
+  image: string;
+
+  @Column({ name: 'phone_number', length: 500, nullable: true })
+  phoneNumber: string;
+
+  @Column({ name: 'status_id', nullable: true })
+  statusId: number;
+
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
+  updatedAt: Date;
+
+  @ManyToOne(() => Role, role => role.users)
+  @JoinColumn({ name: 'role_id' })
+  role: Role;
+
+  @ManyToOne(() => Project, project => project.users)
+  @JoinColumn({ name: 'project_id' })
+  project: Project;
+
+  @OneToMany(() => AccessLog, accessLog => accessLog.user)
+  accessLogs: AccessLog[];
+
+  @OneToMany(() => Token, token => token.user)
+  tokens: Token[];
 }
