@@ -54,7 +54,7 @@ export class AuthenticationService {
     }
     const payload: PayloadModel = {
       userId: user.id,
-      role: user.roleId,
+      role: user.roleId
     };
 
     // 15 minute expired
@@ -85,7 +85,7 @@ export class AuthenticationService {
   public async refreshToken(refresh_token: string) {
     return await this.tokenService.refreshToken(refresh_token);
   }
-  public validateToken(token: string): PayloadModel | null  {
+  public validateToken(token: string)  {
     return this.tokenService.decodeToken(token);
   }
   public async logout(token: string) {

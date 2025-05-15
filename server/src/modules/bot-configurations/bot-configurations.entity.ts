@@ -1,27 +1,27 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { Project } from '../projects/projects.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, JoinColumn } from 'typeorm';
+import { Prompt } from '../prompts/prompt.entity';
 
 @Entity('bot_configurations')
 export class BotConfiguration {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ name: 'project_id' })
-  projectId: number;
+  @Column({ name: 'promts_id' })
+  promptId: number;
 
-  @Column({ nullable: true })
+  @Column({ name: 'personality', length: 255, nullable: true })
   personality: string;
 
   @Column({ name: 'start_suggestions', type: 'text', nullable: true })
   startSuggestions: string;
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ name: 'greeting', type: 'text', nullable: true })
   greeting: string;
 
-  @Column('text', { array: true, name: 'application_domains' })
+  @Column({ name: 'application_domains', type: 'text', array: true, nullable: true })
   applicationDomains: string[];
 
-  @Column({ name: 'header_title', nullable: true })
+  @Column({ name: 'header_title', length: 255, nullable: true })
   headerTitle: string;
 
   @Column({ name: 'header_title_color', length: 7, nullable: true })
@@ -30,16 +30,16 @@ export class BotConfiguration {
   @Column({ name: 'background_color', length: 7, nullable: true })
   backgroundColor: string;
 
-  @Column({ nullable: true })
+  @Column({ name: 'logo', length: 255, nullable: true })
   logo: string;
 
-  @Column({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   createdAt: Date;
 
-  @Column({ name: 'updated_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
   updatedAt: Date;
 
-  @ManyToOne(() => Project, project => project.botConfigurations)
-  @JoinColumn({ name: 'project_id' })
-  project: Project;
-}
+  @ManyToOne(() => Prompt, prompt => prompt.botConfigurations, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'promts_id' })
+  prompt: Prompt;
+} 

@@ -1,8 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { User } from '../users/users.entity';
 import { Domain } from '../domains/domain.entity';
-import { BotConfiguration } from '../bot-configurations/bot-configuration.entity';
-import { FileUpload } from '../file-uploads/file-upload.entity';
+import { Prompt } from '../prompts/prompt.entity';
 
 @Entity('projects')
 export class Project {
@@ -27,17 +26,9 @@ export class Project {
   @OneToMany(() => User, user => user.project)
   users: User[];
 
-  @ManyToMany(() => Domain)
-  @JoinTable({
-    name: 'project_domains',
-    joinColumn: { name: 'id', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'domain_id', referencedColumnName: 'id' }
-  })
+  @OneToMany(() => Domain, domain => domain.project)
   domains: Domain[];
 
-  @OneToMany(() => BotConfiguration, config => config.project)
-  botConfigurations: BotConfiguration[];
-
-  @OneToMany(() => FileUpload, file => file.project)
-  fileUploads: FileUpload[];
+  @OneToMany(() => Prompt, prompt => prompt.project)
+  prompts: Prompt[];
 }

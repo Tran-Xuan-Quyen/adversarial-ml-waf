@@ -12,6 +12,7 @@ import { DomainsModule } from './modules/domains/domains.module';
 import { BotConfiguarationsModule } from './modules/bot-configurations/bot-configuarations.module';
 import { FileUploadsModule } from './modules/file-uploads/file-uploads.module';
 import { RsaKeyModule } from './modules/rsa_key/rsa_key.module';
+import { PromptsModule } from './modules/prompts/prompts.module';
 
 @Module({
   imports: [
@@ -43,7 +44,8 @@ import { RsaKeyModule } from './modules/rsa_key/rsa_key.module';
     DomainsModule,
     BotConfiguarationsModule,
     FileUploadsModule,
-    RsaKeyModule
+    RsaKeyModule,
+    PromptsModule
   ],
   controllers: [AppController],
   providers: [AppService],

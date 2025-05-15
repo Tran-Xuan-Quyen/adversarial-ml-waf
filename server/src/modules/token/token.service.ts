@@ -41,23 +41,22 @@ export class TokenService {
     };
   }
 
-  public decodeToken(token: string): PayloadModel | null {
+  public decodeToken(token: string){
     try {
-      return jwt.verify(token, this.publicKey, { algorithms: ['RS256'] }) as PayloadModel;
+      return jwt.verify(token, this.publicKey, { algorithms: ['RS256'] });
     } catch (error) {
       console.error('Token is invalid or expired:', error.message);
       return null;
     }
   }
 
-  public async refreshToken(token: string): Promise<TokensResponseModel | null> {
+  public async refreshToken(token: string,expiredTime?: number): Promise<TokensResponseModel | null> {
     const decoded = this.decodeToken(token);
     if (!decoded) return null;
 
     const existingToken = await this.tokenRepository.findOne({
       where: { 
         refreshToken: token,
-        expiredAt: MoreThan(new Date())
       }
     });
 

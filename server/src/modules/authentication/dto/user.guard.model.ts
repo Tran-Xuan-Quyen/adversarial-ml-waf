@@ -1,6 +1,6 @@
 
 export class UserGuardModel {
-  accountId: string;
+  userId: string;
   role?: number;
   clientId?: string;
 }

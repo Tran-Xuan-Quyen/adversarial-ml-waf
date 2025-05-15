@@ -9,7 +9,7 @@ export class Token {
     @Column({ name: 'user_id' })
     userId: number;
 
-    @Column({ name: 'refresh_token', length: 255 })
+    @Column({ name: 'refresh_token', length: 1000 })
     refreshToken: string;
 
     @Column({ name: 'expired_at' })
