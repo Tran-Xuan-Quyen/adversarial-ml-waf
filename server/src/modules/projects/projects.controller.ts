@@ -1,30 +1,48 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+  Post,
+  Put,
+  Res,
+} from '@nestjs/common';
 import { ProjectsService } from './projects.service';
-import { Project } from './projects.entity';
 import {
   ApiBearerAuth,
   ApiOperation,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { ProjectsCreateModel } from './dto/projects.create.model';
 import { ProjectsUpdateModel } from './dto/projects.update.model';
+import { ProjectsResponseModel } from './dto/projects.response.model';
+import { plainToInstance } from 'class-transformer';
+import { ProjectsRequestModel } from './dto/projects.request.model';
+import { UsersService } from '../users/users.service';
 
 @ApiTags('projects')
 @ApiBearerAuth()
 @Controller('projects')
 export class ProjectsController {
-  constructor(private readonly projectsService: ProjectsService) {}
+  constructor(
+    private readonly projectsService: ProjectsService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @Get()
   @ApiOperation({ summary: 'Get all projects' })
   @ApiResponse({
     status: 200,
     description: 'Return all projects.',
-    type: [Project],
+    type: [ProjectsResponseModel],
   })
-  async findAll(): Promise<Project[]> {
-    return this.projectsService.findAll();
+  async findAll() {
+    console.log(`[P]:::Get all projects data`);
+    const projects = await this.projectsService.findAll();
+    let result = plainToInstance(ProjectsResponseModel, projects);
+    return result;
   }
 
   @Get(':id')
@@ -32,11 +50,13 @@ export class ProjectsController {
   @ApiResponse({
     status: 200,
     description: 'Return the project.',
-    type: Project,
+    type: ProjectsResponseModel,
   })
-  async findOne(@Param('id') id: string): Promise<Project> {
-    console.log(id);
-    return this.projectsService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    console.log(`[P]:::Get project by id: ${id}`);
+    const project = await this.projectsService.findOne(+id);
+    let result = plainToInstance(ProjectsResponseModel, project);
+    return result;
   }
 
   @Post()
@@ -44,12 +64,13 @@ export class ProjectsController {
   @ApiResponse({
     status: 201,
     description: 'The project has been successfully created.',
-    type: Project,
+    type: ProjectsResponseModel,
   })
-  async create(
-    @Body() createProjectDto: ProjectsCreateModel,
-  ): Promise<Project> {
-    return this.projectsService.create(createProjectDto);
+  async create(@Body() createProjectDto: ProjectsRequestModel) {
+    console.log(`[P]:::Create project: ${createProjectDto}`);
+    const project = await this.projectsService.create(createProjectDto);
+    let result = plainToInstance(ProjectsResponseModel, project);
+    return result;
   }
 
   @Put(':id')
@@ -57,12 +78,26 @@ export class ProjectsController {
   @ApiResponse({
     status: 200,
     description: 'The project has been successfully updated.',
-    type: Project,
+    type: ProjectsResponseModel,
   })
   async update(
     @Param('id') id: string,
     @Body() updateProjectDto: ProjectsUpdateModel,
-  ): Promise<Project> {
-    return this.projectsService.update(+id, updateProjectDto);
+  ) {
+    console.log(`[P]:::Update project: ${id} with ${updateProjectDto}`);
+    const project = await this.projectsService.update(+id, updateProjectDto);
+    let result = plainToInstance(ProjectsResponseModel, project);
+    return result;
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Delete a project by ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'The project has been successfully deleted.',
+  })
+  async delete(@Param('id') id: string): Promise<void> {
+    console.log(`[P]:::Delete project: ${id}`);
+    return this.projectsService.delete(+id);
   }
 }
