@@ -1,39 +1,6 @@
-import {
-  IsString,
-  IsInt,
-  IsOptional,
-  IsUrl,
-  IsPhoneNumber,
-  IsDateString,
-  IsUUID,
-} from 'class-validator';
+import { PartialType } from "@nestjs/swagger";
+import { UserRequestModel } from "./user.request.model";
 
-export class UserUpdateModel {
-  @IsOptional()
-  @IsString()
-  username: string;
+export class UserUpdateModel extends PartialType(UserRequestModel) {
 
-  @IsOptional()
-  @IsInt()
-  gender?: number;
-
-  @IsOptional()
-  @IsDateString()
-  birth?: bigint;
-
-  @IsOptional()
-  @IsPhoneNumber('VN')
-  phone_number?: string;
-
-  @IsOptional()
-  @IsUrl()
-  image?: string;
-
-  @IsOptional()
-  @IsInt()
-  status_id: number;
-
-  @IsOptional()
-  @IsInt()
-  role_id: number;
 }

@@ -68,7 +68,7 @@ CREATE TABLE users (
                        password_hash VARCHAR(255) NOT NULL,
                        full_name VARCHAR(255) NOT NULL,
                        role_id INT REFERENCES roles(id) ON DELETE SET NULL,
-                       project_id INT REFERENCES projects(id) ON DELETE SET NULL,
+                       project_id INT REFERENCES user_projects(id) ON DELETE SET NULL,
                        gender INT,
                        birth TIMESTAMP,
                        image VARCHAR(500),
@@ -95,4 +95,13 @@ CREATE TABLE tokens (
                         expired_at TIMESTAMP NOT NULL,
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE user_projects (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    project_id INT REFERENCES projects(id) ON DELETE CASCADE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(user_id, project_id)
 );

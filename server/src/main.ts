@@ -17,8 +17,8 @@ async function bootstrap() {
 
   app.enableCors();
   const config = new DocumentBuilder()
-    .setTitle('My API')
-    .setDescription('API description')
+    .setTitle('Chat Bot API')
+    .setDescription('The Chat Bot API description')
     .setVersion('1.0')
     .addBearerAuth()
     .build();

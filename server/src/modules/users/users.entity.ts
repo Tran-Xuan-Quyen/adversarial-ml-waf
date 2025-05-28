@@ -1,8 +1,18 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+  JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Role } from '../roles/role.entity';
 import { Project } from '../projects/projects.entity';
 import { AccessLog } from '../access-logs/access-logs.entity';
 import { Token } from '../token/token.entity';
+import { UserProject } from '../user-projects/user-projects.entity';
 
 @Entity('users')
 export class User {
@@ -45,17 +55,22 @@ export class User {
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
   updatedAt: Date;
 
-  @ManyToOne(() => Role, role => role.users)
+  @ManyToOne(() => Role, (role) => role.users)
   @JoinColumn({ name: 'role_id' })
   role: Role;
 
-  @ManyToOne(() => Project, project => project.users)
+  @ManyToOne(() => Project)
   @JoinColumn({ name: 'project_id' })
   project: Project;
 
-  @OneToMany(() => AccessLog, accessLog => accessLog.user)
+  @OneToMany(() => AccessLog, (accessLog) => accessLog.user)
   accessLogs: AccessLog[];
 
-  @OneToMany(() => Token, token => token.user)
+  @OneToMany(() => Token, (token) => token.user)
   tokens: Token[];
+
+  @OneToMany(() => UserProject, (userProject) => userProject.user)
+  userProjects: UserProject[];
+
+  projects?: Project[];
 }

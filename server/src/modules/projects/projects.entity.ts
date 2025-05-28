@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { User } from '../users/users.entity';
 import { Domain } from '../domains/domain.entity';
 import { Prompt } from '../prompts/prompt.entity';
@@ -23,12 +30,12 @@ export class Project {
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
   updatedAt: Date;
 
-  @OneToMany(() => User, user => user.project)
+  @OneToMany(() => User, (user) => user.project)
   users: User[];
 
-  @OneToMany(() => Domain, domain => domain.project)
+  @OneToMany(() => Domain, (domain) => domain.project)
   domains: Domain[];
 
-  @OneToMany(() => Prompt, prompt => prompt.project)
+  @OneToMany(() => Prompt, (prompt) => prompt.project)
   prompts: Prompt[];
 }

@@ -1,15 +1,5 @@
-import { IsOptional, IsString } from 'class-validator';
+import { PartialType } from '@nestjs/swagger';
+import { ProjectsRequestModel } from './projects.request.model';
 
-export class ProjectsUpdateModel {
-  @IsOptional()
-  @IsString()
-  projectName: string;
-
-  @IsOptional()
-  @IsString()
-  applicationDomain: string;
-
-  @IsOptional()
-  @IsString()
-  description: string;
+export class ProjectsUpdateModel extends PartialType(ProjectsRequestModel) {
 }
