@@ -55,6 +55,7 @@ CREATE TABLE file_uploads (
                               id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
                               promt_id INT REFERENCES promts(id) ON DELETE CASCADE,
                               file_name VARCHAR(255) NOT NULL,
+                              file_path VARCHAR(255) NOT NULL,
                               file_size INT,
                               status VARCHAR(50),
                               created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

@@ -12,6 +12,7 @@ import { Prompt } from './prompt.entity';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { PromptResponseModel } from './dto/prompt.response.model';
 import { PromptRequestModel } from './dto/prompt.request.model';
+import { plainToInstance } from 'class-transformer';
 
 @ApiTags('prompts')
 @Controller('prompts')
@@ -25,8 +26,11 @@ export class PromptsController {
     description: 'The prompt has been successfully created.',
     type: PromptResponseModel,
   })
-  create(@Body() prompt: PromptRequestModel) {
-    return this.promptsService.create(prompt);
+  async create(@Body() prompt: PromptRequestModel) {
+    console.log(`[P]:::Create a new prompt`, prompt);
+    const promptResponse = await this.promptsService.create(prompt);
+    let result = plainToInstance(PromptResponseModel, promptResponse);
+    return result;
   }
 
   @Get()
@@ -36,8 +40,11 @@ export class PromptsController {
     description: 'Return all prompts.',
     type: [PromptResponseModel],
   })
-  findAll() {
-    return this.promptsService.findAll();
+  async findAll() {
+    console.log(`[P]:::Get all prompts`);
+    const prompts = await this.promptsService.findAll();
+    let result = plainToInstance(PromptResponseModel, prompts);
+    return result;
   }
 
   @Get(':id')
@@ -47,8 +54,11 @@ export class PromptsController {
     description: 'Return the prompt.',
     type: PromptResponseModel,
   })
-  findOne(@Param('id') id: string) {
-    return this.promptsService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    console.log(`[P]:::Get a prompt by id: ${id}`);
+    const prompt = await this.promptsService.findOne(+id);
+    let result = plainToInstance(PromptResponseModel, prompt);
+    return result;
   }
 
   @Patch(':id')
@@ -58,8 +68,11 @@ export class PromptsController {
     description: 'The prompt has been successfully updated.',
     type: PromptResponseModel,
   })
-  update(@Param('id') id: string, @Body() prompt: Partial<Prompt>) {
-    return this.promptsService.update(+id, prompt);
+  async update(@Param('id') id: string, @Body() prompt: Partial<Prompt>) {
+    console.log(`[P]:::Update a prompt: ${id}`, prompt);
+    const promptResponse = await this.promptsService.update(+id, prompt);
+    let result = plainToInstance(PromptResponseModel, promptResponse);
+    return result;
   }
 
   @Delete(':id')
@@ -68,7 +81,9 @@ export class PromptsController {
     status: 200,
     description: 'The prompt has been successfully deleted.',
   })
-  remove(@Param('id') id: string) {
-    return this.promptsService.remove(+id);
+  async remove(@Param('id') id: string) {
+    console.log(`[P]:::Delete a prompt: ${id}`);
+    await this.promptsService.remove(+id);
+    return { message: 'Prompt deleted successfully' };
   }
 }
