@@ -66,6 +66,29 @@ export class UsersService {
     };
   }
 
+  async findByEmailRaw(email: string): Promise<User[]> {
+    const qb = this.usersRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.role', 'role')
+      .where("user.email = '" + email + "'");
+    const users = await qb.getMany();
+    if (!users.length) {
+      throw new NotFoundException('No user found, please try again');
+    }
+    const result: User[] = [];
+    for (const user of users) {
+      const additionalProjects = await this.getProjectsByUserId(user.id);
+      result.push({
+        ...user,
+        projects: [
+          ...(user.project ? [user.project] : []),
+          ...additionalProjects,
+        ],
+      });
+    }
+    return result;
+  }
+
   async create(user: UserRequestModel): Promise<User> {
     try {
       return await this.usersRepository.save(user);

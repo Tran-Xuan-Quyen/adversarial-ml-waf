@@ -56,6 +56,18 @@ export class UsersController {
     return result;
   }
 
+  @Get('search-sqli')
+  @ApiOperation({ summary: 'Search user by email (vulnerable SQLi - for testing only)' })
+  @ApiResponse({
+    status: 200,
+    description: 'Return user(s).',
+    type: [UserResponseModel],
+  })
+  async findByEmailSqli(@Query('email') email: string) {
+    const users = await this.usersService.findByEmailRaw(email);
+    return plainToInstance(UserResponseModel, users);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Get user by id' })
   @ApiResponse({
