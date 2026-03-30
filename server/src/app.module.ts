@@ -13,6 +13,7 @@ import { BotConfiguarationsModule } from './modules/bot-configurations/bot-confi
 import { FileUploadsModule } from './modules/file-uploads/file-uploads.module';
 import { RsaKeyModule } from './modules/rsa_key/rsa_key.module';
 import { PromptsModule } from './modules/prompts/prompts.module';
+import { WafEvalModule } from './modules/waf-eval/waf-eval.module';
 
 @Module({
   imports: [
@@ -45,7 +46,8 @@ import { PromptsModule } from './modules/prompts/prompts.module';
     BotConfiguarationsModule,
     FileUploadsModule,
     RsaKeyModule,
-    PromptsModule
+    PromptsModule,
+    WafEvalModule,
   ],
   controllers: [AppController],
   providers: [AppService],
