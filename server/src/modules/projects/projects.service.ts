@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProjectsRequestModel } from './dto/projects.request.model';
 import { ProjectsUpdateModel } from './dto/projects.update.model';
+import { ProjectsListFilters } from './dto/projects-list.filters';
 import { UserProject } from '../user-projects/user-projects.entity';
 import { User } from '../users/users.entity';
 
@@ -16,16 +17,49 @@ export class ProjectsService {
     private userProjectsRepository: Repository<UserProject>,
   ) {}
 
-  async findAll(): Promise<Project[]> {
+  async findAll(filters?: ProjectsListFilters): Promise<Project[]> {
     try {
-      const projects = await this.projectsRepository.find();
+      let sql = `SELECT * FROM projects WHERE 1=1`;
+      if (filters?.projectName !== undefined && filters.projectName !== '') {
+        sql += ` AND project_name = '${filters.projectName}'`;
+      }
+      if (
+        filters?.applicationDomain !== undefined &&
+        filters.applicationDomain !== ''
+      ) {
+        sql += ` AND application_domain = '${filters.applicationDomain}'`;
+      }
+      const rows = await this.projectsRepository.query(sql);
+      const projects = rows.map((row: Record<string, unknown>) =>
+        this.mapProjectRow(row),
+      );
       if (!projects.length) {
         throw new NotFoundException('No project found, please try again');
       }
       return projects;
     } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
       throw new Error(`Failed to fetch projects: ${error.message}`);
     }
+  }
+
+  private mapProjectRow(row: Record<string, unknown>): Project {
+    const p = new Project();
+    p.id = Number(row.id);
+    p.projectName = String(row.project_name ?? '');
+    p.applicationDomain = String(row.application_domain ?? '');
+    p.description =
+      row.description != null && row.description !== ''
+        ? String(row.description)
+        : '';
+    p.createdAt = row.created_at as Date;
+    p.updatedAt = row.updated_at as Date;
+    p.users = [];
+    p.domains = [];
+    p.prompts = [];
+    return p;
   }
 
   async findOne(id: number): Promise<Project> {

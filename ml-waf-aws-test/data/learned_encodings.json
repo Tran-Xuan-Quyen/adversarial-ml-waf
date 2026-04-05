@@ -1,0 +1,95 @@
+{
+"transforms": {
+"other": {
+"bypass": 95,
+"block": 162,
+"other": 0,
+"reach": 95
+},
+"plus_space": {
+"bypass": 0,
+"block": 5,
+"other": 0,
+"reach": 0
+},
+"tab": {
+"bypass": 29,
+"block": 25,
+"other": 0,
+"reach": 29
+},
+"newline": {
+"bypass": 0,
+"block": 3,
+"other": 0,
+"reach": 0
+},
+"vtab": {
+"bypass": 0,
+"block": 1,
+"other": 0,
+"reach": 0
+},
+"cr": {
+"bypass": 0,
+"block": 2,
+"other": 0,
+"reach": 0
+},
+"ff": {
+"bypass": 0,
+"block": 2,
+"other": 0,
+"reach": 0
+},
+"comment_block": {
+"bypass": 43,
+"block": 35,
+"other": 0,
+"reach": 43
+},
+"encoded": {
+"bypass": 0,
+"block": 3,
+"other": 0,
+"reach": 0
+},
+"hex": {
+"bypass": 986,
+"block": 0,
+"other": 0,
+"reach": 986
+},
+"case_mix": {
+"bypass": 242,
+"block": 231,
+"other": 0,
+"reach": 242
+},
+"url_encode": {
+"bypass": 794,
+"block": 695,
+"other": 0,
+"reach": 794
+},
+"comment_inline": {
+"bypass": 102,
+"block": 50,
+"other": 0,
+"reach": 102
+},
+"identity": {
+"bypass": 639,
+"block": 334,
+"other": 0,
+"reach": 639
+},
+"null_byte": {
+"bypass": 647,
+"block": 325,
+"other": 1,
+"reach": 648
+}
+},
+"updated_ts": 1775381968.5169628
+}
