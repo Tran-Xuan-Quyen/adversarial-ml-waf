@@ -10,6 +10,7 @@ inject_mode path: .../projects/<segment> (remap e.g. to numeric id if you use pa
 
 Setup:
   cd ml-waf-aws-test
+  py -3 -m pip install -r requirements.txt
   copy config.example.json config.json   (or edit config.json)
   py -3 run_probe.py --fresh
 
@@ -50,3 +51,16 @@ Classification: blocked=WAF. Bypass=effective cases (200, non-encoding 500, 400/
 Each request is printed to the terminal as it completes (flush); use PYTHONUNBUFFERED=1 if your shell buffers output.
 
 If the API expects another param name or path style, change query_param / base_url.
+
+Generate suggested AWS WAF rules from mutate_rules.json (broad, aligned with adv_mutate) and/or bypass/blocked JSONL (data-specific):
+  py -3 -m pip install -r requirements.txt
+  py -3 generate_rules_from_data.py
+  General patterns only (read data/mutate_rules.json — regex_rules + transform fn map): py -3 generate_rules_from_data.py --mode mutate
+  Data + mutate (default): py -3 generate_rules_from_data.py --mode both
+  JSONL only: py -3 generate_rules_from_data.py --mode data
+  Optional: py -3 generate_rules_from_data.py --mutate-rules ./data/mutate_rules.json --data-dirs ./data ../ml-waf/data --max-patterns 15 --out-json data/generated_aws_rule_suggestion.json
+  Review generated_aws_rule_suggestion.json: rule_regex_from_mutate_rules (raw regex from mutator), rule_regex_from_bypass_generalized (bypass JSONL mined + generalized), rule_regex_compact_from_data / rule_regex_compact (escaped literals from mined data when --mode data or both). Tune --bypass-min-support-ratio, --no-bypass-generalize, --min-support, --max-bypass-ratio as needed.
+  Remap-aware: mining and ML n-grams run on normalize_for_mining_deep() so windows are not taken inside id remap tokens (e.g. Demo_project); remap-like fragments (e.g. roject%27) are dropped from ByteMatch / escaped-regex pools.
+
+Semantic regex + rich transforms (few rules, broad patterns — tune for false positives):
+  See presets/semantic_sqli_regex_presets.json (Or merge those Statement blocks into a Web ACL rule). Chains in text_transform_chains.* are reusable on any RegexMatchStatement.

@@ -130,6 +130,7 @@ def load_config(path: Path) -> dict:
     c.setdefault("adv_mutate_max", 80)
     c.setdefault("adv_second_layer", True)
     c.setdefault("adv_second_layer_max", 50)
+    c.setdefault("repeat_per_variant", 1)
     return c
 
 
@@ -591,6 +592,13 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Full ml-waf pipeline: queue + spawn_from + generations (like run_until_bypass.py)",
     )
+    ap.add_argument(
+        "--repeat-per-variant",
+        type=int,
+        default=None,
+        metavar="N",
+        help="Override config repeat_per_variant: send each variant probe N times (variants mode only; improves per-variant stats).",
+    )
     ns = ap.parse_args(argv)
 
     if not ns.config.is_file():
@@ -677,6 +685,17 @@ def main(argv: list[str] | None = None) -> int:
     status_hist: Counter[int] = Counter()
     report_lines: list[str] = []
 
+    repeat_pv = int(cfg.get("repeat_per_variant") or 1)
+    if ns.repeat_per_variant is not None:
+        repeat_pv = int(ns.repeat_per_variant)
+    repeat_pv = max(1, repeat_pv)
+    if probe_mode == "full" and repeat_pv != 1:
+        print(
+            "repeat_per_variant>1 applies to probe_mode=variants only; ignoring for --full",
+            file=sys.stderr,
+        )
+        repeat_pv = 1
+
     print(
         f"Target: {base}  probe_mode={probe_mode}  inject={mode}  "
         f"({'param=' + param if mode == 'query' else 'path'})  "
@@ -685,7 +704,8 @@ def main(argv: list[str] | None = None) -> int:
         f"adv_mutate={cfg.get('adv_mutate_enabled', True)}  "
         f"sql={cfg.get('sql_dialect', 'postgresql')}  "
         f"{'max_gen=' + str(max_gen_cfg) + '  ' if probe_mode == 'full' else ''}"
-        f"variants={len(variants) if probe_mode != 'full' else 'queue'}  sleep={sleep_s}"
+        f"variants={len(variants) if probe_mode != 'full' else 'queue'}  "
+        f"repeat_per_variant={repeat_pv}  sleep={sleep_s}"
     )
 
     learn_files = not ns.dry_run
@@ -759,128 +779,136 @@ def main(argv: list[str] | None = None) -> int:
             else open(os.devnull, "w")
         ) as fother:
             for payload, name in variants:
-                if mode == "query":
-                    url = build_url_query(base, param, payload)
-                else:
-                    url = build_url_path(base, payload)
-                if ns.dry_run:
-                    print(url[:200] + ("..." if len(url) > 200 else ""))
-                    continue
-                try:
-                    r = requests.get(url, headers=headers, timeout=20, allow_redirects=True)
-                except requests.RequestException as e:
+                for trial in range(repeat_pv):
+                    if mode == "query":
+                        url = build_url_query(base, param, payload)
+                    else:
+                        url = build_url_path(base, payload)
+                    if ns.dry_run:
+                        if trial == 0:
+                            print(url[:200] + ("..." if len(url) > 200 else ""))
+                        continue
+                    try:
+                        r = requests.get(url, headers=headers, timeout=20, allow_redirects=True)
+                    except requests.RequestException as e:
+                        rec = {
+                            "variant": name,
+                            "gen": 0,
+                            "trial": trial,
+                            "trials_total": repeat_pv,
+                            "http_status": None,
+                            "result": "error",
+                            "error": str(e)[:400],
+                            "url_snip": url[:300],
+                        }
+                        fout.write(json.dumps(rec, ensure_ascii=False) + "\n")
+                        other_n += 1
+                        tested += 1
+                        if sleep_s:
+                            time.sleep(sleep_s)
+                        continue
+
+                    res, detail = classify_result(r)
+                    bp = res == "bypass"
+                    status_hist[r.status_code] += 1
+                    if res == "bypass":
+                        bypass_n += 1
+                    elif res == "blocked":
+                        block_n += 1
+                    else:
+                        other_n += 1
+                    if res != "blocked":
+                        waf_pass_n += 1
+
                     rec = {
                         "variant": name,
-                        "http_status": None,
-                        "result": "error",
-                        "error": str(e)[:400],
-                        "url_snip": url[:300],
+                        "gen": 0,
+                        "trial": trial,
+                        "trials_total": repeat_pv,
+                        "http_status": r.status_code,
+                        "result": res,
+                        "result_detail": detail,
+                        "waf_passed": res != "blocked",
+                        "url_snip": url[:400],
+                        "body_snip": (r.text or "")[:240].replace("\n", " "),
                     }
                     fout.write(json.dumps(rec, ensure_ascii=False) + "\n")
-                    other_n += 1
                     tested += 1
+                    report_lines.append(
+                        f"{res.upper():8}  HTTP {r.status_code:3}  t{trial + 1}/{repeat_pv}  {name}  ({detail})"
+                    )
+                    if learn_files and trial == repeat_pv - 1:
+                        now = time.time()
+                        if bp:
+                            fbypass.write(
+                                json.dumps(
+                                    {
+                                        "payload": payload,
+                                        "name": name,
+                                        "gen": 0,
+                                        "ts": now,
+                                    },
+                                    ensure_ascii=False,
+                                )
+                                + "\n"
+                            )
+                            bump_learned_encoding(
+                                LEARNED_ENCODINGS_JSON,
+                                name_to_transform_key(name),
+                                "bypass",
+                            )
+                        elif res == "blocked":
+                            fblocked.write(
+                                json.dumps(
+                                    {
+                                        "payload": payload,
+                                        "name": name,
+                                        "status": "blocked",
+                                        "status_code": r.status_code,
+                                        "ts": now,
+                                    },
+                                    ensure_ascii=False,
+                                )
+                                + "\n"
+                            )
+                            bump_learned_encoding(
+                                LEARNED_ENCODINGS_JSON,
+                                name_to_transform_key(name),
+                                "block",
+                            )
+                        elif detail in OTHER_LEARNED_DETAILS:
+                            fother.write(
+                                json.dumps(
+                                    {
+                                        "payload": payload,
+                                        "name": name,
+                                        "status": "other",
+                                        "result_detail": detail,
+                                        "status_code": r.status_code,
+                                        "ts": now,
+                                    },
+                                    ensure_ascii=False,
+                                )
+                                + "\n"
+                            )
+                            bump_learned_encoding(
+                                LEARNED_ENCODINGS_JSON,
+                                name_to_transform_key(name),
+                                "other",
+                            )
+                        if res != "blocked":
+                            bump_learned_encoding(
+                                LEARNED_ENCODINGS_JSON,
+                                name_to_transform_key(name),
+                                "reach",
+                            )
+                    print(
+                        f"  [{tested}] {res.upper():8}  t{trial + 1}/{repeat_pv}  {name:22}  HTTP {r.status_code}  ({detail})",
+                        flush=True,
+                    )
+
                     if sleep_s:
                         time.sleep(sleep_s)
-                    continue
-
-                res, detail = classify_result(r)
-                bp = res == "bypass"
-                status_hist[r.status_code] += 1
-                if res == "bypass":
-                    bypass_n += 1
-                elif res == "blocked":
-                    block_n += 1
-                else:
-                    other_n += 1
-                if res != "blocked":
-                    waf_pass_n += 1
-
-                rec = {
-                    "variant": name,
-                    "http_status": r.status_code,
-                    "result": res,
-                    "result_detail": detail,
-                    "waf_passed": res != "blocked",
-                    "url_snip": url[:400],
-                    "body_snip": (r.text or "")[:240].replace("\n", " "),
-                }
-                fout.write(json.dumps(rec, ensure_ascii=False) + "\n")
-                tested += 1
-                report_lines.append(
-                    f"{res.upper():8}  HTTP {r.status_code:3}  {name}  ({detail})"
-                )
-                if learn_files:
-                    now = time.time()
-                    if bp:
-                        fbypass.write(
-                            json.dumps(
-                                {
-                                    "payload": payload,
-                                    "name": name,
-                                    "gen": 0,
-                                    "ts": now,
-                                },
-                                ensure_ascii=False,
-                            )
-                            + "\n"
-                        )
-                        bump_learned_encoding(
-                            LEARNED_ENCODINGS_JSON,
-                            name_to_transform_key(name),
-                            "bypass",
-                        )
-                    elif res == "blocked":
-                        fblocked.write(
-                            json.dumps(
-                                {
-                                    "payload": payload,
-                                    "name": name,
-                                    "status": "blocked",
-                                    "status_code": r.status_code,
-                                    "ts": now,
-                                },
-                                ensure_ascii=False,
-                            )
-                            + "\n"
-                        )
-                        bump_learned_encoding(
-                            LEARNED_ENCODINGS_JSON,
-                            name_to_transform_key(name),
-                            "block",
-                        )
-                    elif detail in OTHER_LEARNED_DETAILS:
-                        fother.write(
-                            json.dumps(
-                                {
-                                    "payload": payload,
-                                    "name": name,
-                                    "status": "other",
-                                    "result_detail": detail,
-                                    "status_code": r.status_code,
-                                    "ts": now,
-                                },
-                                ensure_ascii=False,
-                            )
-                            + "\n"
-                        )
-                        bump_learned_encoding(
-                            LEARNED_ENCODINGS_JSON,
-                            name_to_transform_key(name),
-                            "other",
-                        )
-                    if res != "blocked":
-                        bump_learned_encoding(
-                            LEARNED_ENCODINGS_JSON,
-                            name_to_transform_key(name),
-                            "reach",
-                        )
-                print(
-                    f"  [{tested}] {res.upper():8}  {name:22}  HTTP {r.status_code}  ({detail})",
-                    flush=True,
-                )
-
-                if sleep_s:
-                    time.sleep(sleep_s)
 
     summary = {
         "ts": time.time(),
@@ -891,6 +919,7 @@ def main(argv: list[str] | None = None) -> int:
         "id_remap_legacy": [{"from": a, "to": b} for a, b in extra_pairs],
         "sql_dialect": cfg.get("sql_dialect", "postgresql"),
         "raw_payload": raw,
+        "repeat_per_variant": repeat_pv if probe_mode != "full" else 1,
         "variants_tested": tested if not ns.dry_run else 0,
         "bypass": bypass_n,
         "blocked": block_n,
