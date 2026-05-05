@@ -392,6 +392,7 @@ def run_full_transform_probe(
     adv_mutate_max: int = 80,
     adv_second_layer: bool = True,
     adv_second_layer_max: int = 50,
+    checkpoint_fn=None,
 ) -> tuple[int, int, int, int, Counter[int], list[str], int]:
     rub = patch_run_until_paths()
     policy = rub.load_transform_policy()
@@ -571,6 +572,8 @@ def run_full_transform_probe(
                 f"  [{tested}] {res.upper():8}  g{gen}  {name[:52]:52}  HTTP {r.status_code}  ({detail})",
                 flush=True,
             )
+            if checkpoint_fn and tested > 0 and tested % 1000 == 0:
+                checkpoint_fn(bypass_n, block_n, other_n, waf_pass_n, status_hist, report_lines, tested)
             if sleep_s:
                 time.sleep(sleep_s)
     return bypass_n, block_n, other_n, waf_pass_n, status_hist, report_lines, tested
@@ -732,6 +735,50 @@ def main(argv: list[str] | None = None) -> int:
 
     waf_pass_n = 0
 
+    def save_results(b_n, bl_n, o_n, wp_n, hist, tested_count, r_lines):
+        summary = {
+            "ts": time.time(),
+            "base_url": base,
+            "inject_mode": mode,
+            "query_param": param,
+            "id_remap": {"from": old_id, "to": new_id},
+            "id_remap_legacy": [{"from": a, "to": b} for a, b in extra_pairs],
+            "sql_dialect": cfg.get("sql_dialect", "postgresql"),
+            "raw_payload": raw,
+            "repeat_per_variant": repeat_pv if probe_mode != "full" else 1,
+            "variants_tested": tested_count if not ns.dry_run else 0,
+            "bypass": b_n,
+            "blocked": bl_n,
+            "waf_passed": wp_n,
+            "blocked_note": "blocked=WAF; bypass=200 OK, effective 500, 400/422 app errors; other_learned=404 not_found or 500 ineffective (utf8/encoding)",
+            "bypass_note": "bypass=effective outcome only; waf_passed=any non-WAF denial (includes 404 app not found, 502, ineffective 500)",
+            "other_or_error": o_n,
+            "http_status_counts": dict(sorted(hist.items())),
+            "calibration": cal,
+            "config": str(ns.config.resolve()),
+            "bypass_learned_jsonl": str(BYPASS_LEARNED_JSONL.resolve()),
+            "blocked_learned_jsonl": str(BLOCKED_LEARNED_JSONL.resolve()),
+            "other_learned_jsonl": str(OTHER_LEARNED_JSONL.resolve()),
+            "learned_encodings_json": str(LEARNED_ENCODINGS_JSON.resolve()),
+            "report_txt": str(REPORT_TXT.resolve()),
+            "bypass_found_txt": str(BYPASS_FOUND_TXT.resolve()),
+        }
+        if not ns.dry_run:
+            with open(SUMMARY_JSON, "w", encoding="utf-8") as f:
+                json.dump(summary, f, ensure_ascii=False, indent=2)
+            hdr = [
+                "AWS probe report",
+                f"bypass={b_n}  blocked={bl_n}  waf_passed={wp_n}  other={o_n}",
+                "blocked = WAF/edge-style denials (403/406/429 or rejection body on 200)",
+                "bypass = effective only: 200 clean, effective 500, 400/422 JSON app errors",
+                "waf_passed = request not blocked by WAF (includes 404, 502, ineffective 500)",
+                "other = timeouts/errors/ambiguous; 404/ineffective_500/upstream_error also in other_learned.jsonl",
+                "",
+            ]
+            REPORT_TXT.write_text(
+                "\n".join(hdr + r_lines) + "\n", encoding="utf-8"
+            )
+
     if probe_mode == "full" and learn_files:
         with open(RESULTS_JSONL, "a", encoding="utf-8") as fout:
             (
@@ -762,6 +809,9 @@ def main(argv: list[str] | None = None) -> int:
                 int(cfg.get("adv_mutate_max") or 80),
                 cfg.get("adv_second_layer", True),
                 int(cfg.get("adv_second_layer_max") or 50),
+                checkpoint_fn=lambda bn, bln, on, wpn, hist, lines, tst: (
+                    save_results(bn, bln, on, wpn, hist, tst, lines) or print(f"--- Saved checkpoint at {tst} requests ---", flush=True)
+                ),
             )
 
     if probe_mode != "full":
@@ -910,48 +960,8 @@ def main(argv: list[str] | None = None) -> int:
                     if sleep_s:
                         time.sleep(sleep_s)
 
-    summary = {
-        "ts": time.time(),
-        "base_url": base,
-        "inject_mode": mode,
-        "query_param": param,
-        "id_remap": {"from": old_id, "to": new_id},
-        "id_remap_legacy": [{"from": a, "to": b} for a, b in extra_pairs],
-        "sql_dialect": cfg.get("sql_dialect", "postgresql"),
-        "raw_payload": raw,
-        "repeat_per_variant": repeat_pv if probe_mode != "full" else 1,
-        "variants_tested": tested if not ns.dry_run else 0,
-        "bypass": bypass_n,
-        "blocked": block_n,
-        "waf_passed": waf_pass_n,
-        "blocked_note": "blocked=WAF; bypass=200 OK, effective 500, 400/422 app errors; other_learned=404 not_found or 500 ineffective (utf8/encoding)",
-        "bypass_note": "bypass=effective outcome only; waf_passed=any non-WAF denial (includes 404 app not found, 502, ineffective 500)",
-        "other_or_error": other_n,
-        "http_status_counts": dict(sorted(status_hist.items())),
-        "calibration": cal,
-        "config": str(ns.config.resolve()),
-        "bypass_learned_jsonl": str(BYPASS_LEARNED_JSONL.resolve()),
-        "blocked_learned_jsonl": str(BLOCKED_LEARNED_JSONL.resolve()),
-        "other_learned_jsonl": str(OTHER_LEARNED_JSONL.resolve()),
-        "learned_encodings_json": str(LEARNED_ENCODINGS_JSON.resolve()),
-        "report_txt": str(REPORT_TXT.resolve()),
-        "bypass_found_txt": str(BYPASS_FOUND_TXT.resolve()),
-    }
+    save_results(bypass_n, block_n, other_n, waf_pass_n, status_hist, tested, report_lines)
     if not ns.dry_run:
-        with open(SUMMARY_JSON, "w", encoding="utf-8") as f:
-            json.dump(summary, f, ensure_ascii=False, indent=2)
-        hdr = [
-            "AWS probe report",
-            f"bypass={bypass_n}  blocked={block_n}  waf_passed={waf_pass_n}  other={other_n}",
-            "blocked = WAF/edge-style denials (403/406/429 or rejection body on 200)",
-            "bypass = effective only: 200 clean, effective 500, 400/422 JSON app errors",
-            "waf_passed = request not blocked by WAF (includes 404, 502, ineffective 500)",
-            "other = timeouts/errors/ambiguous; 404/ineffective_500/upstream_error also in other_learned.jsonl",
-            "",
-        ]
-        REPORT_TXT.write_text(
-            "\n".join(hdr + report_lines) + "\n", encoding="utf-8"
-        )
         print(
             f"\nDone. bypass={bypass_n}  blocked={block_n}  waf_passed={waf_pass_n}  "
             f"other={other_n}  HTTP codes: {dict(sorted(status_hist.items()))}"

@@ -2,7 +2,7 @@
   "how_to_read_two_roots": {
     "aws_waf_lab": "Data under ml-waf-aws-test/data — AWS HTTP probe (aws_probe_results.jsonl) and learned logs for that lab run.",
     "ml_waf_lab": "Data under ml-waf/data — separate lab (ModSecurity / local runs). Has bypass_learned etc.; usually no aws_probe_results.jsonl unless you copy or probe there.",
-    "cross_env_metrics": "Spearman needs aws_probe_results.jsonl in both directories; otherwise null is expected."
+    "cross_env_metrics": "Spearman is skipped unless aws_probe_results.jsonl exists in each env data/; see envs_missing_probe_file in cross_environment_* blocks."
   },
   "data_availability_by_env": {
     "aws_waf_lab": {
@@ -49,12 +49,22 @@
     }
   },
   "cross_environment_variants": {
+    "comparison_status": "skipped",
     "spearman_across_envs": null,
-    "reason": "missing_probe_file_in_one_env"
+    "reason": "missing_aws_probe_results_jsonl",
+    "envs_missing_probe_file": [
+      "ml_waf_lab"
+    ],
+    "how_to_enable": "Spearman needs aws_probe_results.jsonl in every env data/ directory. Typical fix: copy the same-schema JSONL to ml-waf/data/ after a probe, or configure run_probe to write RESULTS_JSONL under ml-waf/data."
   },
   "cross_environment_families": {
+    "comparison_status": "skipped",
     "spearman_families": null,
-    "reason": "missing_probe_file_in_one_env"
+    "reason": "missing_aws_probe_results_jsonl",
+    "envs_missing_probe_file": [
+      "ml_waf_lab"
+    ],
+    "how_to_enable": "Same as cross_environment_variants: both envs need aws_probe_results.jsonl so family rates exist for Spearman."
   },
   "top_family_cohorts_preview": {
     "aws_waf_lab": [

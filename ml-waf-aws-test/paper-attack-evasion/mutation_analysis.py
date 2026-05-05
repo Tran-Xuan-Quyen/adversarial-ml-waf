@@ -259,7 +259,7 @@ def build_paper_summary(full: dict[str, Any]) -> dict[str, Any]:
         "how_to_read_two_roots": {
             "aws_waf_lab": "Data under ml-waf-aws-test/data — AWS HTTP probe (aws_probe_results.jsonl) and learned logs for that lab run.",
             "ml_waf_lab": "Data under ml-waf/data — separate lab (ModSecurity / local runs). Has bypass_learned etc.; usually no aws_probe_results.jsonl unless you copy or probe there.",
-            "cross_env_metrics": "Spearman needs aws_probe_results.jsonl in both directories; otherwise null is expected.",
+            "cross_env_metrics": "Spearman is skipped unless aws_probe_results.jsonl exists in each env data/; see envs_missing_probe_file in cross_environment_* blocks.",
         },
         "data_availability_by_env": data_avail,
         "probe_overall_bypass_rate_by_env": overall,

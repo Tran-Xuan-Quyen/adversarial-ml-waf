@@ -25436,12 +25436,22 @@
     }
   },
   "probe_cross_environment": {
+    "comparison_status": "skipped",
     "spearman_across_envs": null,
-    "reason": "missing_probe_file_in_one_env"
+    "reason": "missing_aws_probe_results_jsonl",
+    "envs_missing_probe_file": [
+      "ml_waf_lab"
+    ],
+    "how_to_enable": "Spearman needs aws_probe_results.jsonl in every env data/ directory. Typical fix: copy the same-schema JSONL to ml-waf/data/ after a probe, or configure run_probe to write RESULTS_JSONL under ml-waf/data."
   },
   "probe_cross_environment_families": {
+    "comparison_status": "skipped",
     "spearman_families": null,
-    "reason": "missing_probe_file_in_one_env"
+    "reason": "missing_aws_probe_results_jsonl",
+    "envs_missing_probe_file": [
+      "ml_waf_lab"
+    ],
+    "how_to_enable": "Same as cross_environment_variants: both envs need aws_probe_results.jsonl so family rates exist for Spearman."
   },
   "methodology": {
     "attack_track": "mutation_analysis",

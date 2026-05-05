@@ -182,16 +182,32 @@ def compare_probe_envs(
     min_attempts: int = 3,
 ) -> dict[str, Any]:
     if len(reports) < 2:
-        return {"spearman_across_envs": None, "reason": "need_two_probe_environments"}
+        return {
+            "comparison_status": "skipped",
+            "spearman_across_envs": None,
+            "reason": "need_two_probe_environments",
+        }
     r0, r1 = reports[0], reports[1]
-    if not r0.get("has_probe") or not r1.get("has_probe"):
-        return {"spearman_across_envs": None, "reason": "missing_probe_file_in_one_env"}
+    missing = [r.get("env") for r in reports if not r.get("has_probe")]
+    if missing:
+        return {
+            "comparison_status": "skipped",
+            "spearman_across_envs": None,
+            "reason": "missing_aws_probe_results_jsonl",
+            "envs_missing_probe_file": missing,
+            "how_to_enable": (
+                "Spearman needs aws_probe_results.jsonl in every env data/ directory. "
+                "Typical fix: copy the same-schema JSONL to ml-waf/data/ after a probe, "
+                "or configure run_probe to write RESULTS_JSONL under ml-waf/data."
+            ),
+        }
     ra = r0.get("rates_by_variant") or {}
     rb = r1.get("rates_by_variant") or {}
     na = r0.get("attempts_by_variant") or {}
     nb = r1.get("attempts_by_variant") or {}
     sp = cross_env_spearman(ra, rb, na, nb, min_attempts=min_attempts)
     return {
+        "comparison_status": "ok",
         "env_a": r0.get("env"),
         "env_b": r1.get("env"),
         "min_attempts_per_env": min_attempts,
@@ -204,16 +220,31 @@ def compare_family_probe_envs(
     min_attempts: int = 10,
 ) -> dict[str, Any]:
     if len(reports) < 2:
-        return {"spearman_families": None, "reason": "need_two_probe_environments"}
+        return {
+            "comparison_status": "skipped",
+            "spearman_families": None,
+            "reason": "need_two_probe_environments",
+        }
     r0, r1 = reports[0], reports[1]
-    if not r0.get("has_probe") or not r1.get("has_probe"):
-        return {"spearman_families": None, "reason": "missing_probe_file_in_one_env"}
+    missing = [r.get("env") for r in reports if not r.get("has_probe")]
+    if missing:
+        return {
+            "comparison_status": "skipped",
+            "spearman_families": None,
+            "reason": "missing_aws_probe_results_jsonl",
+            "envs_missing_probe_file": missing,
+            "how_to_enable": (
+                "Same as cross_environment_variants: both envs need aws_probe_results.jsonl "
+                "so family rates exist for Spearman."
+            ),
+        }
     fa = (r0.get("family_aggregation") or {}).get("rates_by_family") or {}
     fb = (r1.get("family_aggregation") or {}).get("rates_by_family") or {}
     na = (r0.get("family_aggregation") or {}).get("attempts_by_family") or {}
     nb = (r1.get("family_aggregation") or {}).get("attempts_by_family") or {}
     sp = cross_env_spearman(fa, fb, na, nb, min_attempts=min_attempts)
     return {
+        "comparison_status": "ok",
         "env_a": r0.get("env"),
         "env_b": r1.get("env"),
         "min_attempts_per_family_per_env": min_attempts,
