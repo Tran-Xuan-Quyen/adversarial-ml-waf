@@ -256,12 +256,28 @@ def is_waf_or_app_block(resp) -> bool:
     return False
 
 
+def contains_project_data(text: str) -> bool:
+    try:
+        data = json.loads(text)
+        project_data = data.get("data") if isinstance(data, dict) and "data" in data else data
+        if isinstance(project_data, list):
+            return len(project_data) > 0 and any(
+                isinstance(p, dict) and ("projectName" in p or "name" in p or "applicationDomain" in p)
+                for p in project_data
+            )
+        elif isinstance(project_data, dict):
+            return "projectName" in project_data or "name" in project_data or "applicationDomain" in project_data
+    except Exception:
+        pass
+    return False
+
+
 def is_bypass(resp) -> bool:
     if resp.status_code != 200:
         return False
     if is_waf_or_app_block(resp):
         return False
-    return True
+    return contains_project_data(resp.text)
 
 
 def is_app_origin_bypass(resp) -> bool:
@@ -466,6 +482,12 @@ def run_full_transform_probe(
                 print(f"Stopped: max_requests={max_tests}")
                 break
             payload, name = queue.popleft()
+            # Enforce global string-level deduplication
+            if not hasattr(run_full_transform_probe, 'seen_payloads'):
+                run_full_transform_probe.seen_payloads = set()
+            if payload in run_full_transform_probe.seen_payloads:
+                continue
+            run_full_transform_probe.seen_payloads.add(payload)
             key = (payload[:300], name)
             if key in seen:
                 continue
@@ -815,6 +837,7 @@ def main(argv: list[str] | None = None) -> int:
             )
 
     if probe_mode != "full":
+        seen_payloads = set()
         with open(RESULTS_JSONL, "a", encoding="utf-8") as fout, (
             open(BYPASS_LEARNED_JSONL, "a", encoding="utf-8")
             if learn_files
@@ -829,6 +852,9 @@ def main(argv: list[str] | None = None) -> int:
             else open(os.devnull, "w")
         ) as fother:
             for payload, name in variants:
+                if payload in seen_payloads:
+                    continue
+                seen_payloads.add(payload)
                 for trial in range(repeat_pv):
                     if mode == "query":
                         url = build_url_query(base, param, payload)

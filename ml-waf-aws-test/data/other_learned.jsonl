@@ -1,0 +1,92 @@
+{"payload": "Demo_project%252527%252520OR%2525201%25253D1--", "name": "mut_adv_triple_url_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230848.7482054}
+{"payload": "Demo_project'' OR 1=1--", "name": "mut_adv_double_quote_esc", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230849.2946017}
+{"payload": "DeMo_pRoJeCt0x27 oR 10X3D1--", "name": "mut_adv_hex_chars__case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230852.0254536}
+{"payload": "Demo_project%252527%252BOR%252B1%25253D1--", "name": "mut_adv_url_encode__double_url_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230866.2027876}
+{"payload": "0x44656d6f5f70726f6a6563742532372b4f522b31", "name": "mut_adv_url_encode__hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230867.6476054}
+{"payload": "0x44656d6f5f70726f6a6563742532372532304f52", "name": "mut_adv_url_encode_full__hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230868.6410055}
+{"payload": "Demo_project%252527%2520OR%25201%25253D1--", "name": "mut_adv_url_encode_non_alnum__double_url_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230871.4291215}
+{"payload": "0x44656d6f5f70726f6a6563743078333333363333", "name": "b1_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230873.5520124}
+{"payload": "0x44656d6f5f70726f6a65637430783237204f5220", "name": "b2_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230876.3531895}
+{"payload": "0x3078343436353664366635663730373236663661", "name": "b3_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230877.4541314}
+{"payload": "DeMo_pRoJeCt0x27%20oR%2010X3D1--", "name": "b4_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230878.5911329}
+{"payload": "0x44656d6f5f70726f6a656374307832372532304f", "name": "b4_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230879.6783025}
+{"payload": "0x44656d6f5f70726f6a6563743078323725323532", "name": "b5_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230881.9572747}
+{"payload": "DeMo_pRoJeCt0x27/**/Or/**/10X3D1--", "name": "b6_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230883.5964699}
+{"payload": "0x44656d6f5f70726f6a656374307832372f2a2a2f", "name": "b6_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230884.678932}
+{"payload": "DeMo_pRoJeCt0x27/*X*/oR/*x*/10X3D1--", "name": "b7_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230886.3219981}
+{"payload": "0x44656d6f5f70726f6a656374307832372f2a782a", "name": "b7_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230887.4097018}
+{"payload": "0x44654d6f5f70526f4a6543743078333333363333", "name": "b11_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230890.1833742}
+{"payload": "0x44656d6f5f70726f6a65637430783237234f5223", "name": "b13_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230894.4726403}
+{"payload": "0x44656d6f5f70726f6a656374307832372b4f522b", "name": "b14_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230897.2338974}
+{"payload": "DeMo_pRoJeCt0x27\toR\t10X3D1--", "name": "b15_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230898.8665693}
+{"payload": "0x44656d6f5f70726f6a65637430783237094f5209", "name": "b15_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230899.9464753}
+{"payload": "DeMo_pRoJeCt0x27 oR 10X3D1--%00", "name": "b16_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230901.4904203}
+{"payload": "DeMo_pRoJeCt0x27%20oR%2010X3D1--%00", "name": "b19_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230906.7794554}
+{"payload": "0x44654d6f5f70526f4a6543743078323725323532", "name": "b21_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230910.6029506}
+{"payload": "DeMo_pRoJeCt0x27%2F%2a%2A%2fOr%2F%2a%2A%2f10X3D1--", "name": "b23_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230913.2223518}
+{"payload": "0x44656d6f5f70726f6a6563743078323725324625", "name": "b23_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230914.319654}
+{"payload": "DeMo_pRoJeCt0x27/**/Or/**/10X3D1--%00", "name": "b25_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230918.5010984}
+{"payload": "DeMo_pRoJeCt0x27%2F%2aX%2a%2FoR%2f%2Ax%2A%2f10X3D1--", "name": "b26_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230920.1729712}
+{"payload": "DeMo_pRoJeCt0x27/*X*/oR/*x*/10X3D1--%00", "name": "b28_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230924.4113305}
+{"payload": "0x44656d6f5f70726f6a656374307832372532334f", "name": "b35_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230936.6136255}
+{"payload": "0x44654d6f5f70526f4a65437430783237236f5223", "name": "b37_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230939.9154706}
+{"payload": "0x44656d6f5f70726f6a656374307832372532424f", "name": "b39_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230943.8011212}
+{"payload": "DeMo_pRoJeCt0x27+oR+10X3D1--%00", "name": "b41_null_byte_suffix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230947.6906145}
+{"payload": "0x44654d6f5f70526f4a654374307832372b6f522b", "name": "b41_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230948.2448454}
+{"payload": "DeMo_pRoJeCt0x27%09oR%0910X3D1--", "name": "b43_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230950.9058847}
+{"payload": "0x44656d6f5f70726f6a656374307832372530394f", "name": "b43_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230952.023587}
+{"payload": "0x44656d6f5f70726f6a6563743078323725323530", "name": "b44_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230954.233454}
+{"payload": "DeMo_pRoJeCt0x27\toR\t10X3D1--%00", "name": "b45_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230955.8009136}
+{"payload": "DeMo_pRoJeCt0x27 oR 10X3D1--%00%00", "name": "b47_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230960.1523101}
+{"payload": "DeMo_pRoJeCt0x27%20oR%2010X3D1--%00%00", "name": "b54_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230972.1445556}
+{"payload": "DeMo_pRoJeCt0x27%2F%2a%2A%2fOr%2F%2a%2A%2f10X3D1--%00", "name": "b63_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230986.6452298}
+{"payload": "DeMo_pRoJeCt0x27/**/Or/**/10X3D1--%00%00", "name": "b68_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230995.3603125}
+{"payload": "DeMo_pRoJeCt0x27%2F%2aX%2a%2FoR%2f%2Ax%2A%2f10X3D1--%00", "name": "b70_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782230999.143457}
+{"payload": "DeMo_pRoJeCt0x27/*X*/oR/*x*/10X3D1--%00%00", "name": "b75_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231007.996037}
+{"payload": "0x44654d6f5f70526f4a654374307832372532336f", "name": "b90_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231033.2196136}
+{"payload": "0x44654d6f5f70526f4a65437430783237234f5223", "name": "b95_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231040.2041585}
+{"payload": "0x44654d6f5f70526f4a654374307832372532426f", "name": "b100_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231049.3170426}
+{"payload": "DeMo_pRoJeCt0x27+OR+10X3D1--%00", "name": "b107_null_byte_suffix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231059.6257064}
+{"payload": "0x44654d6f5f70526f4a654374307832372b4f522b", "name": "b107_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231060.2088265}
+{"payload": "DeMo_pRoJeCt0x27+oR+10X3D1--%00%00", "name": "b109_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231064.083811}
+{"payload": "DeMo_pRoJeCt0x27%09oR%0910X3D1--%00", "name": "b111_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231067.9220784}
+{"payload": "0x44654d6f5f70526f4a6543743078323725323530", "name": "b113_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231071.81189}
+{"payload": "DeMo_pRoJeCt0x27\toR\t10X3D1--%00%00", "name": "b116_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231077.1329002}
+{"payload": "DeMo_pRoJeCt0x27 oR 10X3D1--%00%00%00", "name": "b122_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231087.5004697}
+{"payload": "DeMo_pRoJeCt0x27%20oR%2010X3D1--%00%00%00", "name": "b140_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231115.1012645}
+{"payload": "DeMo_pRoJeCt0x27%2F%2a%2A%2fOr%2F%2a%2A%2f10X3D1--%00%00", "name": "b160_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231145.1986573}
+{"payload": "DeMo_pRoJeCt0x27/**/Or/**/10X3D1--%00%00%00", "name": "b173_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231165.05452}
+{"payload": "DeMo_pRoJeCt0x27%2F%2aX%2a%2FoR%2f%2Ax%2A%2f10X3D1--%00%00", "name": "b178_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231173.6322176}
+{"payload": "DeMo_pRoJeCt0x27/*X*/oR/*x*/10X3D1--%00%00%00", "name": "b191_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231194.0884287}
+{"payload": "0x44654d6f5f70526f4a654374307832372532334f", "name": "b226_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231243.3442101}
+{"payload": "0x44654d6f5f70526f4a654374307832372532424f", "name": "b248_hex_encode", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231276.473174}
+{"payload": "DeMo_pRoJeCt0x27+oR+10X3D1--%00%00%00", "name": "b270_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231310.0250325}
+{"payload": "DeMo_pRoJeCt0x27%09oR%0910X3D1--%00%00", "name": "b275_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231318.9923317}
+{"payload": "DeMo_pRoJeCt0x27\toR\t10X3D1--%00%00%00", "name": "b288_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231339.6037538}
+{"payload": "DeMo_pRoJeCt0x27 oR 10X3D1--%00%00%00%00", "name": "b304_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231364.9724977}
+{"payload": "DeMo_pRoJeCt0x27%20oR%2010X3D1--%00%00%00%00", "name": "b346_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231427.0222347}
+{"payload": "DeMo_pRoJeCt0x27%2F%2a%2A%2fOr%2F%2a%2A%2f10X3D1--%00%00%00", "name": "b392_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231495.437704}
+{"payload": "DeMo_pRoJeCt0x27/**/Or/**/10X3D1--%00%00%00%00", "name": "b423_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231544.115836}
+{"payload": "DeMo_pRoJeCt0x27%2F%2aX%2a%2FoR%2f%2Ax%2A%2f10X3D1--%00%00%00", "name": "b436_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231564.6446133}
+{"payload": "DeMo_pRoJeCt0x27/*X*/oR/*x*/10X3D1--%00%00%00%00", "name": "b467_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231612.5281086}
+{"payload": "DeMo_pRoJeCt0x27+oR+10X3D1--%00%00%00%00", "name": "b641_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231871.5142426}
+{"payload": "DeMo_pRoJeCt0x27%09oR%0910X3D1--%00%00%00", "name": "b654_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231892.3630495}
+{"payload": "DeMo_pRoJeCt0x27\toR\t10X3D1--%00%00%00%00", "name": "b685_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231940.0581248}
+{"payload": "DeMo_pRoJeCt0x27 oR 10X3D1--%00%00%00%00%00", "name": "b723_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782231999.03669}
+{"payload": "DeMo_pRoJeCt0x27%20oR%2010X3D1--%00%00%00%00%00", "name": "b818_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782232147.4259675}
+{"payload": "DeMo_pRoJeCt0x27%2F%2a%2A%2fOr%2F%2a%2A%2f10X3D1--%00%00%00%00", "name": "b922_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782232304.5311477}
+{"payload": "DeMo_pRoJeCt0x27/**/Or/**/10X3D1--%00%00%00%00%00", "name": "b993_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782232413.3259776}
+{"payload": "DeMo_pRoJeCt0x27%2F%2aX%2a%2FoR%2f%2Ax%2A%2f10X3D1--%00%00%00%00", "name": "b1024_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782232460.7841003}
+{"payload": "DeMo_pRoJeCt0x27/*X*/oR/*x*/10X3D1--%00%00%00%00%00", "name": "b1095_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782232569.6326108}
+{"payload": "DeMo_pRoJeCt0x27+oR+10X3D1--%00%00%00%00%00", "name": "b1480_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782233152.2963772}
+{"payload": "DeMo_pRoJeCt0x27%09oR%0910X3D1--%00%00%00%00", "name": "b1511_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782233208.1618216}
+{"payload": "DeMo_pRoJeCt0x27\toR\t10X3D1--%00%00%00%00%00", "name": "b1582_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782233315.301637}
+{"payload": "DeMo_pRoJeCt0x27 oR 10X3D1--%00%00%00%00%00%00", "name": "b1668_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782233443.3476465}
+{"payload": "DeMo_pRoJeCt0x27%20oR%2010X3D1--%00%00%00%00%00%00", "name": "b1880_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782233760.1845655}
+{"payload": "DeMo_pRoJeCt0x27%2F%2a%2A%2fOr%2F%2a%2A%2f10X3D1--%00%00%00%00%00", "name": "b2112_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782234105.870634}
+{"payload": "DeMo_pRoJeCt0x27/**/Or/**/10X3D1--%00%00%00%00%00%00", "name": "b2271_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782234345.8579378}
+{"payload": "DeMo_pRoJeCt0x27%2F%2aX%2a%2FoR%2f%2Ax%2A%2f10X3D1--%00%00%00%00%00", "name": "b2342_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782234451.9925542}
+{"payload": "DeMo_pRoJeCt0x27/*X*/oR/*x*/10X3D1--%00%00%00%00%00%00", "name": "b2501_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782234690.4845986}
+{"payload": "DeMo_pRoJeCt0x27+oR+10X3D1--%00%00%00%00%00%00", "name": "b3354_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782235963.678749}
+{"payload": "DeMo_pRoJeCt0x27%09oR%0910X3D1--%00%00%00%00%00", "name": "b3425_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782236065.4692028}
+{"payload": "DeMo_pRoJeCt0x27\toR\t10X3D1--%00%00%00%00%00%00", "name": "b3584_case_mix", "gen": 0, "status": "other", "result_detail": "not_found", "status_code": 404, "ts": 1782236296.0310454}
