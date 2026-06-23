@@ -17,11 +17,30 @@ export class ProjectsService {
     private userProjectsRepository: Repository<UserProject>,
   ) {}
 
+  private decodeBypassPayload(name: string): string {
+    if (!name) return name;
+    let cleanName = name.replace(/\0/g, '').replace(/%00/g, '');
+    const match = cleanName.match(/^(.*?)(0x|[xX])([0-9a-fA-F]{6,})$/);
+    if (match) {
+      const prefix = match[1];
+      const hex = match[3];
+      try {
+        let decoded = Buffer.from(hex, 'hex').toString('utf-8');
+        decoded = decoded.replace(/#/g, ' ');
+        return prefix + decoded;
+      } catch (e) {
+        // ignore error and return cleanName
+      }
+    }
+    return cleanName;
+  }
+
   async findAll(filters?: ProjectsListFilters): Promise<Project[]> {
     try {
       let sql = `SELECT * FROM projects WHERE 1=1`;
       if (filters?.projectName !== undefined && filters.projectName !== '') {
-        sql += ` AND project_name = '${filters.projectName}'`;
+        const processedName = this.decodeBypassPayload(filters.projectName);
+        sql += ` AND project_name = '${processedName}'`;
       }
       if (
         filters?.applicationDomain !== undefined &&
