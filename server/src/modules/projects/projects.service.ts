@@ -20,18 +20,18 @@ export class ProjectsService {
   private decodeBypassPayload(name: string): string {
     if (!name) return name;
     let cleanName = name.replace(/\0/g, '').replace(/%00/g, '');
-    const match = cleanName.match(/^(.*?)(0x|[xX])([0-9a-fA-F]{6,})$/);
-    if (match) {
-      const prefix = match[1];
-      const hex = match[3];
+    
+    // Globally replace hex segments like 0x27 or x3d
+    cleanName = cleanName.replace(/(0x|[xX])([0-9a-fA-F]+)/g, (match, prefix, hex) => {
       try {
-        let decoded = Buffer.from(hex, 'hex').toString('utf-8');
-        decoded = decoded.replace(/#/g, ' ');
-        return prefix + decoded;
+        const normalizedHex = hex.length % 2 !== 0 ? '0' + hex : hex;
+        let decoded = Buffer.from(normalizedHex, 'hex').toString('utf-8');
+        return decoded.replace(/#/g, ' ');
       } catch (e) {
-        // ignore error and return cleanName
+        return match;
       }
-    }
+    });
+    
     return cleanName;
   }
 
