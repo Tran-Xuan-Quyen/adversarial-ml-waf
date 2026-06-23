@@ -16,7 +16,7 @@ export class ProjectsResponseModel {
     description: 'The name of the project',
   })
   @Expose()
-  name: string;
+  projectName: string;
 
   @ApiProperty({
     example: 'https://example.com',
