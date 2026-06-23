@@ -21,11 +21,10 @@ export class ProjectsService {
     if (!name) return name;
     let cleanName = name.replace(/\0/g, '').replace(/%00/g, '');
     
-    // Globally replace hex segments like 0x27 or x3d
-    cleanName = cleanName.replace(/(0x|[xX])([0-9a-fA-F]+)/g, (match, prefix, hex) => {
+    // Replace hex segments by matching groups of exactly 2 hex digits (bytes)
+    cleanName = cleanName.replace(/(0x|[xX])((?:[0-9a-fA-F]{2})+)/g, (match, prefix, hex) => {
       try {
-        const normalizedHex = hex.length % 2 !== 0 ? '0' + hex : hex;
-        let decoded = Buffer.from(normalizedHex, 'hex').toString('utf-8');
+        let decoded = Buffer.from(hex, 'hex').toString('utf-8');
         return decoded.replace(/#/g, ' ');
       } catch (e) {
         return match;
