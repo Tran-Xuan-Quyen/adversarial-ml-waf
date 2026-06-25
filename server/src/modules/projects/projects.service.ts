@@ -23,7 +23,7 @@ export class ProjectsService {
 
   private decodeBypassPayload(name: string): string {
     if (!name) return name;
-    
+
     let cleanName = name;
     try {
       let decodedName = cleanName;
@@ -40,17 +40,20 @@ export class ProjectsService {
     }
 
     cleanName = cleanName.replace(/\0/g, '').replace(/%00/g, '');
-    
+
     // Replace hex segments by matching groups of exactly 2 hex digits (bytes)
-    cleanName = cleanName.replace(/(0x|[xX])((?:[0-9a-fA-F]{2})+)/g, (match, prefix, hex) => {
-      try {
-        let decoded = Buffer.from(hex, 'hex').toString('utf-8');
-        return decoded.replace(/#/g, ' ');
-      } catch (e) {
-        return match;
-      }
-    });
-    
+    cleanName = cleanName.replace(
+      /(0x|[xX])((?:[0-9a-fA-F]{2})+)/g,
+      (match, prefix, hex) => {
+        try {
+          let decoded = Buffer.from(hex, 'hex').toString('utf-8');
+          return decoded.replace(/#/g, ' ');
+        } catch (e) {
+          return match;
+        }
+      },
+    );
+
     return cleanName;
   }
 
