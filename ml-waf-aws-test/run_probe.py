@@ -150,7 +150,16 @@ def next_gen_from_base_dialect(
 ) -> list[tuple[str, str]]:
     if gen == 0:
         v = variants_for_dialect(base, dialect)
-        return rub.filter_variant_list(v, policy)
+        v = rub.filter_variant_list(v, policy)
+        # Limit the number of variants per transform type to 15 in g0
+        counts = {}
+        limited_v = []
+        for pl, name in v:
+            tkey = rub.name_to_transform_key(name)
+            counts[tkey] = counts.get(tkey, 0) + 1
+            if counts[tkey] <= 15:
+                limited_v.append((pl, name))
+        return limited_v
     prev = next_gen_from_base_dialect(base, gen - 1, policy, dialect, rub)
     out = []
     for pl, name in prev:
@@ -159,7 +168,15 @@ def next_gen_from_base_dialect(
                 out.append((t, f"g{gen}_{name}_{tname}"))
     out = rub.filter_variant_list(out, policy)
     out = rub.sort_by_learned_encodings(out)
-    return out[:300]
+    # Also limit high-generation variants per transform type to 15
+    counts = {}
+    limited_out = []
+    for pl, name in out:
+        tkey = rub.name_to_transform_key(name)
+        counts[tkey] = counts.get(tkey, 0) + 1
+        if counts[tkey] <= 15:
+            limited_out.append((pl, name))
+    return limited_out[:300]
 
 
 def parse_remap_legacy(cfg: dict) -> list[tuple[str, str]]:
@@ -447,7 +464,15 @@ def run_full_transform_probe(
         )
     initial = rub.filter_variant_list(initial, policy)
     initial = rub.sort_by_learned_encodings(initial)
-    queue = deque(initial)
+    # Apply capping limit of 15 per transform type for initial variants (g0)
+    counts = {}
+    limited_initial = []
+    for pl, name in initial:
+        tkey = rub.name_to_transform_key(name)
+        counts[tkey] = counts.get(tkey, 0) + 1
+        if counts[tkey] <= 15:
+            limited_initial.append((pl, name))
+    queue = deque(limited_initial)
     saved = rub.load_saved_bypasses()
     if saved:
         print(f"Loaded {len(saved)} saved bypass seed(s) -> spawn queue")
@@ -556,10 +581,16 @@ def run_full_transform_probe(
                 bypass_count += 1
                 rub.save_bypass(payload, name, gen)
                 rub.update_learned_encoding(name_to_transform_key(name), True)
-                for t, tname in rub.spawn_from(payload, f"b{bypass_count}", policy):
-                    queue.append(
-                        remap_payloads([(t, tname)], old_id, new_id, extra_remap_pairs)[0]
-                    )
+                spawned = rub.spawn_from(payload, f"b{bypass_count}", policy)
+                # Apply capping of 15 per transform type for spawned variants
+                counts_spawn = {}
+                for t, tname in spawned:
+                    tkey = rub.name_to_transform_key(tname)
+                    counts_spawn[tkey] = counts_spawn.get(tkey, 0) + 1
+                    if counts_spawn[tkey] <= 15:
+                        queue.append(
+                            remap_payloads([(t, tname)], old_id, new_id, extra_remap_pairs)[0]
+                        )
             elif res == "blocked":
                 rub.save_blocked(payload, name, r.status_code)
                 rub.update_learned_encoding(name_to_transform_key(name), False)

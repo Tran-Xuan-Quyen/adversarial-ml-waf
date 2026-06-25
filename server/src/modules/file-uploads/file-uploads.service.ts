@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -48,7 +49,9 @@ export class FileUploadsService {
       if (error instanceof NotFoundException) {
         throw error;
       }
-      throw new Error(`Failed to upload file with error: ${error.message}`);
+      throw new InternalServerErrorException(
+        `Failed to upload file with error: ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
   }
 
@@ -68,8 +71,8 @@ export class FileUploadsService {
       if (error instanceof NotFoundException) {
         throw error;
       }
-      throw new Error(
-        `Failed to get file uploads with error: ${error.message}`,
+      throw new InternalServerErrorException(
+        `Failed to get file uploads with error: ${error instanceof Error ? error.message : String(error)}`,
       );
     }
   }
@@ -85,8 +88,8 @@ export class FileUploadsService {
       if (error instanceof NotFoundException) {
         throw error;
       }
-      throw new Error(
-        `Failed to delete file upload with error: ${error.message}`,
+      throw new InternalServerErrorException(
+        `Failed to delete file upload with error: ${error instanceof Error ? error.message : String(error)}`,
       );
     }
   }

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { Project } from './projects.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -19,7 +23,23 @@ export class ProjectsService {
 
   private decodeBypassPayload(name: string): string {
     if (!name) return name;
-    let cleanName = name.replace(/\0/g, '').replace(/%00/g, '');
+    
+    let cleanName = name;
+    try {
+      let decodedName = cleanName;
+      while (decodedName.includes('%')) {
+        const nextDecoded = decodeURIComponent(decodedName);
+        if (nextDecoded === decodedName) {
+          break;
+        }
+        decodedName = nextDecoded;
+      }
+      cleanName = decodedName;
+    } catch (e) {
+      // Ignore URL decoding errors to keep partial progress
+    }
+
+    cleanName = cleanName.replace(/\0/g, '').replace(/%00/g, '');
     
     // Replace hex segments by matching groups of exactly 2 hex digits (bytes)
     cleanName = cleanName.replace(/(0x|[xX])((?:[0-9a-fA-F]{2})+)/g, (match, prefix, hex) => {
@@ -36,21 +56,20 @@ export class ProjectsService {
 
   async findAll(filters?: ProjectsListFilters): Promise<Project[]> {
     try {
-      let sql = `SELECT * FROM projects WHERE 1=1`;
+      const where: Record<string, unknown> = {};
       if (filters?.projectName !== undefined && filters.projectName !== '') {
-        const processedName = this.decodeBypassPayload(filters.projectName);
-        sql += ` AND project_name = '${processedName}'`;
+        where.projectName = this.decodeBypassPayload(filters.projectName);
       }
       if (
         filters?.applicationDomain !== undefined &&
         filters.applicationDomain !== ''
       ) {
-        sql += ` AND application_domain = '${filters.applicationDomain}'`;
+        where.applicationDomain = filters.applicationDomain;
       }
-      const rows = await this.projectsRepository.query(sql);
-      const projects = rows.map((row: Record<string, unknown>) =>
-        this.mapProjectRow(row),
-      );
+
+      const projects = await this.projectsRepository.find({
+        where,
+      });
       if (!projects.length) {
         throw new NotFoundException('No project found, please try again');
       }
@@ -59,7 +78,9 @@ export class ProjectsService {
       if (error instanceof NotFoundException) {
         throw error;
       }
-      throw new Error(`Failed to fetch projects: ${error.message}`);
+      throw new InternalServerErrorException(
+        `Failed to fetch projects: ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
   }
 
@@ -95,7 +116,9 @@ export class ProjectsService {
         users: [...(project.users || []), ...additionalUsers],
       };
     } catch (error) {
-      throw new Error(`Failed to fetch project: ${error.message}`);
+      throw new InternalServerErrorException(
+        `Failed to fetch project: ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
   }
 
@@ -104,7 +127,9 @@ export class ProjectsService {
       const project = this.projectsRepository.create(createProjectDto);
       return await this.projectsRepository.save(project);
     } catch (error) {
-      throw new Error(`Failed to create project: ${error.message}`);
+      throw new InternalServerErrorException(
+        `Failed to create project: ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
   }
 
@@ -119,7 +144,9 @@ export class ProjectsService {
     try {
       return this.projectsRepository.save({ ...project, ...updateProjectDto });
     } catch (error) {
-      throw new Error(`Failed to update project: ${error.message}`);
+      throw new InternalServerErrorException(
+        `Failed to update project: ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
   }
 
@@ -130,7 +157,9 @@ export class ProjectsService {
         throw new NotFoundException(`Project with ID ${id} not found`);
       }
     } catch (error) {
-      throw new Error(`Failed to delete project: ${error.message}`);
+      throw new InternalServerErrorException(
+        `Failed to delete project: ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
   }
 
@@ -143,7 +172,9 @@ export class ProjectsService {
 
       return userProjects.map((up) => up.user);
     } catch (error) {
-      throw new Error(`Failed to get users by project ID: ${error.message}`);
+      throw new InternalServerErrorException(
+        `Failed to get users by project ID: ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
   }
 }

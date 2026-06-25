@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './users.entity';
@@ -93,7 +97,9 @@ export class UsersService {
     try {
       return await this.usersRepository.save(user);
     } catch (error) {
-      throw new Error(`Failed to create user: ${error.message}`);
+      throw new InternalServerErrorException(
+        `Failed to create user: ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
   }
 
@@ -102,7 +108,9 @@ export class UsersService {
     try {
       return await this.usersRepository.save({ ...userToUpdate, ...user });
     } catch (error) {
-      throw new Error(`Failed to update user: ${error.message}`);
+      throw new InternalServerErrorException(
+        `Failed to update user: ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
   }
 

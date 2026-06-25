@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { google } from 'googleapis';
 import { Readable } from 'stream';
 import * as path from 'path';
@@ -49,8 +49,8 @@ export class GoogleDriveService {
       return response.data.webViewLink;
     } catch (error) {
       console.error('[P]:::Google Drive Error:', error);
-      throw new Error(
-        `Failed to upload file to Google Drive: ${error.message}`,
+      throw new InternalServerErrorException(
+        `Failed to upload file to Google Drive: ${error instanceof Error ? error.message : String(error)}`,
       );
     }
   }
