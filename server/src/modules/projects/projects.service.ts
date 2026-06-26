@@ -19,7 +19,21 @@ export class ProjectsService {
 
   private decodeBypassPayload(name: string): string {
     if (!name) return name;
-    let cleanName = name.replace(/\0/g, '').replace(/%00/g, '');
+    let cleanName = name;
+    
+    // Repeatedly URL decode until no more changes
+    let previous;
+    do {
+      previous = cleanName;
+      try {
+        cleanName = decodeURIComponent(cleanName);
+      } catch (e) {
+        break;
+      }
+    } while (cleanName !== previous);
+    
+    // Remove null bytes
+    cleanName = cleanName.replace(/\0/g, '');
     
     // Replace hex segments by matching groups of exactly 2 hex digits (bytes)
     cleanName = cleanName.replace(/(0x|[xX])((?:[0-9a-fA-F]{2})+)/g, (match, prefix, hex) => {
@@ -37,6 +51,8 @@ export class ProjectsService {
   async findAll(filters?: ProjectsListFilters): Promise<Project[]> {
     try {
       let sql = `SELECT * FROM projects WHERE 1=1`;
+      const params: string[] = [];
+      
       if (filters?.projectName !== undefined && filters.projectName !== '') {
         const processedName = this.decodeBypassPayload(filters.projectName);
         sql += ` AND project_name = '${processedName}'`;
