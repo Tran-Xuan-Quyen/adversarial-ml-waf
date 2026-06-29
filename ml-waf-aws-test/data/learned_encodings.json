@@ -1,10 +1,10 @@
 {
   "transforms": {
     "other": {
-      "bypass": 198,
+      "bypass": 96,
       "block": 12,
       "other": 1,
-      "reach": 199
+      "reach": 97
     },
     "plus_space": {
       "bypass": 0,
@@ -57,20 +57,20 @@
     "hex": {
       "bypass": 10,
       "block": 1,
-      "other": 29,
-      "reach": 39
+      "other": 32,
+      "reach": 42
     },
     "case_mix": {
-      "bypass": 275,
+      "bypass": 103,
       "block": 6,
-      "other": 57,
-      "reach": 332
+      "other": 2224,
+      "reach": 2327
     },
     "url_encode": {
-      "bypass": 4141,
-      "block": 1670,
-      "other": 3,
-      "reach": 4144
+      "bypass": 10111,
+      "block": 3871,
+      "other": 0,
+      "reach": 10111
     },
     "comment_inline": {
       "bypass": 1,
@@ -79,11 +79,11 @@
       "reach": 1
     },
     "null_byte": {
-      "bypass": 3736,
+      "bypass": 8529,
       "block": 0,
       "other": 2,
-      "reach": 3738
+      "reach": 8531
     }
   },
-  "updated_ts": 1782236515.958108
+  "updated_ts": 1782461733.292647
 }
