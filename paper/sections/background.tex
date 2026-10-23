@@ -1,0 +1,21 @@
+\section{Background and Related Work}
+\label{sec:background}
+Offensive SQLi evaluation bridges adversarial search against detectors, HTTP semantics, and operational security measurement. We highlight strands that motivate our focus on family-resolved reporting.
+
+% \begin{figure}[t]
+%   \centering
+%   \fbox{\parbox{\columnwidth}{\centering Layers: lexical SQLi mutations; URL/query encodings; edge WAF normalization; application parser/ORM; observable HTTP/app signals}}
+%   \caption{Conceptual layering for SQLi WAF bypass experiments.}
+%   \label{fig:related-taxonomy}
+% \end{figure}
+
+\subsection{Mutation-Based SQLi Attacks}
+Adversarial methods search for inputs that preserve malicious intent while evading detectors. Reinforcement learning approaches like SSQLi \cite{guan2023ssqli}, GAN-based methods like GSQLi \cite{khan2024gsqli}, and semantics-preserving fuzzing like WAF-A-MoLE \cite{demetrio2020wafamole} achieve high bypass rates. The underlying attack space is combinatorial, involving comment insertions, encodings, and dialect-specific spellings that interact non-monotonically with tokenized defenses. Consequently, the relevant metric is not just the aggregate bypass rate, but which specific compositions survive, as this informs both attacker and defender strategies.
+
+\subsection{Parsing Discrepancies and Defense Evaluation}
+When components disagree on decoding order or structural boundaries, attackers can satisfy edge predicates while delivering malicious semantics \cite{akhavani2025waffled}. WAFFLED demonstrated this across major WAFs. Our experiments stabilize parameter binding via remapped seeds to isolate representation-level variance. 
+
+Hybrid defenses aim to raise evasion costs through better data \cite{elebiary2026wamm}, shadow models \cite{wu2025wafbooster}, or preprocessing \cite{zhang2026bwafsql}. However, evaluating these defenses requires paired offensive benchmarks. Without logs tying attempts to mutation families, it is difficult to determine if a mitigation removes high-yield operators or merely reshuffles the search order. Our work supplies a log-grounded baseline for such comparisons.
+
+\subsection{Metrics and Confounding Threats}
+Black-box evaluation relies on observable HTTP outcomes. Since different probes map the same vulnerability to different observables, any operational definition of a bypass embeds epistemic commitments. Transparent scripting and published logs mitigate this issue, though they do not eliminate it entirely.

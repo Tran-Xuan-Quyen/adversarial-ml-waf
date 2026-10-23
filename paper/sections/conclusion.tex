@@ -1,0 +1,15 @@
+\section{Discussion and Conclusion}
+\label{sec:discussion}
+This work decomposes SQLi WAF bypass analysis along semantics, scale, and structure under an induced search distribution.
+
+\subsection{Research Question Answers}
+\textbf{RQ1 (Scale and semantics):} Our comprehensive live execution with ($N=21{,}000$) payload variants revealed an aggregate bypass rate ($\mathrm{BR}_{\mathrm{agg}}$) of 73.6\%. The high volume of successful edge evasions is heavily driven by multi-layered encoding strategies that successfully bypass the Application Load Balancer (ALB) WAF rulesets but trigger structural anomalies down the line.
+
+\textbf{RQ2 (Structure):}  Evasion efficacy is intensely polarized across mutation categories. The null\_byte suffix family achieved an absolute bypass rate of 99.9\% (7,209 successful bypasses out of 7,211 attempts) under the fixed AWS policy configuration. Conversely, space substitution primitives (plus\_space, newline, vtab) and structured comment\_block modifications were completely mitigated ($\mathrm{BR}_{\mathrm{f}} = 0\%$), proving that the WAF's lexical tokenization filters are highly optimized for space-boundary semantics but weak against encoding anomalies.
+
+\subsection{Implications and Conclusion}
+For defenders, policy tuning and regression testing must be family-aware; relying on aggregate dashboards is insufficient. Edge decisions should be combined with robust application-layer controls. For offensive researchers, publishing induced search configurations and explicit outcome logs is vital for reproducible science.
+
+We presented a reproducible black-box methodology for SQLi WAF evaluation. The core takeaway is that meaningful offensive evaluation demands decomposed statistics and transparent search bias. Our family-level analysis identifies specific operational vulnerabilities, reinforcing the need for layered, context-aware defenses.
+
+\textbf{Limitations and Ethics.} Our findings are bounded by a single policy snapshot and URL injection channel. All methodology is strictly intended for authorized testing environments.

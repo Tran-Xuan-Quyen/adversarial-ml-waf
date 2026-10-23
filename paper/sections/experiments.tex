@@ -1,0 +1,132 @@
+\section{Experiments and Results}
+\label{sec:experiments}
+We answered RQ1--RQ3 using data exported from live AWS WAF probing and an RFC decoding surrogate pilot. Scripts were executed in a Windows environment using standard data science libraries (scikit-learn, joblib).
+
+\Needspace{8\baselineskip}
+\subsection{Experimental Flow}
+We followed a consistent workflow:
+\begin{enumerate}
+  \item Start with SQLi seeds and remap IDs to the target format.
+  \item Apply mutation rules and send GET requests to the endpoint.
+  \item Classify responses as bypass, blocked, or other.
+  \item Aggregate outcomes to compare family-level behavior.
+\end{enumerate}
+
+% Updated results section with detailed tables and analysis
+
+\subsection{Overall Summary}
+Table~\ref{tab:overall_summary} presents the high‑level outcome distribution across the 21,000 tested payloads.
+\begin{table}[h]
+  \centering
+  \caption{Overall result distribution}
+  \label{tab:overall_summary}
+  \begin{tabular}{lrr}
+    \toprule
+    Result Type & Count & Percentage \\
+    \midrule
+    Bypass (200 OK and 500) & 15{,}457 & 73.6\% \\
+    Blocked by WAF (403) & 3{,}221 & 15.3\% \\
+    Other (404 Not Found) & 2{,}322 & 11.1\% \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Status Code Breakdown}
+Table~\ref{tab:status_breakdown} shows the distribution of HTTP status codes observed.
+\begin{table}[h]
+  \centering
+  \caption{HTTP status distribution}
+  \label{tab:status_breakdown}
+  \begin{tabular}{lrr}
+    \toprule
+    Status Code & Count & Description \\
+    \midrule
+    200 OK & 9{,}866 & Successful request (Clean application pass) \\
+    403 Forbidden & 3{,}221 & Request blocked by AWS WAF edge policy \\
+    404 Not Found & 2{,}322 & Resource not found (Payload parsing anomaly) \\
+    500 Internal Server Error & 5{,}591 & Server error (often due to injection) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Transformation Effectiveness}
+Table~\ref{tab:transform_stats} summarizes bypass and block counts per transformation type, derived from \texttt{learned\_encodings.json}.
+\begin{table}[h]
+  \centering
+  \caption{Bypass/Block statistics by transform}
+  \label{tab:transform_stats}
+  \begin{tabular}{lrrrrr}
+    \toprule
+    Transform & Bypass & Blocked & Other & Reach & Success Rate (\%)\\
+    \midrule
+    url\_encode & 8{,}534 & 3{,}274 & 0 & 11{,}808 & 72.3\% \\
+    null\_byte & 7{,}209 & 0 & 2 & 7{,}211 & 99.9\%\\
+    case\_mix & 97 & 6 & 2{,}224 & 2{,}327 & 4.2\%\\
+    other & 88 & 12 & 1 & 101 & 87.1\% \\
+    hex & 10 & 1 & 32 & 43 & 23.3\% \\
+    tab & 1 & 6 & 0 & 7 & 14.3\% \\
+    comment\_inline & 1 & 2 & 0 & 3 & 33.3\% \\
+    \bottomrule
+  \end{tabular}\\[0.6em]
+
+  \footnotesize
+  \emph{Note.} Reach denotes the total number of payload variants containing a given mutation style. Categories are not mutually exclusive because multiple mutation styles may be compounded within a single payload.
+\end{table}
+
+\subsection{Key Takeaways}
+\begin{itemize}
+  \item Double/triple URL‑encoding and null‑byte suffixes are the most effective techniques to bypass the WAF.
+  \item Transformations that replace spaces with "+", introduce tab/newline characters, or inject comment blocks are largely blocked.
+  \item Server‑side double‑decoding has been mitigated, reducing 500 errors during testing.
+\end{itemize}
+
+\Needspace{8\baselineskip}
+\subsection{RQ1: Scale, Labels, and Unique Payloads}
+The new experimental run tested $N=21{,}000$ payload variants, achieving $N_{\mathrm{bp}}=15{,}457$ successful bypasses ($73.6\%$) and $N_{\mathrm{blk}}=3{,}221$ blocked attempts ($15.3\%$). The remaining $2{,}322$ responses were other outcomes such as 404 or server errors ($11.1\%$). Table~\ref{tab:new_dataset} summarizes these aggregate statistics.
+
+\begin{table}[h]
+  \centering
+  \caption{Aggregate results of ML-WAF AWS probing (21k variants).}
+  \label{tab:new_dataset}
+  \begin{tabular}{lrr}
+    \toprule
+    Metric & Count & Percentage \\
+    \midrule
+    Variants tested $N$ & 21{,}000 & 100\% \\
+    Bypass count $N_{\mathrm{bp}}$ & 15{,}457 & 73.6\% \\
+    Blocked count $N_{\mathrm{blk}}$ & 3{,}221 & 15.3\% \\
+    Other outcomes $N_{\mathrm{oth}}$ & 2{,}322 & 11.1\% \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\Needspace{8\baselineskip}
+\subsection{RQ2: Family-Level Heterogeneity}
+Bypass success is highly concentrated within specific mutation categories. Figure~\ref{fig:bypass} and Table~\ref{tab:bypass_categories} demonstrate a stark polarization in evasion efficacy. The null\_byte family achieves a near-absolute bypass rate ($\mathrm{BR}_{\mathrm{f}} = 99.9\%$), while the large-scale url\_encode family maintains a high yield of 72.3\%, serving as the primary driver of successful edge evasions by volume. Conversely, structural mutations such as space\_modifiers are completely suppressed ($\mathrm{BR}_{f} = 0\%$) by the AWS WAF edge filters. This pattern indicates that policy stress is heavily concentrated in specific syntactic strategies rather than being uniformly distributed across all transformation types.
+
+\begin{figure}[h]
+  \centering
+  \fbox{\parbox{\columnwidth}{url\_encode and null\_byte yield high success rates, while space\_modifiers are systematically suppressed ($N = 21{,}000$).}}
+  \caption{Contrasting family-level bypass behavior.}
+  \label{fig:bypass}
+\end{figure}
+
+\begin{table}[h]
+  \centering
+  \caption{Selected mutation families: attempts $N_f$ and $\mathrm{BR}_f$.}
+  \label{tab:bypass_categories}
+  \begin{tabular}{lrrr}
+    \toprule
+    Family Name& Reach & $\mathrm{BR}_f$ (\%) & Role \\
+    \midrule
+    url\_encode & 11{,}808 & 72.3\% & High Scale / Core Driver \\
+    null\_byte & 7{,}211 & 99.9\% & Maximum Yield Evasion \\
+    space\_modifiers & $>0$ & 0.0\% & Systematically Suppressed \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\Needspace{8\baselineskip}
+\subsection{Threats to Validity and Reproducibility}
+\textbf{Threats.} Our labels rely on script-specific heuristics. Results are bound to a specific policy snapshot and single-channel URL injection. Furthermore, the search distribution is explicitly non-uniform, reflecting operational biases. 
+\textbf{Reproducibility.} Summaries can be regenerated with scripts in the repository. Executing \texttt{run\_probe.py} yields fresh logs, though counts will naturally drift as WAF policies evolve. Probing was conducted exclusively against authorized targets.

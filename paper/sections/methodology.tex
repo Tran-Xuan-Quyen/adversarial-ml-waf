@@ -1,0 +1,58 @@
+\section{Methodology}
+\label{sec:methodology}
+This section details our adversarial evaluation methodology, including the experimental environment, adversary capabilities, and the attack pipeline. Artifacts are available under \texttt{paper/experiment}.
+
+\subsection{Experimental Environment}
+We deployed the study on AWS, sending traffic through an AWS WAF Web ACL in \texttt{us-east-1} before reaching an EC2-hosted application. This mirrors a production environment where the backend only sees what the WAF forwards. 
+
+The Web ACL (\texttt{test-waf}) features three sequential rules:
+\begin{enumerate}
+  \item \textbf{\texttt{Block-SQLi-Strict-Pattern}:} Targets simple tautologies (e.g., \texttt{1=1}) evaluated across all query arguments after decoding and normalization.
+  \item \textbf{\texttt{AWS-AWSManagedRulesSQLiRuleSet}:} Amazon's managed SQLi bundle, set to block any hit, providing broad vendor coverage across the request structure.
+  \item \textbf{\texttt{Final-Optimized-SQLi-Rule}:} A custom regular expression stage targeting specific lab leftovers, such as hex-flavored encodings and null-byte obfuscation.
+\end{enumerate}
+
+The endpoint is a custom web application on a \texttt{t3.micro} EC2 instance. We drove probes manually via scripts without relying on generic scanners like sqlmap. Outcomes were observed directly from HTTP responses: a \texttt{403} indicated a block, while a \texttt{200} indicated the request reached the application.
+
+\subsection{Adversary Model and Attack Pipeline}
+We model a network adversary capable of sending HTTP/1.1 requests, observing responses, and adapting mutations based on logs. The adversary lacks white-box access, aligning with typical red-team constraints \cite{guan2023ssqli,demetrio2020wafamole}. 
+
+The end-to-end pipeline operates as follows:
+\begin{equation}
+\label{eq:attack-pipeline}
+\begin{aligned}
+\mathcal{M}: \text{Seeds} &\rightarrow \text{Augmentations} \rightarrow \text{Transforms} \rightarrow \mathcal{V}, \\
+\mathcal{V} &\xrightarrow{\text{HTTP}} \text{WAF} \rightarrow \text{App} \rightarrow \text{Label}.
+\end{aligned}
+\end{equation}
+The driver serializes each variant in $\mathcal{V}$ as a GET request, logs the response, and outputs a JSON object.
+
+\begin{figure}[t]
+  \centering
+  \fbox{\parbox{\columnwidth}{\centering Seeds $\rightarrow$ augmentations \& rules $\rightarrow$ 2nd-layer transforms $\rightarrow$ probes $\rightarrow$ logs}}
+  \caption{Offensive evaluation workflow; policies configurable in \texttt{config.json}.}
+  \label{fig:pipeline}
+\end{figure}
+
+\subsection{Staged Mutation Generation}
+To balance diversity and reproducibility, generation is staged:
+\begin{itemize}
+  \item \textbf{Seeds:} We use PostgreSQL- and Oracle-oriented templates, affecting syntax and tokenization. Numeric seed tokens are remapped to stable string prefixes to align WAF and application parameter tracking.
+  \item \textbf{Learned Rules:} The harness injects deployment-specific variants, biasing the search towards historically informative outcomes.
+  \item \textbf{Transforms:} An optional second layer applies further evasion transforms subject to configuration limits. Consequently, the empirical distribution reflects practical search limits rather than a uniform draw from all possible SQLi strings.
+\end{itemize}
+
+\subsection{Outcome Semantics and Metrics}
+Each attempt $i$ yields an HTTP status $s_i$ and body $b_i$, and is labeled $y_i \in \{clean\_bypass, error\_bypass, blocked, other\}$. A blocked label denotes edge denial. A bypass label indicates a WAF-pass with application-visible signals consistent with effective SQLi side effects. The "other" label covers ambiguous outcomes.
+
+An attempt $i$ is considered as $y_i=\mathrm{clean\_bypass}$ if the HTTP response status code is either 200 OK which indicates a clean bypass reaching the application logic; $y_i=\mathrm{error\_bypass}$ if the status code is 500 Internal Server Error indicating that the mutated payload successfully bypassed the WAF edge and caused an unhandled database or ORM exception at the application layer.
+
+Let $N$ be the total attempts and $N_{\mathrm{bp}}$ the bypass count. The aggregate bypass rate is:
+\begin{equation}
+\label{eq:aggregate-bypass-rate}
+\mathrm{BR}_{\mathrm{agg}} = \frac{N_{\mathrm{bp}}}{N}
+\end{equation}
+For a mutation family $f$, the family-level bypass rate is $\mathrm{BR}_f = N_{f,\mathrm{bp}}/N_f$. We also measure unique payload cardinality to identify whether high attempt-level rates result from diverse payloads or string reuse.
+
+\subsection{Secondary Control}
+To assess normalization effects, we applied fixpoint \texttt{unquote\_plus} decoding to probe strings and trained a TF-IDF logistic-regression surrogate (\texttt{ml\_baseline.py}) on 20 labeled HTTP templates. This pilot tests whether minimal RFC-relevant decoding aligns feature spaces sufficiently to improve a simple classifier.

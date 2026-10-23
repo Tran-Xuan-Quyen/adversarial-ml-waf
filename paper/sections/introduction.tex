@@ -1,0 +1,21 @@
+\section{Introduction}
+Web applications remain the primary interface for online services, with Web Application Firewalls (WAFs) widely deployed to block injection attacks \cite{owasp-crs}. From an attacker's perspective, the key challenge is navigating a specific deployment's concrete rules and parsers to achieve a security-relevant application outcome. Signatures can be evaded by semantic-preserving rewrites, and parsers can disagree on decoding and parameter binding. While these phenomena are well known, measuring the conditions and specific mutation structures under which bypasses occur remains a scientific challenge.
+
+This paper contributes an operational, attack-centric evaluation. We systematically mutate SQLi fragments, probe a production-style AWS WAF deployment, and analyze outcomes at both aggregate and variant-family levels. We release our implementation as a reproducible artifact to provide red and blue teams with empirical distributions for prioritization and regression testing.
+
+\subsection{Problem Statement}
+SQLi evasion combines representation-level mutation---altering substrings or encodings seen by a pattern matcher---and interpretation-level divergence, where the WAF and application decode the same sequence differently \cite{akhavani2025waffled}. 
+
+Prior adversarial methods demonstrate that the attack space is combinatorial. Systems like SSQLi \cite{guan2023ssqli}, GSQLi \cite{khan2024gsqli}, and WAF-A-MoLE \cite{demetrio2020wafamole} achieve high bypass rates by searching this space. However, success is rarely uniform across operators. Published rates seldom decompose by operator family on live managed WAFs, obscuring which mutations survive. Furthermore, while mutating HTTP structure induces parsing discrepancies \cite{akhavani2025waffled}, we focus on URL-visible injection with deterministic seed remapping. This minimizes parameter-name mismatch, providing a controlled setting to study representation-level evasion against a fixed policy.
+
+\subsection{Objectives and Research Questions}
+We structure our empirical evaluation around three core questions:
+\begin{itemize}
+  \item \textbf{RQ1 (Scale and semantics).} Under an explicit bypass definition, what fraction of attempts succeed against our AWS WAF lab, and how does this relate to unique payload cardinality?
+  \item \textbf{RQ2 (Structure).} How much bypass mass concentrates in specific mutation families, and which are systematically suppressed?
+\end{itemize}
+
+In addressing these questions, we formalize a black-box attack pipeline for managed WAF assessment. We provide an empirical characterization of a live AWS WAF run, detailing unique payload counts and family-level bypass rates that reveal sharp heterogeneity. Finally, we include a secondary control showing that basic canonicalization does not immediately rescue simple classifiers.
+
+\subsection{Paper Organization}
+Section~\ref{sec:background} covers related work. Section~\ref{sec:methodology} details our methodology. Section~\ref{sec:experiments} presents the evaluation answering RQ1--RQ3. Section~\ref{sec:discussion} concludes the paper.
