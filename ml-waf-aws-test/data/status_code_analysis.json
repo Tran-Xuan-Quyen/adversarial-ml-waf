@@ -1,0 +1,177 @@
+{
+  "generated_at": "2026-06-29 23:13:36",
+  "total_records": 50118,
+  "files": {
+    "blocked_learned.jsonl": {
+      "total": 3917,
+      "source": "blocked"
+    },
+    "bypass_learned.jsonl": {
+      "total": 18851,
+      "source": "bypass"
+    },
+    "other_learned.jsonl": {
+      "total": 2259,
+      "source": "other"
+    },
+    "aws_probe_results.jsonl": {
+      "total": 25091,
+      "source": "aws_probe"
+    }
+  },
+  "all_status_codes": [
+    200,
+    403,
+    404,
+    500
+  ],
+  "by_transform": {
+    "url_encode": {
+      "counts_by_status": {
+        "403": 7726,
+        "404": 4,
+        "200": 1025,
+        "500": 718
+      },
+      "total": 9473,
+      "bypass_200": 1025,
+      "block_403": 7726,
+      "bypass_pct": 10.82,
+      "block_pct": 81.56
+    },
+    "double_url_encode": {
+      "counts_by_status": {
+        "403": 12,
+        "200": 4939,
+        "500": 3429
+      },
+      "total": 8380,
+      "bypass_200": 4939,
+      "block_403": 12,
+      "bypass_pct": 58.94,
+      "block_pct": 0.14
+    },
+    "triple_url_encode": {
+      "counts_by_status": {
+        "200": 1
+      },
+      "total": 1,
+      "bypass_200": 1,
+      "block_403": 0,
+      "bypass_pct": 100.0,
+      "block_pct": 0.0
+    },
+    "null_byte": {
+      "counts_by_status": {
+        "403": 8,
+        "404": 4,
+        "200": 4997,
+        "500": 3532
+      },
+      "total": 8541,
+      "bypass_200": 4997,
+      "block_403": 8,
+      "bypass_pct": 58.51,
+      "block_pct": 0.09
+    },
+    "case_mix": {
+      "counts_by_status": {
+        "403": 6,
+        "404": 4448,
+        "200": 57,
+        "500": 141
+      },
+      "total": 4652,
+      "bypass_200": 57,
+      "block_403": 6,
+      "bypass_pct": 1.23,
+      "block_pct": 0.13
+    },
+    "comment_inline": {
+      "counts_by_status": {
+        "403": 6,
+        "200": 1,
+        "500": 2
+      },
+      "total": 9,
+      "bypass_200": 1,
+      "block_403": 6,
+      "bypass_pct": 11.11,
+      "block_pct": 66.67
+    },
+    "comment_slash": {
+      "counts_by_status": {
+        "403": 10,
+        "200": 1,
+        "500": 1
+      },
+      "total": 12,
+      "bypass_200": 1,
+      "block_403": 10,
+      "bypass_pct": 8.33,
+      "block_pct": 83.33
+    },
+    "tab_newline": {
+      "counts_by_status": {
+        "403": 26,
+        "500": 2,
+        "200": 1
+      },
+      "total": 29,
+      "bypass_200": 1,
+      "block_403": 26,
+      "bypass_pct": 3.45,
+      "block_pct": 89.66
+    },
+    "hex": {
+      "counts_by_status": {
+        "404": 60,
+        "200": 4
+      },
+      "total": 64,
+      "bypass_200": 4,
+      "block_403": 0,
+      "bypass_pct": 6.25,
+      "block_pct": 0.0
+    },
+    "other_transform": {
+      "counts_by_status": {
+        "404": 2
+      },
+      "total": 2,
+      "bypass_200": 0,
+      "block_403": 0,
+      "bypass_pct": 0.0,
+      "block_pct": 0.0
+    },
+    "original": {
+      "counts_by_status": {
+        "403": 2
+      },
+      "total": 2,
+      "bypass_200": 0,
+      "block_403": 2,
+      "bypass_pct": 0.0,
+      "block_pct": 100.0
+    },
+    "__unknown__": {
+      "counts_by_status": {
+        "403": 38
+      },
+      "total": 38,
+      "bypass_200": 0,
+      "block_403": 38,
+      "bypass_pct": 0.0,
+      "block_pct": 100.0
+    }
+  },
+  "grand_total": {
+    "total": 31203,
+    "by_status": {
+      "403": 7834,
+      "500": 7825,
+      "200": 11026,
+      "404": 4518
+    }
+  }
+}
