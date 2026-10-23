@@ -1,77 +1,71 @@
 {
-"transforms": {
-"other": {
-"bypass": 0,
-"block": 13,
-"other": 0,
-"reach": 0
-},
-"plus_space": {
-"bypass": 0,
-"block": 1,
-"other": 0,
-"reach": 0
-},
-"tab": {
-"bypass": 0,
-"block": 3,
-"other": 0,
-"reach": 0
-},
-"newline": {
-"bypass": 0,
-"block": 3,
-"other": 0,
-"reach": 0
-},
-"vtab": {
-"bypass": 0,
-"block": 1,
-"other": 0,
-"reach": 0
-},
-"cr": {
-"bypass": 0,
-"block": 2,
-"other": 0,
-"reach": 0
-},
-"ff": {
-"bypass": 0,
-"block": 2,
-"other": 0,
-"reach": 0
-},
-"comment_block": {
-"bypass": 0,
-"block": 2,
-"other": 0,
-"reach": 0
-},
-"encoded": {
-"bypass": 0,
-"block": 3,
-"other": 0,
-"reach": 0
-},
-"hex": {
-"bypass": 5,
-"block": 3,
-"other": 1,
-"reach": 6
-},
-"case_mix": {
-"bypass": 0,
-"block": 1,
-"other": 0,
-"reach": 0
-},
-"url_encode": {
-"bypass": 1,
-"block": 3,
-"other": 0,
-"reach": 1
-}
-},
-"updated_ts": 1792764207.5361292
+  "transforms": {
+    "other": {
+      "bypass": 82,
+      "block": 7,
+      "other": 0,
+      "reach": 82
+    },
+    "cr": {
+      "bypass": 0,
+      "block": 1,
+      "other": 0,
+      "reach": 0
+    },
+    "ff": {
+      "bypass": 0,
+      "block": 1,
+      "other": 0,
+      "reach": 0
+    },
+    "hex": {
+      "bypass": 7,
+      "block": 2,
+      "other": 27,
+      "reach": 34
+    },
+    "case_mix": {
+      "bypass": 90,
+      "block": 6,
+      "other": 706,
+      "reach": 796
+    },
+    "comment_block": {
+      "bypass": 0,
+      "block": 8,
+      "other": 0,
+      "reach": 0
+    },
+    "url_encode": {
+      "bypass": 3845,
+      "block": 1506,
+      "other": 0,
+      "reach": 3845
+    },
+    "comment_inline": {
+      "bypass": 1,
+      "block": 8,
+      "other": 0,
+      "reach": 1
+    },
+    "plus_space": {
+      "bypass": 0,
+      "block": 4,
+      "other": 0,
+      "reach": 0
+    },
+    "tab": {
+      "bypass": 1,
+      "block": 3,
+      "other": 0,
+      "reach": 1
+    },
+    "null_byte": {
+      "bypass": 3308,
+      "block": 0,
+      "other": 2,
+      "reach": 3310
+    }
+  },
+  "updated_ts": 1792770145.7276921
 }

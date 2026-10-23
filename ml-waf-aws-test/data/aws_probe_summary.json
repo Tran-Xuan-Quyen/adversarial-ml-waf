@@ -1,5 +1,5 @@
 {
-  "ts": 1782461671.9637926,
+  "ts": 1792769642.3890758,
   "base_url": "http://dune-load-balancer-1826856788.ap-southeast-2.elb.amazonaws.com/projects",
   "inject_mode": "query",
   "query_param": "projectName",
@@ -20,32 +20,30 @@
   "sql_dialect": "postgresql",
   "raw_payload": "36331' OR 1=1--",
   "repeat_per_variant": 1,
-  "variants_tested": 25000,
-  "bypass": 18775,
-  "blocked": 3902,
-  "waf_passed": 21034,
+  "variants_tested": 9000,
+  "bypass": 6918,
+  "blocked": 1461,
+  "waf_passed": 7517,
   "blocked_note": "blocked=WAF; bypass=200 OK, effective 500, 400/422 app errors; other_learned=404 not_found or 500 ineffective (utf8/encoding)",
   "bypass_note": "bypass=effective outcome only; waf_passed=any non-WAF denial (includes 404 app not found, 502, ineffective 500)",
-  "other_or_error": 2323,
+  "other_or_error": 621,
   "http_status_counts": {
-    "200": 11026,
-    "403": 3902,
-    "404": 2259,
-    "500": 7749
+    "200": 3355,
+    "403": 1461,
+    "404": 599,
+    "500": 3563
   },
   "calibration": {
-    "http_status": 200,
+    "http_status": null,
     "url": "http://dune-load-balancer-1826856788.ap-southeast-2.elb.amazonaws.com/projects?projectName=Demo_project",
-    "body_snip": "{\"statusCode\":200,\"message\":\"[GET]:::/projects?projectName=Demo_project - Success\",\"data\":[{\"id\":7,\"projectName\":\"Demo_project\",\"applicationDomain\":\"https://example.com\",\"createdAt\":\"2026-06-23T15:29:40.884Z\",\"updatedAt\":\"2026-06-23T15:29:40.884Z\",\"users\":[]}]}",
-    "hint": "ok",
-    "waf_blocked": false,
-    "classify_detail": "ok_200"
+    "error": "HTTPConnectionPool(host='dune-load-balancer-1826856788.ap-southeast-2.elb.amazonaws.com', port=80): Max retries exceeded with url: /projects?projectName=Demo_project (Caused by ConnectTimeoutError(<HTTPConnection(host='dune-load-balancer-1826856788.ap-southeast-2.elb.amazonaws.com', port=80) at 0x1d1192ef590>, 'Connection to dune-load-balancer-1826856788.ap-southeast-2.elb.amazonaws.com timed out.",
+    "hint": "request_failed"
   },
-  "config": "E:\\installQ\\chatbotAI\\chat-bot-ai\\ml-waf-aws-test\\config.json",
-  "bypass_learned_jsonl": "E:\\installQ\\chatbotAI\\chat-bot-ai\\ml-waf-aws-test\\data\\bypass_learned.jsonl",
-  "blocked_learned_jsonl": "E:\\installQ\\chatbotAI\\chat-bot-ai\\ml-waf-aws-test\\data\\blocked_learned.jsonl",
-  "other_learned_jsonl": "E:\\installQ\\chatbotAI\\chat-bot-ai\\ml-waf-aws-test\\data\\other_learned.jsonl",
-  "learned_encodings_json": "E:\\installQ\\chatbotAI\\chat-bot-ai\\ml-waf-aws-test\\data\\learned_encodings.json",
-  "report_txt": "E:\\installQ\\chatbotAI\\chat-bot-ai\\ml-waf-aws-test\\data\\aws_probe_report.txt",
-  "bypass_found_txt": "E:\\installQ\\chatbotAI\\chat-bot-ai\\ml-waf-aws-test\\data\\bypass_found.txt"
+  "config": "C:\\Users\\GAMING\\Desktop\\project\\chat-bot\\chat-bot-ai\\ml-waf-aws-test\\config.json",
+  "bypass_learned_jsonl": "C:\\Users\\GAMING\\Desktop\\project\\chat-bot\\chat-bot-ai\\ml-waf-aws-test\\data\\bypass_learned.jsonl",
+  "blocked_learned_jsonl": "C:\\Users\\GAMING\\Desktop\\project\\chat-bot\\chat-bot-ai\\ml-waf-aws-test\\data\\blocked_learned.jsonl",
+  "other_learned_jsonl": "C:\\Users\\GAMING\\Desktop\\project\\chat-bot\\chat-bot-ai\\ml-waf-aws-test\\data\\other_learned.jsonl",
+  "learned_encodings_json": "C:\\Users\\GAMING\\Desktop\\project\\chat-bot\\chat-bot-ai\\ml-waf-aws-test\\data\\learned_encodings.json",
+  "report_txt": "C:\\Users\\GAMING\\Desktop\\project\\chat-bot\\chat-bot-ai\\ml-waf-aws-test\\data\\aws_probe_report.txt",
+  "bypass_found_txt": "C:\\Users\\GAMING\\Desktop\\project\\chat-bot\\chat-bot-ai\\ml-waf-aws-test\\data\\bypass_found.txt"
 }
