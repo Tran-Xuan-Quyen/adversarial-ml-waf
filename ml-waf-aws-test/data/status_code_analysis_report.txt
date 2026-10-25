@@ -1,12 +1,12 @@
 ============================================================
   STATUS CODE ANALYSIS REPORT
-  Generated: 2026-10-25 23:52:24
+  Generated: 2026-10-26 00:05:08
 ============================================================
 
 FILES ANALYZED:
-  * aws_probe_results.jsonl: 20,849 records  [aws_probe]
+  * aws_probe_results.jsonl: 22,230 records  [aws_probe]
 
-  TOTAL RECORDS: 20,849
+  TOTAL RECORDS: 22,230
 
 ============================================================
   BANG TONG HOP (STATUS CODE x TRANSFORM)
@@ -15,11 +15,11 @@ FILES ANALYZED:
 +------------------------+------------+------------+------------+------------+------------+------------+------------+
 | Transform              |    200     |    403     |    404     |    500     |   Total    |  Bypass%   |   Block%   |
 +------------------------+------------+------------+------------+------------+------------+------------+------------+
-| url_encode             |    982     |    3312    |     2      |    510     |    4806    |   20.4%    |   68.9%    |
-| double_url_encode      |    4731    |     6      |     0      |    2430    |    7167    |   66.0%    |    0.1%    |
+| url_encode             |    984     |    3548    |     2      |    614     |    5148    |   19.1%    |   68.9%    |
+| double_url_encode      |    4743    |     6      |     0      |    2934    |    7683    |   61.7%    |    0.1%    |
 | triple_url_encode      |     1      |     0      |     0      |     0      |     1      |   100.0%   |    0.0%    |
-| null_byte              |    4793    |     4      |     2      |    2519    |    7318    |   65.5%    |    0.1%    |
-| case_mix               |     61     |     5      |    1257    |    127     |    1450    |    4.2%    |    0.3%    |
+| null_byte              |    4805    |     4      |     2      |    3026    |    7837    |   61.3%    |    0.1%    |
+| case_mix               |     61     |     5      |    1257    |    131     |    1454    |    4.2%    |    0.3%    |
 | comment_inline         |     0      |     11     |     0      |     2      |     13     |    0.0%    |   84.6%    |
 | comment_slash          |     0      |     13     |     0      |     1      |     14     |    0.0%    |   92.9%    |
 | tab_newline            |     1      |     13     |     0      |     2      |     16     |    6.2%    |   81.2%    |
@@ -28,29 +28,29 @@ FILES ANALYZED:
 | original               |     0      |     1      |     0      |     0      |     1      |    0.0%    |   100.0%   |
 | __unknown__            |     0      |     19     |     0      |     0      |     19     |    0.0%    |   100.0%   |
 +------------------------+------------+------------+------------+------------+------------+------------+------------+
-| GRAND TOTAL            |   10573    |    3397    |    1288    |    5591    |   20849    |   50.7%    |   16.3%    |
+| GRAND TOTAL            |   10599    |    3633    |    1288    |    6710    |   22230    |   47.7%    |   16.3%    |
 +------------------------+------------+------------+------------+------------+------------+------------+------------+
 
 ============================================================
   CHI TIET THEO TUNG STATUS CODE
 ============================================================
 
--- Status 200 --  (Total: 10,573)
+-- Status 200 --  (Total: 10,599)
   Transform                    Count        %
   ------------------------- --------  -------
-  null_byte                    4,793    45.3%
-  double_url_encode            4,731    44.7%
-  url_encode                     982     9.3%
+  null_byte                    4,805    45.3%
+  double_url_encode            4,743    44.7%
+  url_encode                     984     9.3%
   case_mix                        61     0.6%
   hex                              4     0.0%
   triple_url_encode                1     0.0%
   tab_newline                      1     0.0%
 
--- Status 403 --  (Total: 3,397)
+-- Status 403 --  (Total: 3,633)
   Transform                    Count        %
   ------------------------- --------  -------
-  url_encode                   3,312    97.5%
-  __unknown__                     19     0.6%
+  url_encode                   3,548    97.7%
+  __unknown__                     19     0.5%
   comment_slash                   13     0.4%
   tab_newline                     13     0.4%
   comment_inline                  11     0.3%
@@ -69,13 +69,13 @@ FILES ANALYZED:
   url_encode                       2     0.2%
   null_byte                        2     0.2%
 
--- Status 500 --  (Total: 5,591)
+-- Status 500 --  (Total: 6,710)
   Transform                    Count        %
   ------------------------- --------  -------
-  null_byte                    2,519    45.1%
-  double_url_encode            2,430    43.5%
-  url_encode                     510     9.1%
-  case_mix                       127     2.3%
+  null_byte                    3,026    45.1%
+  double_url_encode            2,934    43.7%
+  url_encode                     614     9.2%
+  case_mix                       131     2.0%
   comment_inline                   2     0.0%
   tab_newline                      2     0.0%
   comment_slash                    1     0.0%
@@ -93,11 +93,11 @@ FILES ANALYZED:
     \toprule
     \textbf{Transform} & \textbf{200} & \textbf{403} & \textbf{404} & \textbf{500} & \textbf{Total} & \textbf{Bypass\%} & \textbf{Block\%} \\
     \midrule
-    url\_encode & 982 & 3,312 & 2 & 510 & 4,806 & 20.4\% & 68.9\% \\
-    double\_url\_encode & 4,731 & 6 & 0 & 2,430 & 7,167 & 66.0\% & 0.1\% \\
+    url\_encode & 984 & 3,548 & 2 & 614 & 5,148 & 19.1\% & 68.9\% \\
+    double\_url\_encode & 4,743 & 6 & 0 & 2,934 & 7,683 & 61.7\% & 0.1\% \\
     triple\_url\_encode & 1 & 0 & 0 & 0 & 1 & 100.0\% & 0.0\% \\
-    null\_byte & 4,793 & 4 & 2 & 2,519 & 7,318 & 65.5\% & 0.1\% \\
-    case\_mix & 61 & 5 & 1,257 & 127 & 1,450 & 4.2\% & 0.3\% \\
+    null\_byte & 4,805 & 4 & 2 & 3,026 & 7,837 & 61.3\% & 0.1\% \\
+    case\_mix & 61 & 5 & 1,257 & 131 & 1,454 & 4.2\% & 0.3\% \\
     comment\_inline & 0 & 11 & 0 & 2 & 13 & 0.0\% & 84.6\% \\
     comment\_slash & 0 & 13 & 0 & 1 & 14 & 0.0\% & 92.9\% \\
     tab\_newline & 1 & 13 & 0 & 2 & 16 & 6.2\% & 81.2\% \\
@@ -106,7 +106,7 @@ FILES ANALYZED:
     original & 0 & 1 & 0 & 0 & 1 & 0.0\% & 100.0\% \\
     \_\_unknown\_\_ & 0 & 19 & 0 & 0 & 19 & 0.0\% & 100.0\% \\
     \midrule
-    \textbf{TOTAL} & 10,573 & 3,397 & 1,288 & 5,591 & \textbf{20,849} & 50.7\% & 16.3\% \\
+    \textbf{TOTAL} & 10,599 & 3,633 & 1,288 & 6,710 & \textbf{22,230} & 47.7\% & 16.3\% \\
     \bottomrule
   \end{tabular}\\[0.6em]
   \footnotesize

@@ -43,10 +43,10 @@
       "reach": 0
     },
     "url_encode": {
-      "bypass": 9158,
-      "block": 3512,
+      "bypass": 9275,
+      "block": 3556,
       "other": 0,
-      "reach": 9158
+      "reach": 9275
     },
     "comment_inline": {
       "bypass": 1,
@@ -85,11 +85,11 @@
       "reach": 0
     },
     "null_byte": {
-      "bypass": 7734,
+      "bypass": 7831,
       "block": 0,
       "other": 2,
-      "reach": 7736
+      "reach": 7833
     }
   },
-  "updated_ts": 1792947735.005746
+  "updated_ts": 1792947879.3192759
 }

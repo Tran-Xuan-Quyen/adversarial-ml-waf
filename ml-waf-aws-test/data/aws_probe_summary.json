@@ -1,7 +1,7 @@
 {
   "run_id": "official_exp_run_1",
-  "ts": 1792947187.3098288,
-  "timestamp": "2026-10-25T16:53:07.309831+00:00",
+  "ts": 1792947751.4275136,
+  "timestamp": "2026-10-25T17:02:31.427515+00:00",
   "base_url": "http://dune-load-balancer-1826856788.ap-southeast-2.elb.amazonaws.com/projects",
   "inject_mode": "query",
   "query_param": "projectName",
@@ -22,23 +22,23 @@
   "sql_dialect": "postgresql",
   "raw_payload": "36331' OR 1=1--",
   "repeat_per_variant": 1,
-  "variants_tested": 21000,
+  "variants_tested": 22000,
   "bypass_200_only": 10599,
-  "bypass_500_only": 5690,
+  "bypass_500_only": 6519,
   "bypass_app_err": 0,
-  "bypass_total": 16289,
-  "bypass": 16289,
-  "bypass_200_rate": 0.5047,
-  "bypass_total_rate": 0.7757,
-  "blocked": 3423,
-  "block_rate": 0.163,
-  "waf_passed": 17577,
+  "bypass_total": 17118,
+  "bypass": 17118,
+  "bypass_200_rate": 0.4818,
+  "bypass_total_rate": 0.7781,
+  "blocked": 3594,
+  "block_rate": 0.1634,
+  "waf_passed": 18406,
   "other_or_error": 1288,
   "http_status_counts": {
     "200": 10599,
-    "403": 3423,
+    "403": 3594,
     "404": 1288,
-    "500": 5690
+    "500": 6519
   },
   "cookie_policy": "clear_per_request",
   "cookies_detected": [],
@@ -53,14 +53,14 @@
     "waf_passed": 14
   },
   "adaptive_spawn_stats": {
-    "tested": 20903,
+    "tested": 21903,
     "bypass_200": 10592,
-    "bypass_500": 5686,
+    "bypass_500": 6515,
     "bypass_app_err": 0,
-    "bypass_total": 16278,
-    "blocked": 3340,
+    "bypass_total": 17107,
+    "blocked": 3511,
     "other": 1285,
-    "waf_passed": 17563
+    "waf_passed": 18392
   },
   "generation_breakdown": {},
   "calibration": {
@@ -315,6 +315,17 @@
       "classify_detail": "ok_200",
       "ts": 1792947187.3096738,
       "checked_at_tested": 21000,
+      "gen": 0
+    },
+    {
+      "http_status": 200,
+      "url": "http://dune-load-balancer-1826856788.ap-southeast-2.elb.amazonaws.com/projects?projectName=Demo_project",
+      "body_snip": "{\"statusCode\":200,\"message\":\"[GET]:::/projects?projectName=Demo_project - Success\",\"data\":[{\"id\":7,\"projectName\":\"Demo_project\",\"applicationDomain\":\"https://example.com\",\"createdAt\":\"2026-06-23T15:29:40.884Z\",\"updatedAt\":\"2026-06-23T15:29:40.884Z\",\"users\":[]}]}",
+      "hint": "ok",
+      "waf_blocked": false,
+      "classify_detail": "ok_200",
+      "ts": 1792947751.4273899,
+      "checked_at_tested": 22000,
       "gen": 0
     }
   ],

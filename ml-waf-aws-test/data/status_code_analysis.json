@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-10-25 23:52:24",
-  "total_records": 20849,
+  "generated_at": "2026-10-26 00:05:08",
+  "total_records": 22230,
   "files": {
     "aws_probe_results.jsonl": {
-      "total": 20849,
+      "total": 22230,
       "source": "aws_probe"
     }
   },
@@ -16,27 +16,27 @@
   "by_transform": {
     "url_encode": {
       "counts_by_status": {
-        "403": 3312,
-        "200": 982,
+        "403": 3548,
+        "200": 984,
         "404": 2,
-        "500": 510
+        "500": 614
       },
-      "total": 4806,
-      "bypass_200": 982,
-      "block_403": 3312,
-      "bypass_pct": 20.43,
-      "block_pct": 68.91
+      "total": 5148,
+      "bypass_200": 984,
+      "block_403": 3548,
+      "bypass_pct": 19.11,
+      "block_pct": 68.92
     },
     "double_url_encode": {
       "counts_by_status": {
         "403": 6,
-        "500": 2430,
-        "200": 4731
+        "500": 2934,
+        "200": 4743
       },
-      "total": 7167,
-      "bypass_200": 4731,
+      "total": 7683,
+      "bypass_200": 4743,
       "block_403": 6,
-      "bypass_pct": 66.01,
+      "bypass_pct": 61.73,
       "block_pct": 0.08
     },
     "triple_url_encode": {
@@ -52,14 +52,14 @@
     "null_byte": {
       "counts_by_status": {
         "403": 4,
-        "200": 4793,
-        "500": 2519,
+        "200": 4805,
+        "500": 3026,
         "404": 2
       },
-      "total": 7318,
-      "bypass_200": 4793,
+      "total": 7837,
+      "bypass_200": 4805,
       "block_403": 4,
-      "bypass_pct": 65.5,
+      "bypass_pct": 61.31,
       "block_pct": 0.05
     },
     "case_mix": {
@@ -67,12 +67,12 @@
         "403": 5,
         "200": 61,
         "404": 1257,
-        "500": 127
+        "500": 131
       },
-      "total": 1450,
+      "total": 1454,
       "bypass_200": 61,
       "block_403": 5,
-      "bypass_pct": 4.21,
+      "bypass_pct": 4.2,
       "block_pct": 0.34
     },
     "comment_inline": {
@@ -153,12 +153,12 @@
     }
   },
   "grand_total": {
-    "total": 20849,
+    "total": 22230,
     "by_status": {
-      "403": 3397,
-      "200": 10573,
+      "403": 3633,
+      "200": 10599,
       "404": 1288,
-      "500": 5591
+      "500": 6710
     }
   }
 }
