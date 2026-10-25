@@ -3,7 +3,7 @@
 This section details our adversarial evaluation methodology, including the experimental environment, adversary capabilities, and the attack pipeline. Artifacts are available under \texttt{paper/experiment}.
 
 \subsection{Experimental Environment}
-We deployed the study on AWS, sending traffic through an AWS WAF Web ACL in \texttt{us-east-1} before reaching an EC2-hosted application. This mirrors a production environment where the backend only sees what the WAF forwards. 
+We deployed the study on AWS in the Asia Pacific (Sydney) region (\texttt{ap-southeast-2}), routing adversarial traffic through an AWS Application Load Balancer (ALB) integrated with AWS WAF before reaching an EC2-hosted application. This mirrors an enterprise cloud deployment where the backend only sees what the edge WAF forwards. 
 
 The Web ACL (\texttt{test-waf}) features three sequential rules:
 \begin{enumerate}
@@ -12,7 +12,8 @@ The Web ACL (\texttt{test-waf}) features three sequential rules:
   \item \textbf{\texttt{Final-Optimized-SQLi-Rule}:} A custom regular expression stage targeting specific lab leftovers, such as hex-flavored encodings and null-byte obfuscation.
 \end{enumerate}
 
-The endpoint is a custom web application on a \texttt{t3.micro} EC2 instance. We drove probes manually via scripts without relying on generic scanners like sqlmap. Outcomes were observed directly from HTTP responses: a \texttt{403} indicated a block, while a \texttt{200} indicated the request reached the application.
+The backend application is a production-style NestJS REST service backed by a PostgreSQL database on an EC2 instance. We drove probes programmatically via custom asynchronous HTTP client scripts without relying on generic commercial scanners like sqlmap. Outcomes were observed directly from HTTP responses: a \texttt{403} indicated a WAF/ALB edge block, a \texttt{200} confirmed clean bypass with data leakage, a \texttt{500} confirmed database-level unhandled exception, and a \texttt{404} indicated application-layer path reach without query execution.
+
 
 \subsection{Adversary Model and Attack Pipeline}
 We model a network adversary capable of sending HTTP/1.1 requests, observing responses, and adapting mutations based on logs. The adversary lacks white-box access, aligning with typical red-team constraints \cite{guan2023ssqli,demetrio2020wafamole}. 
@@ -38,21 +39,24 @@ The driver serializes each variant in $\mathcal{V}$ as a GET request, logs the r
 To balance diversity and reproducibility, generation is staged:
 \begin{itemize}
   \item \textbf{Seeds:} We use PostgreSQL- and Oracle-oriented templates, affecting syntax and tokenization. Numeric seed tokens are remapped to stable string prefixes to align WAF and application parameter tracking.
-  \item \textbf{Learned Rules:} The harness injects deployment-specific variants, biasing the search towards historically informative outcomes.
-  \item \textbf{Transforms:} An optional second layer applies further evasion transforms subject to configuration limits. Consequently, the empirical distribution reflects practical search limits rather than a uniform draw from all possible SQLi strings.
+  \item \textbf{Learned Rules:} The harness injects deployment-specific variants, biasing the search towards historically informative outcomes. Prior to commencing official data collection, the mutation policy state was strictly purged (via the \texttt{--fresh} flag), resetting the operator exclusion list to empty (\texttt{exclude: []}) to prevent survivorship bias from earlier test probes.
+  \item \textbf{Transforms:} An optional second layer applies further evasion transforms subject to configuration limits. Consequently, the empirical distribution reflects practical search limits rather than an unconstrained draw from all possible SQLi strings.
 \end{itemize}
 
 \subsection{Outcome Semantics and Metrics}
-Each attempt $i$ yields an HTTP status $s_i$ and body $b_i$, and is labeled $y_i \in \{clean\_bypass, error\_bypass, blocked, other\}$. A blocked label denotes edge denial. A bypass label indicates a WAF-pass with application-visible signals consistent with effective SQLi side effects. The "other" label covers ambiguous outcomes.
+Each attempt $i$ yields an HTTP status $s_i$ and body $b_i$, and is labeled $y_i \in \{clean\_bypass, error\_bypass, blocked, other\}$. A blocked label denotes edge denial. A bypass label indicates a WAF-pass with application-visible signals consistent with effective SQLi side effects.
 
-An attempt $i$ is considered as $y_i=\mathrm{clean\_bypass}$ if the HTTP response status code is either 200 OK which indicates a clean bypass reaching the application logic; $y_i=\mathrm{error\_bypass}$ if the status code is 500 Internal Server Error indicating that the mutated payload successfully bypassed the WAF edge and caused an unhandled database or ORM exception at the application layer.
+An attempt $i$ is considered as $y_i=\mathrm{clean\_bypass}$ if the HTTP response status code is 200 OK, indicating a clean bypass reaching the application logic with returned entity records; $y_i=\mathrm{error\_bypass}$ if the status code is 500 Internal Server Error, indicating that the mutated payload successfully bypassed the WAF edge and caused an unhandled PostgreSQL driver syntax exception at the database layer. An attempt is labeled $y_i=\mathrm{blocked}$ if intercepted at the perimeter ($s_i = 403$), and $y_i=\mathrm{other}$ if the request passed the WAF to the application router but returned 404 Not Found (e.g., altered project query strings).
 
-Let $N$ be the total attempts and $N_{\mathrm{bp}}$ the bypass count. The aggregate bypass rate is:
+Although our tracking harness accounts for client validation errors (HTTP 400/422) as potential application-reach indicators, the target NestJS route accepts string query arguments without schema type-rejections. As verified in Section~\ref{sec:experiments}, zero 400 or 422 responses occurred ($N_{400/422}=0$), meaning all successful WAF evasions cleanly partitioned into either 200 OK or 500 Server Errors.
+
+Let $N$ be the total attempts and $N_{\mathrm{bp}}$ the bypass count ($N_{200} + N_{500}$). The aggregate bypass rate is:
 \begin{equation}
 \label{eq:aggregate-bypass-rate}
 \mathrm{BR}_{\mathrm{agg}} = \frac{N_{\mathrm{bp}}}{N}
 \end{equation}
-For a mutation family $f$, the family-level bypass rate is $\mathrm{BR}_f = N_{f,\mathrm{bp}}/N_f$. We also measure unique payload cardinality to identify whether high attempt-level rates result from diverse payloads or string reuse.
+For a mutation family $f$, the family-level bypass rate is $\mathrm{BR}_f = N_{f,\mathrm{bp}}/N_f$.
 
 \subsection{Secondary Control}
-To assess normalization effects, we applied fixpoint \texttt{unquote\_plus} decoding to probe strings and trained a TF-IDF logistic-regression surrogate (\texttt{ml\_baseline.py}) on 20 labeled HTTP templates. This pilot tests whether minimal RFC-relevant decoding aligns feature spaces sufficiently to improve a simple classifier.
+To assess normalization effects, we applied fixpoint \texttt{unquote\_plus} decoding to probe strings and trained a TF-IDF logistic-regression surrogate (\texttt{ml\_baseline.py}) on a 20-sample labeled pilot dataset partitioned into 13 training and 7 test instances (35\% test split, random seed 42). This pilot tests whether minimal RFC-relevant decoding aligns feature spaces sufficiently to improve a simple linear classifier.
+

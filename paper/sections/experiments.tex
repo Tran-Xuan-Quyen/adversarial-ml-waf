@@ -1,132 +1,139 @@
 \section{Experiments and Results}
 \label{sec:experiments}
-We answered RQ1--RQ3 using data exported from live AWS WAF probing and an RFC decoding surrogate pilot. Scripts were executed in a Windows environment using standard data science libraries (scikit-learn, joblib).
+We answered RQ1--RQ3 using empirical data exported from live AWS WAF probing and an RFC decoding surrogate pilot. Probing scripts and analysis pipelines were executed in a Windows Python 3.12 environment using standardized data science and machine learning libraries.
 
 \Needspace{8\baselineskip}
 \subsection{Experimental Flow}
-We followed a consistent workflow:
+We followed a consistent adversarial measurement workflow:
 \begin{enumerate}
-  \item Start with SQLi seeds and remap IDs to the target format.
-  \item Apply mutation rules and send GET requests to the endpoint.
-  \item Classify responses as bypass, blocked, or other.
-  \item Aggregate outcomes to compare family-level behavior.
+  \item Initialize baseline SQLi seeds with dialect-specific syntax (PostgreSQL/Oracle) and remap parameter IDs to match target endpoint routing.
+  \item Dynamically mutate seeds across staged transformation families and dispatch black-box HTTP GET requests to the live AWS ALB endpoint.
+  \item Classify HTTP responses into decomposed semantic outcomes (\texttt{clean\_bypass}, \texttt{error\_bypass}, \texttt{blocked}, \texttt{other}) via verified response body structural inspection.
+  \item Aggregate outcomes across transformation families and evolutionary generations to quantify evasion gains and policy suppression.
+  \item Conduct an independent, non-circular ground-truth audit on randomly sampled responses to validate label precision.
 \end{enumerate}
 
-% Updated results section with detailed tables and analysis
+\subsection{Overall Outcome Distribution}
+Table~\ref{tab:overall_summary} presents the high‑level outcome distribution across the complete live dataset of $N=22{,}230$ tested payload variants.
 
-\subsection{Overall Summary}
-Table~\ref{tab:overall_summary} presents the high‑level outcome distribution across the 21,000 tested payloads.
 \begin{table}[h]
   \centering
-  \caption{Overall result distribution}
+  \caption{Overall result distribution across $N=22{,}230$ live probes}
   \label{tab:overall_summary}
   \begin{tabular}{lrr}
     \toprule
-    Result Type & Count & Percentage \\
+    Result Classification & Count & Percentage \\
     \midrule
-    Bypass (200 OK and 500) & 15{,}457 & 73.6\% \\
-    Blocked by WAF (403) & 3{,}221 & 15.3\% \\
-    Other (404 Not Found) & 2{,}322 & 11.1\% \\
+    Clean Exploit Bypass (200 OK data leak) & 10{,}599 & 47.7\% \\
+    Database Error Bypass (500 SQL syntax error) & 6{,}710 & 30.2\% \\
+    \midrule
+    \textbf{Total Effective Evasion (Passed WAF)} & \textbf{17{,}309} & \textbf{77.9\%} \\
+    Blocked by AWS WAF / Edge (403 Forbidden) & 3{,}633 & 16.3\% \\
+    Application Other (404 Not Found) & 1{,}288 & 5.8\% \\
+    \midrule
+    \textbf{Total Probes Evaluated} & \textbf{22{,}230} & \textbf{100.0\%} \\
     \bottomrule
   \end{tabular}
 \end{table}
 
 \subsection{Status Code Breakdown}
-Table~\ref{tab:status_breakdown} shows the distribution of HTTP status codes observed.
+Table~\ref{tab:status_breakdown} details the distribution of observed HTTP response status codes.
+
 \begin{table}[h]
   \centering
-  \caption{HTTP status distribution}
+  \caption{HTTP status distribution and semantic interpretations}
   \label{tab:status_breakdown}
-  \begin{tabular}{lrr}
+  \begin{tabular}{lrrp{3.8cm}}
     \toprule
-    Status Code & Count & Description \\
+    Status Code & Count & \% & Operational Interpretation \\
     \midrule
-    200 OK & 9{,}866 & Successful request (Clean application pass) \\
-    403 Forbidden & 3{,}221 & Request blocked by AWS WAF edge policy \\
-    404 Not Found & 2{,}322 & Resource not found (Payload parsing anomaly) \\
-    500 Internal Server Error & 5{,}591 & Server error (often due to injection) \\
+    200 OK & 10{,}599 & 47.7\% & Verified data leakage; backend returned valid project entity JSON. \\
+    403 Forbidden & 3{,}633 & 16.3\% & Request denied by AWS WAF ruleset or ALB edge filter. \\
+    404 Not Found & 1{,}288 & 5.8\% & Reached application router; payload altered query parameter key/value without triggering injection. \\
+    500 Server Error & 6{,}710 & 30.2\% & Unhandled PostgreSQL syntax/type exception proving WAF pass to DB layer. \\
+    \midrule
+    \textbf{Total} & \textbf{22{,}230} & \textbf{100.0\%} & Complete closed-form sum ($N_{400/422}=0$, $N_{502}=0$). \\
     \bottomrule
   \end{tabular}
 \end{table}
 
 \subsection{Transformation Effectiveness}
-Table~\ref{tab:transform_stats} summarizes bypass and block counts per transformation type, derived from \texttt{learned\_encodings.json}.
-\begin{table}[h]
+Table~\ref{tab:transform_stats} summarizes the status code distribution and empirical bypass/block rates decomposed across all evaluated transformation families.
+
+\begin{table*}[t]
   \centering
-  \caption{Bypass/Block statistics by transform}
+  \caption{HTTP Status Code Distribution by Transform Type across $N=22{,}230$ Variants}
   \label{tab:transform_stats}
-  \begin{tabular}{lrrrrr}
+  \begin{tabular}{lrrrrrrrr}
     \toprule
-    Transform & Bypass & Blocked & Other & Reach & Success Rate (\%)\\
+    \textbf{Transform Family} & \textbf{200 OK} & \textbf{403 Block} & \textbf{404} & \textbf{500 Err} & \textbf{Total ($N_f$)} & \textbf{Clean Bypass\%} & \textbf{404 Rate\%} & \textbf{Block Rate\%} \\
     \midrule
-    url\_encode & 8{,}534 & 3{,}274 & 0 & 11{,}808 & 72.3\% \\
-    null\_byte & 7{,}209 & 0 & 2 & 7{,}211 & 99.9\%\\
-    case\_mix & 97 & 6 & 2{,}224 & 2{,}327 & 4.2\%\\
-    other & 88 & 12 & 1 & 101 & 87.1\% \\
-    hex & 10 & 1 & 32 & 43 & 23.3\% \\
-    tab & 1 & 6 & 0 & 7 & 14.3\% \\
-    comment\_inline & 1 & 2 & 0 & 3 & 33.3\% \\
+    null\_byte & 4{,}805 & 4 & 2 & 3{,}026 & 7{,}837 & 61.3\% & 0.0\% & 0.1\% \\
+    double\_url\_encode & 4{,}743 & 6 & 0 & 2{,}934 & 7{,}683 & 61.7\% & 0.0\% & 0.1\% \\
+    url\_encode & 984 & 3{,}548 & 2 & 614 & 5{,}148 & 19.1\% & 0.0\% & 68.9\% \\
+    case\_mix & 61 & 5 & 1{,}257 & 131 & 1{,}454 & 4.2\% & 86.4\% & 0.3\% \\
+    hex & 4 & 7 & 27 & 0 & 38 & 10.5\% & 71.1\% & 18.4\% \\
+    tab\_newline & 1 & 13 & 0 & 2 & 16 & 6.2\% & 0.0\% & 81.2\% \\
+    comment\_slash & 0 & 13 & 0 & 1 & 14 & 0.0\% & 0.0\% & 92.9\% \\
+    comment\_inline & 0 & 11 & 0 & 2 & 13 & 0.0\% & 0.0\% & 84.6\% \\
+    other\_transform & 0 & 6 & 0 & 0 & 6 & 0.0\% & 0.0\% & 100.0\% \\
+    triple\_url\_encode$^*$ & 1 & 0 & 0 & 0 & 1 & 100.0\% & 0.0\% & 0.0\% \\
+    original / baseline$^*$ & 0 & 1 & 0 & 0 & 1 & 0.0\% & 0.0\% & 100.0\% \\
+    unclassified & 0 & 19 & 0 & 0 & 19 & 0.0\% & 0.0\% & 100.0\% \\
+    \midrule
+    \textbf{GRAND TOTAL} & \textbf{10{,}599} & \textbf{3{,}633} & \textbf{1{,}288} & \textbf{6{,}710} & \textbf{22{,}230} & \textbf{47.7\%} & \textbf{5.8\%} & \textbf{16.3\%} \\
     \bottomrule
-  \end{tabular}\\[0.6em]
-
+  \end{tabular}\\[0.4em]
   \footnotesize
-  \emph{Note.} Reach denotes the total number of payload variants containing a given mutation style. Categories are not mutually exclusive because multiple mutation styles may be compounded within a single payload.
-\end{table}
+  \emph{Note.} Clean Bypass\% reflects HTTP 200 OK data leakage rate. Block Rate\% reflects HTTP 403 edge denial rate. The total effective WAF evasion rate (200 OK + 500 Server Error) reaches 99.9\% for double\_url\_encode and null\_byte.\\
+  $^*$\emph{Statistical Caveat.} Families with $N_f < 5$ (e.g., \texttt{triple\_url\_encode}, \texttt{original/baseline}) are included to preserve the closed-form sum of $N=22{,}230$, but their apparent extreme rates ($100\%$ or $0\%$) are excluded from rate generalizations due to minute sample support.
+\end{table*}
 
-\subsection{Key Takeaways}
-\begin{itemize}
-  \item Double/triple URL‑encoding and null‑byte suffixes are the most effective techniques to bypass the WAF.
-  \item Transformations that replace spaces with "+", introduce tab/newline characters, or inject comment blocks are largely blocked.
-  \item Server‑side double‑decoding has been mitigated, reducing 500 errors during testing.
-\end{itemize}
+\subsection{RQ1: Scale, Label Precision, and Evolutionary Gain}
+Our empirical testbed evaluated $N=22{,}230$ variants against the live AWS WAF deployment. In response to RQ1:
+\begin{enumerate}
+  \item \textbf{Aggregate Evasion Scale:} As shown in Table~\ref{tab:overall_summary}, $17{,}309$ out of $22{,}230$ attempts ($77.9\%$) successfully evaded the WAF edge rulesets. Of these, $10{,}599$ attempts ($47.7\%$) achieved clean exploitation (HTTP 200), extracting valid backend project entities, while $6{,}710$ attempts ($30.2\%$) bypassed the edge to cause unhandled database-layer exceptions (HTTP 500). Only $3{,}633$ attempts ($16.3\%$) were intercepted at the perimeter. The remaining $1{,}288$ attempts ($5.8\%$) bypassed the edge into the application router but matched no project entity (HTTP 404). Crucially, zero requests returned HTTP 400 or 422 ($N_{400/422}=0$), as the NestJS endpoint route accepts unconstrained query strings without schema rejection.
+  \item \textbf{Ground-Truth Precision Audit:} To verify classification validity without circular reliance on classifier regexes, we conducted an independent structural audit on $N_s=400$ randomly sampled responses ($100$ per outcome category). The audit verified $100.0\%$ precision across all categories:
+  \begin{itemize}
+    \item 200 OK responses matched the complete NestJS Entity JSON schema (\texttt{projectName}, \texttt{id}, \texttt{applicationDomain}).
+    \item 500 responses strictly matched native PostgreSQL driver syntax exception signatures.
+    \item 403 responses exhibited AWS ALB/WAF error markers (\texttt{awselb/2.0}, \texttt{403 Forbidden}).
+    \item 404 responses satisfied NestJS exception envelope schemas.
+  \end{itemize}
+  \item \textbf{Evolutionary Gain over Baseline:} Prior to execution, the transform exclusion list was reset (\texttt{--fresh}) to guarantee a clean initial state without survivorship bias. Comparing pure unadapted initial seeds (Generation 0, $N_0=97$) against subsequent adaptive mutations demonstrates significant evolutionary efficacy:
+  \begin{itemize}
+    \item Gen 0 Baseline: 200 OK rate was $7.2\%$ ($7/97$), total bypass rate was $11.3\%$ ($11/97$), and block rate was $85.6\%$ ($83/97$).
+    \item Adaptive Generations: 200 OK rate surged to $47.9\%$ ($10{,}592/22{,}133$), and total evasion reached $78.2\%$ ($17{,}298/22{,}133$).
+    \item This constitutes an empirical \textbf{Evolutionary Gain of $+40.7\%$} for clean exploit yield and \textbf{$+66.9\%$} for perimeter evasion, confirming that adaptive multi-layered mutations systematically discover WAF parsing blind spots.
+  \end{itemize}
+\end{enumerate}
 
-\Needspace{8\baselineskip}
-\subsection{RQ1: Scale, Labels, and Unique Payloads}
-The new experimental run tested $N=21{,}000$ payload variants, achieving $N_{\mathrm{bp}}=15{,}457$ successful bypasses ($73.6\%$) and $N_{\mathrm{blk}}=3{,}221$ blocked attempts ($15.3\%$). The remaining $2{,}322$ responses were other outcomes such as 404 or server errors ($11.1\%$). Table~\ref{tab:new_dataset} summarizes these aggregate statistics.
-
-\begin{table}[h]
-  \centering
-  \caption{Aggregate results of ML-WAF AWS probing (21k variants).}
-  \label{tab:new_dataset}
-  \begin{tabular}{lrr}
-    \toprule
-    Metric & Count & Percentage \\
-    \midrule
-    Variants tested $N$ & 21{,}000 & 100\% \\
-    Bypass count $N_{\mathrm{bp}}$ & 15{,}457 & 73.6\% \\
-    Blocked count $N_{\mathrm{blk}}$ & 3{,}221 & 15.3\% \\
-    Other outcomes $N_{\mathrm{oth}}$ & 2{,}322 & 11.1\% \\
-    \bottomrule
-  \end{tabular}
-\end{table}
-
-\Needspace{8\baselineskip}
 \subsection{RQ2: Family-Level Heterogeneity}
-Bypass success is highly concentrated within specific mutation categories. Figure~\ref{fig:bypass} and Table~\ref{tab:bypass_categories} demonstrate a stark polarization in evasion efficacy. The null\_byte family achieves a near-absolute bypass rate ($\mathrm{BR}_{\mathrm{f}} = 99.9\%$), while the large-scale url\_encode family maintains a high yield of 72.3\%, serving as the primary driver of successful edge evasions by volume. Conversely, structural mutations such as space\_modifiers are completely suppressed ($\mathrm{BR}_{f} = 0\%$) by the AWS WAF edge filters. This pattern indicates that policy stress is heavily concentrated in specific syntactic strategies rather than being uniformly distributed across all transformation types.
+In addressing RQ2, our results reveal severe polarization in evasion efficacy across mutation operators, rather than a uniform distribution of vulnerability:
+\begin{itemize}
+  \item \textbf{Dominant Evasion Families:} The \texttt{double\_url\_encode} family ($N_f=7{,}683$) and \texttt{null\_byte} family ($N_f=7{,}837$) achieved near-total WAF perimeter evasion, each exhibiting a total bypass rate of $99.9\%$ ($>61\%$ clean 200 OK and $>38\%$ database 500 error). AWS WAF's normalization pipeline fails to collapse multi-layer percent encodings prior to rule evaluation, yet the downstream NestJS/Node.js URI parser transparently unpacks them, delivering malicious SQL syntax to the database driver.
+  \item \textbf{The Semantic Evasion Fallacy in \texttt{case\_mix}:} In Table~\ref{tab:transform_stats}, the \texttt{case\_mix} family ($N_f=1{,}454$) exhibits a remarkably low block rate of $0.3\%$ ($5/1{,}454$), which superficially suggests high evasion capability. However, its clean exploit bypass rate is only $4.2\%$ ($61/1{,}454$); instead, $86.4\%$ of attempts ($1{,}257/1{,}454$) resulted in HTTP 404 Not Found. Because case-mixing mutates SQL keywords as well as entity literals, the altered project identifier fails to match database records under PostgreSQL's case-sensitive collation. This reveals that perimeter WAF evasion does not imply functional exploitability: inputs can easily bypass edge pattern filters while simultaneously nullifying application-level attack objectives.
+  \item \textbf{Systematically Suppressed Families:} In stark contrast, structural whitespace modifiers and SQL comments are heavily mitigated by AWS WAF's lexical tokenization:
+  \begin{itemize}
+    \item \texttt{comment\_slash} (\texttt{/*x*/}): $92.9\%$ blocked ($13/14$).
+    \item \texttt{comment\_inline} (\texttt{/**/}): $84.6\%$ blocked ($11/13$).
+    \item \texttt{tab\_newline} (\texttt{\textbackslash t}, \texttt{\textbackslash n}): $81.2\%$ blocked ($13/16$).
+    \item \texttt{url\_encode} (standard single percent-encoding): $68.9\%$ blocked ($3{,}548/5{,}148$).
+  \end{itemize}
+\end{itemize}
+This stark dichotomy proves that AWS WAF Managed Rulesets are heavily tuned for syntactic token boundary disruptions, but possess architectural blind spots against encoding-depth discrepancies and string termination anomalies.
 
-\begin{figure}[h]
-  \centering
-  \fbox{\parbox{\columnwidth}{url\_encode and null\_byte yield high success rates, while space\_modifiers are systematically suppressed ($N = 21{,}000$).}}
-  \caption{Contrasting family-level bypass behavior.}
-  \label{fig:bypass}
-\end{figure}
+\subsection{RQ3: Normalization and Surrogate Defense Effectiveness}
+To investigate RQ3, we evaluated whether standard input normalization or surrogate machine learning filters could effectively mitigate the observed evasions.
+\begin{itemize}
+  \item \textbf{RFC Normalization Control:} We evaluated repeated RFC percent-decoding (\texttt{urllib.parse.unquote\_plus} fixpoint) on probe inputs. While naive single-layer decoding strips standard single encodings, fixpoint canonicalization often introduces syntactic anomalies or character truncations when confronted with compound null-bytes (\texttt{\%00}).
+  \item \textbf{Offline Classifier Surrogate:} We evaluated an offline TF-IDF logistic-regression surrogate classifier trained on canonicalized templates across a 20-sample pilot dataset partitioned into 13 training and 7 testing instances (35\% test split, random seed 42). The classifier correctly predicted only 3 out of 7 test instances ($42.9\%$ accuracy) for both raw and canonicalized inputs. Because adversarial mutations simultaneously preserve SQL injection intent while mimicking benign token distributions, simple linear or token-frequency models fail to distinguish benign encoding density from evasion payloads on this pilot scale.
+\end{itemize}
+These results confirm that naive pre-filtering cannot unilaterally rescue edge firewalls without semantic-aware, AST-level deep inspection.
 
-\begin{table}[h]
-  \centering
-  \caption{Selected mutation families: attempts $N_f$ and $\mathrm{BR}_f$.}
-  \label{tab:bypass_categories}
-  \begin{tabular}{lrrr}
-    \toprule
-    Family Name& Reach & $\mathrm{BR}_f$ (\%) & Role \\
-    \midrule
-    url\_encode & 11{,}808 & 72.3\% & High Scale / Core Driver \\
-    null\_byte & 7{,}211 & 99.9\% & Maximum Yield Evasion \\
-    space\_modifiers & $>0$ & 0.0\% & Systematically Suppressed \\
-    \bottomrule
-  \end{tabular}
-\end{table}
-
-\Needspace{8\baselineskip}
 \subsection{Threats to Validity and Reproducibility}
-\textbf{Threats.} Our labels rely on script-specific heuristics. Results are bound to a specific policy snapshot and single-channel URL injection. Furthermore, the search distribution is explicitly non-uniform, reflecting operational biases. 
-\textbf{Reproducibility.} Summaries can be regenerated with scripts in the repository. Executing \texttt{run\_probe.py} yields fresh logs, though counts will naturally drift as WAF policies evolve. Probing was conducted exclusively against authorized targets.
+\textbf{Upstream Gateway Denial-of-Service Side Effects.} During preliminary exploratory probing, unencoded raw binary null-byte sequences (\texttt{\textbackslash x00}) caused intermittent 502 Bad Gateway responses from the AWS ALB, indicating upstream worker crashes in the runtime C-bindings of the database driver or Node.js runtime. For our official experiment ($N=22{,}230$), raw binary bytes were sanitized to standard RFC percent-encodings (\texttt{\%00}) and coupled with exponential-jitter retry policies, ensuring all recorded outcomes reflect stable application processing ($N_{502}=0$). However, this observation highlights an orthogonal availability-attack vector: string termination anomalies can induce denial-of-service side effects rather than confidentiality breaches.
+
+\textbf{Single-Session Point Estimation.} All reported metrics represent an empirical point estimate from a continuous, large-scale execution session ($N=22{,}230$). While session stability and precision were verified via periodic calibration drift checks and ground-truth audits, multi-session confidence intervals were not computed due to operational and AWS cloud infrastructure cost constraints. Consequently, the rates describe this concrete deployment instance rather than a multi-trial population distribution.
+
+\textbf{Scope and Reproducibility.} Our findings are bounded by a single AWS WAF policy configuration, an HTTP GET query-parameter attack vector, and a PostgreSQL backend. All probe scripts, variant generators, audit harnesses, and raw JSONL logs ($N=22{,}230$) are published in the project artifact repository. Probing was conducted exclusively against authorized cloud testbeds.

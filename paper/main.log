@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.3.24)  23 OCT 2026 20:29
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.3.24)  26 OCT 2026 00:32
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -416,56 +416,123 @@ Underfull \hbox (badness 5862) in paragraph at lines 10--11
  []
 
 
-Underfull \hbox (badness 3271) in paragraph at lines 18--19
+Underfull \hbox (badness 3271) in paragraph at lines 19--20
 []\OT1/ptm/m/n/10 We model a net-work ad-ver-sary ca-pa-ble of send-ing
  []
 
 
-Overfull \hbox (6.79999pt too wide) in paragraph at lines 32--33
+Overfull \hbox (6.79999pt too wide) in paragraph at lines 33--34
  [][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 33--33
+Underfull \hbox (badness 10000) in paragraph at lines 34--34
 \OT1/ptm/m/n/8 Fig. 1.  []Offensive eval-u-a-tion work-flow; poli-cies con-fig-urable in
  []
 
-[2]) (sections/experiments.tex
-Underfull \hbox (badness 3547) in paragraph at lines 58--1
+[2]
+Underfull \hbox (badness 3547) in paragraph at lines 61--62
 []\OT1/ptm/m/n/10 To as-sess nor-mal-iza-tion ef-fects, we ap-plied fix-point
  []
 
+) (sections/experiments.tex
+Underfull \hbox (badness 1642) in paragraph at lines 11--12
+[]\OT1/ptm/m/n/10 Classify HTTP re-sponses into de-com-posed se-man-
+ []
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+
+Underfull \hbox (badness 4927) in paragraph at lines 11--12
+\OT1/ptm/m/n/10 tic out-comes (\OT1/pcr/m/n/10 clean_bypass\OT1/ptm/m/n/10 , \OT1/pcr/m/n/10 error_bypass\OT1/ptm/m/n/10 ,
+ []
 
 
-Overfull \hbox (41.22272pt too wide) in paragraph at lines 40--50
+Underfull \hbox (badness 10000) in paragraph at lines 50--51
+\OT1/ptm/m/n/8 re-turned valid project en-tity
+ []
+
+
+Underfull \hbox (badness 5847) in paragraph at lines 52--53
+\OT1/ptm/m/n/8 load al-tered query pa-ram-e-ter
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 53--54
+[]\OT1/ptm/m/n/8 Unhandled Post-greSQL
+ []
+
+
+Underfull \hbox (badness 6961) in paragraph at lines 53--54
+\OT1/ptm/m/n/8 syn-tax/type ex-cep-tion prov-ing
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 55--56
+[]\OT1/ptm/m/n/8 Complete closed-form sum
+ []
+
+
+Overfull \hbox (7.36047pt too wide) in paragraph at lines 46--58
  [][] 
  []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-
-Overfull \hbox (19.4943pt too wide) in paragraph at lines 58--70
- [][] 
+[3]
+Underfull \hbox (badness 10000) in paragraph at lines 98--99
+\OT1/ptm/m/n/10 En-tity JSON schema (\OT1/pcr/m/n/10 projectName\OT1/ptm/m/n/10 , \OT1/pcr/m/n/10 id\OT1/ptm/m/n/10 ,
  []
 
 
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Overfull \hbox (6.79999pt too wide) in paragraph at lines 109--110
- [][] 
+Underfull \hbox (badness 1681) in paragraph at lines 107--108
+\OT1/ptm/m/n/10 layered mu-ta-tions sys-tem-at-i-cally dis-cover WAF
  []
 
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+Underfull \hbox (badness 10000) in paragraph at lines 114--115
+[]\OT1/ptm/b/n/10 Dominant Eva-sion Fam-i-lies: \OT1/ptm/m/n/10 The
+ []
 
-[3]) (sections/conclusion.tex) (sections/acknowledgment.tex (content/acknowledgment_text.tex)) (sections/references.tex (content/references_items.tex))
+
+Underfull \hbox (badness 10000) in paragraph at lines 118--119
+[]\OT1/pcr/m/n/10 comment_slash \OT1/ptm/m/n/10 (\OT1/pcr/m/n/10 /*x*/\OT1/ptm/m/n/10 ): $\OT1/cmr/m/n/10 92\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 9%$ \OT1/ptm/m/n/10 blocked
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 119--120
+[]\OT1/pcr/m/n/10 comment_inline \OT1/ptm/m/n/10 (\OT1/pcr/m/n/10 /**/\OT1/ptm/m/n/10 ): $\OT1/cmr/m/n/10 84\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 6%$ \OT1/ptm/m/n/10 blocked
+ []
+
+LaTeX Font Info:    Trying to load font information for OMS+pcr on input line 120.
+(D:\New folder\tex/latex/psnfss\omspcr.fd
+File: omspcr.fd 
+)
+LaTeX Font Info:    Font shape `OMS/pcr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 120.
+
+Underfull \vbox (badness 1038) has occurred while \output is active []
+
+ [4]
+Underfull \hbox (badness 10000) in paragraph at lines 129--130
+[]\OT1/ptm/b/n/10 RFC Nor-mal-iza-tion Con-trol: \OT1/ptm/m/n/10 We eval-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 129--130
+\OT1/ptm/m/n/10 u-ated re-peated RFC percent-decoding
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 129--130
+\OT1/ptm/m/n/10 (\OT1/pcr/m/n/10 urllib.parse.unquote_plus \OT1/ptm/m/n/10 fix-point) on
+ []
+
+) (sections/conclusion.tex [5]
+Underfull \hbox (badness 3547) in paragraph at lines 8--9
+\OT1/ptm/m/n/10 i-lies each achieved a $\OT1/cmr/m/n/10 99\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 9%$ \OT1/ptm/m/n/10 edge by-pass rate un-der
+ []
+
+) (sections/acknowledgment.tex (content/acknowledgment_text.tex)) (sections/references.tex (content/references_items.tex))
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -477,26 +544,26 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[4] (main.aux)
+[6] (main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 1D3F15B12B201F09A578EE841DDC7609;4953.
+(rerunfilecheck)             Checksum: A15DC347A8028FE19A4F26D3778813D9;5304.
  ) 
 Here is how much of TeX's memory you used:
- 11392 strings out of 467871
- 175483 string characters out of 5433253
- 613159 words of memory out of 5000000
- 40030 multiletter control sequences out of 15000+600000
- 668477 words of font info for 119 fonts, out of 8000000 for 9000
+ 11415 strings out of 467871
+ 175824 string characters out of 5433253
+ 617045 words of memory out of 5000000
+ 40046 multiletter control sequences out of 15000+600000
+ 669584 words of font info for 120 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,17n,79p,946b,460s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<D:/New folder/fonts/type1/public/amsfonts/cm/cmmi10.pfb><D:/New folder/fonts/type1/public/amsfonts/cm/cmmi6.pfb><D:/New folder/fonts/type1/public/amsfonts/cm/cmmi7.pfb><D:/New folder/fonts/type1/public/amsfonts/cm/cmmi8.pfb><D:/New folder/fonts/type1/public/amsfonts/cm/cmr10.pfb><D:/New folder/fonts/type1/public/amsfonts/cm/cmr6.pfb><D:/New folder/fonts/type1/public/amsfonts/cm/cmr7.pfb><D:/New folder/fonts/type1/public/amsfonts/cm/cmr8.pfb><D:/New folder/fonts/type1/public/amsfonts/cm/cmsy10.pfb><D:/New folder/fonts/type1/public/amsfonts/cm/cmsy7.pfb><D:/New folder/fonts/type1/urw/courier/ucrb8a.pfb><D:/New folder/fonts/type1/urw/courier/ucrr8a.pfb><D:/New folder/fonts/type1/urw/times/utmb8a.pfb><D:/New folder/fonts/type1/urw/times/utmbi8a.pfb><D:/New folder/fonts/type1/urw/times/utmr8a.pfb><D:/New folder/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (4 pages, 240837 bytes).
+ 75i,17n,79p,1022b,581s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<D:/New folder/fonts/type1/public/amsfonts/cm/cmmi10.pfb><D:/New folder/fonts/type1/public/amsfonts/cm/cmmi6.pfb><D:/New folder/fonts/type1/public/amsfonts/cm/cmmi7.pfb><D:/New folder/fonts/type1/public/amsfonts/cm/cmmi8.pfb><D:/New folder/fonts/type1/public/amsfonts/cm/cmr10.pfb><D:/New folder/fonts/type1/public/amsfonts/cm/cmr6.pfb><D:/New folder/fonts/type1/public/amsfonts/cm/cmr7.pfb><D:/New folder/fonts/type1/public/amsfonts/cm/cmr8.pfb><D:/New folder/fonts/type1/public/amsfonts/cm/cmsy10.pfb><D:/New folder/fonts/type1/public/amsfonts/cm/cmsy6.pfb><D:/New folder/fonts/type1/public/amsfonts/cm/cmsy7.pfb><D:/New folder/fonts/type1/urw/courier/ucrb8a.pfb><D:/New folder/fonts/type1/urw/courier/ucrr8a.pfb><D:/New folder/fonts/type1/urw/times/utmb8a.pfb><D:/New folder/fonts/type1/urw/times/utmbi8a.pfb><D:/New folder/fonts/type1/urw/times/utmr8a.pfb><D:/New folder/fonts/type1/urw/times/utmri8a.pfb>
+Output written on main.pdf (6 pages, 265802 bytes).
 PDF statistics:
- 278 PDF objects out of 1000 (max. 8388607)
- 60 named destinations out of 1000 (max. 500000)
+ 293 PDF objects out of 1000 (max. 8388607)
+ 63 named destinations out of 1000 (max. 500000)
  217 words of extra memory for PDF output out of 10000 (max. 10000000)
 

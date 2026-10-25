@@ -25,10 +25,10 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-A}}Mutation-Based SQLi Attacks}{2}{subsection.2.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-B}}Parsing Discrepancies and Defense Evaluation}{2}{subsection.2.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-C}}Metrics and Confounding Threats}{2}{subsection.2.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {III}Methodology}{2}{section.3}\protected@file@percent }
-\newlabel{sec:methodology}{{III}{2}{Methodology}{section.3}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Offensive evaluation workflow; policies configurable in \texttt  {config.json}.}}{2}{figure.1}\protected@file@percent }
 \newlabel{fig:pipeline}{{1}{2}{Offensive evaluation workflow; policies configurable in \texttt {config.json}}{figure.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {III}Methodology}{2}{section.3}\protected@file@percent }
+\newlabel{sec:methodology}{{III}{2}{Methodology}{section.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-A}}Experimental Environment}{2}{subsection.3.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-B}}Adversary Model and Attack Pipeline}{2}{subsection.3.2}\protected@file@percent }
 \newlabel{eq:attack-pipeline}{{1}{2}{Adversary Model and Attack Pipeline}{equation.1}{}}
@@ -39,18 +39,22 @@
 \@writefile{toc}{\contentsline {section}{\numberline {IV}Experiments and Results}{3}{section.4}\protected@file@percent }
 \newlabel{sec:experiments}{{IV}{3}{Experiments and Results}{section.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Experimental Flow}{3}{subsection.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Overall Summary}{3}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Overall Outcome Distribution}{3}{subsection.4.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Overall result distribution across $N=22{,}230$ live probes}}{3}{table.1}\protected@file@percent }
+\newlabel{tab:overall_summary}{{I}{3}{Overall result distribution across $N=22{,}230$ live probes}{table.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Status Code Breakdown}{3}{subsection.4.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}Transformation Effectiveness}{3}{subsection.4.4}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Overall result distribution}}{3}{table.1}\protected@file@percent }
-\newlabel{tab:overall_summary}{{I}{3}{Overall result distribution}{table.1}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces HTTP status distribution}}{3}{table.2}\protected@file@percent }
-\newlabel{tab:status_breakdown}{{II}{3}{HTTP status distribution}{table.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}Key Takeaways}{3}{subsection.4.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}RQ1: Scale, Labels, and Unique Payloads}{3}{subsection.4.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-G}}RQ2: Family-Level Heterogeneity}{3}{subsection.4.7}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Contrasting family-level bypass behavior.}}{3}{figure.2}\protected@file@percent }
-\newlabel{fig:bypass}{{2}{3}{Contrasting family-level bypass behavior}{figure.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces HTTP status distribution and semantic interpretations}}{4}{table.2}\protected@file@percent }
+\newlabel{tab:status_breakdown}{{II}{4}{HTTP status distribution and semantic interpretations}{table.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}RQ1: Scale, Label Precision, and Evolutionary Gain}{4}{subsection.4.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}RQ2: Family-Level Heterogeneity}{4}{subsection.4.6}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces HTTP Status Code Distribution by Transform Type across $N=22{,}230$ Variants}}{5}{table.3}\protected@file@percent }
+\newlabel{tab:transform_stats}{{III}{5}{HTTP Status Code Distribution by Transform Type across $N=22{,}230$ Variants}{table.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-G}}RQ3: Normalization and Surrogate Defense Effectiveness}{5}{subsection.4.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-H}}Threats to Validity and Reproducibility}{5}{subsection.4.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {V}Discussion and Conclusion}{5}{section.5}\protected@file@percent }
+\newlabel{sec:discussion}{{V}{5}{Discussion and Conclusion}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Research Question Answers}{5}{subsection.5.1}\protected@file@percent }
 \bibcite{guan2023ssqli}{1}
 \bibcite{akhavani2025waffled}{2}
 \bibcite{httpnormalizer}{3}
@@ -62,16 +66,6 @@
 \bibcite{owasp-crs}{9}
 \bibcite{rfc7230}{10}
 \bibcite{rfc3986}{11}
-\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces Bypass/Block statistics by transform}}{4}{table.3}\protected@file@percent }
-\newlabel{tab:transform_stats}{{III}{4}{Bypass/Block statistics by transform}{table.3}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces Aggregate results of ML-WAF AWS probing (21k variants).}}{4}{table.4}\protected@file@percent }
-\newlabel{tab:new_dataset}{{IV}{4}{Aggregate results of ML-WAF AWS probing (21k variants)}{table.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-H}}Threats to Validity and Reproducibility}{4}{subsection.4.8}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {V}Discussion and Conclusion}{4}{section.5}\protected@file@percent }
-\newlabel{sec:discussion}{{V}{4}{Discussion and Conclusion}{section.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Research Question Answers}{4}{subsection.5.1}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces Selected mutation families: attempts $N_f$ and $\mathrm  {BR}_f$.}}{4}{table.5}\protected@file@percent }
-\newlabel{tab:bypass_categories}{{V}{4}{Selected mutation families: attempts $N_f$ and $\mathrm {BR}_f$}{table.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Implications and Conclusion}{4}{subsection.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{References}{4}{section*.2}\protected@file@percent }
-\gdef \@abspage@last{4}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Implications and Future Work}{6}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{References}{6}{section*.2}\protected@file@percent }
+\gdef \@abspage@last{6}

@@ -1,20 +1,19 @@
 ================================================================================
   INDEPENDENT GROUND-TRUTH & CLASSIFIER PRECISION AUDIT REPORT
 ================================================================================
-Input File:        aws_probe_results.jsonl (1,010 total records)
-Sampled Records:   250 (seed=42, max 50/category)
+Input File:        aws_probe_results.jsonl (22,230 total records)
+Sampled Records:   400 (seed=42, max 100/category)
 Mode:              Automated Structural Audit
-Overall Precision: 100.00% (250/250 verified correct)
+Overall Precision: 100.00% (400/400 verified correct)
 Total False Pos:   0 (App error misclassified as WAF block)
 Total False Neg:   0 (WAF block misclassified as Bypass)
 --------------------------------------------------------------------------------
 Category                        Total  Sampled  Correct    FP    FN  Precision
 --------------------------------------------------------------------------------
-blocked_waf_or_edge               217       50       50     0     0     100.0%
-bypass_http_500                   221       50       50     0     0     100.0%
-bypass_ok_200                     331       50       50     0     0     100.0%
-other_not_found                    80       50       50     0     0     100.0%
-other_upstream_error              161       50       50     0     0     100.0%
+blocked_waf_or_edge             3,633      100      100     0     0     100.0%
+bypass_http_500                 6,710      100      100     0     0     100.0%
+bypass_ok_200                  10,599      100      100     0     0     100.0%
+other_not_found                 1,288      100      100     0     0     100.0%
 ================================================================================
 
 Methodology & Ground-Truth Verification Description for Paper:
@@ -23,5 +22,5 @@ Methodology & Ground-Truth Verification Description for Paper:
      - Database Layer Reach (500): Verified against native PostgreSQL driver exception syntax.
      - Origin Validation Reach (400/422): Verified via NestJS JSON exception envelope structure (statusCode/message).
      - Edge / WAF Blocks: Verified via HTTP 403 status, CloudFront/ALB HTML template, and AWS headers.
-  2. Results: Independent inspection of N=250 randomly sampled probe responses
+  2. Results: Independent inspection of N=400 randomly sampled probe responses
      yields an empirical classifier precision of 100.00% with 0 false positive(s) and 0 false negative(s).

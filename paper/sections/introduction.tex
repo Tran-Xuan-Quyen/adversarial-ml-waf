@@ -13,7 +13,9 @@ We structure our empirical evaluation around three core questions:
 \begin{itemize}
   \item \textbf{RQ1 (Scale and semantics).} Under an explicit bypass definition, what fraction of attempts succeed against our AWS WAF lab, and how does this relate to unique payload cardinality?
   \item \textbf{RQ2 (Structure).} How much bypass mass concentrates in specific mutation families, and which are systematically suppressed?
+  \item \textbf{RQ3 (Defense and Normalization).} To what extent can standard RFC percent-decoding or surrogate machine learning models counter these representation-level evasions, and does input canonicalization restore detector precision?
 \end{itemize}
+
 
 In addressing these questions, we formalize a black-box attack pipeline for managed WAF assessment. We provide an empirical characterization of a live AWS WAF run, detailing unique payload counts and family-level bypass rates that reveal sharp heterogeneity. Finally, we include a secondary control showing that basic canonicalization does not immediately rescue simple classifiers.
 
