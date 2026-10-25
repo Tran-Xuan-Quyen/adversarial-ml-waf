@@ -21,5 +21,8 @@
   "adv_mutate_max": 80,
   "adv_second_layer": true,
   "adv_second_layer_max": 50,
+  "clear_cookies": true,
+  "shuffle_queue": true,
+  "calibration_interval": 1000,
   "extra_headers": {}
 }

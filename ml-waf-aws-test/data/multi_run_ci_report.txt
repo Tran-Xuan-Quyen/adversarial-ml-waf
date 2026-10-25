@@ -1,0 +1,39 @@
+=====================================================================================
+  MULTI-RUN AGGREGATION & CONFIDENCE INTERVAL REPORT
+=====================================================================================
+Data Source: aws_probe_results.jsonl (1,010 total records across 3 run(s))
+-------------------------------------------------------------------------------------
+Run ID                             Tested     Bypass 200   Bypass 500   Bypass Total    Blocked
+-------------------------------------------------------------------------------------
+official_exp_run_1                   1000    331 (33.1%)    221 (22.1%)    552 (55.2%)   210 (21.0%)
+run_20261025_190330_c7e934              5      0 ( 0.0%)      0 ( 0.0%)      0 ( 0.0%)     4 (80.0%)
+run_20261025_190444_d3aaea              5      0 ( 0.0%)      0 ( 0.0%)      0 ( 0.0%)     3 (60.0%)
+-------------------------------------------------------------------------------------
+POOLED TOTAL (Weighted)              1010    331 (32.8%)    221 (21.9%)    552 (54.7%)   217 (21.5%)
+=====================================================================================
+
+ACROSS-SESSION INFERENCE (Unweighted Run Mean +/- Std Dev):
+  * Confirmed Exploit (200 OK)  : 11.03% +/- 19.11%  (95% CI: [0.00% - 58.51%], df=2, t=4.303)
+  * Database Layer Reach (500)  : 7.37% +/- 12.76%  (95% CI: [0.00% - 39.07%])
+  * Total Evasion (Passed WAF)  : 18.40% +/- 31.87%  (95% CI: [0.00% - 97.58%])
+  * Blocked by WAF / Edge       : 53.67% +/- 30.01%  (95% CI: [0.00% - 100.00%])
+=====================================================================================
+
+% LaTeX table snippet for Research Paper:
+\begin{table}[h]
+  \centering
+  \caption{Empirical WAF Evasion Rates Across Independent Runs ($N=3$ Runs, Total Requests: 1,010)}
+  \label{tab:waf_evasion_ci}
+  \begin{tabular}{lcccc}
+    \toprule
+    \textbf{Metric} & \textbf{Pooled (\%)} & \textbf{Run Mean (\%)} & \textbf{Std Dev (\%)} & \textbf{95\% CI (Student's $t$)} \\
+    \midrule
+    Confirmed Exploit (200 OK)  & 32.8\% & 11.0\% & 19.1\% & [0.0\% -- 58.5\%] \\
+    Database Layer Reach (500)  & 21.9\% & 7.4\% & 12.8\% & [0.0\% -- 39.1\%] \\
+    Total Evasion (WAF Bypass)  & 54.7\% & 18.4\% & 31.9\% & [0.0\% -- 97.6\%] \\
+    Blocked by WAF / Edge       & 21.5\% & 53.7\% & 30.0\% & [0.0\% -- 100.0\%] \\
+    \bottomrule
+  \end{tabular}\\[0.4em]
+  \footnotesize
+  \emph{Note.} Pooled rate is request-weighted. 95\% CI calculated via Student's $t$-distribution with $df=N-1$.
+\end{table}

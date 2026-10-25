@@ -24,15 +24,23 @@ from datetime import datetime
 # ─── Cấu hình ─────────────────────────────────────────────────────────────────
 BASE_DIR = Path(__file__).parent / "data"
 
-DATA_FILES = {
-    "blocked_learned.jsonl":  "blocked",
-    "bypass_learned.jsonl":   "bypass",
-    "other_learned.jsonl":    "other",
-    "aws_probe_results.jsonl": "aws_probe",
-}
+# Nguồn dữ liệu: Ưu tiên aws_probe_results.jsonl (Master dataset chứa 100% request đã probe).
+# Chỉ fallback sang 3 file learned con nếu không có file master, nhằm tránh đếm trùng (double counting).
+PROBE_RESULTS_PATH = BASE_DIR / "aws_probe_results.jsonl"
+if PROBE_RESULTS_PATH.exists() and PROBE_RESULTS_PATH.stat().st_size > 0:
+    DATA_FILES = {
+        "aws_probe_results.jsonl": "aws_probe",
+    }
+else:
+    DATA_FILES = {
+        "blocked_learned.jsonl":  "blocked",
+        "bypass_learned.jsonl":   "bypass",
+        "other_learned.jsonl":    "other",
+    }
 
 OUTPUT_REPORT = BASE_DIR / "status_code_analysis_report.txt"
 OUTPUT_JSON   = BASE_DIR / "status_code_analysis.json"
+
 
 # ─── Mapping transform keyword → nhóm gọn ────────────────────────────────────
 TRANSFORM_GROUPS = {
@@ -63,6 +71,7 @@ TRANSFORM_GROUPS = {
     "adv_case_mix":             "case_mix",
     "case_upper":               "case_mix",
     "adv_case_upper_kw":        "case_mix",
+    "case_random_union":        "case_mix",
 
     # Comment inline (MySQL style)
     "comment_inline":           "comment_inline",
@@ -82,6 +91,7 @@ TRANSFORM_GROUPS = {
     "newline":                  "tab_newline",
     "vtab":                     "tab_newline",
     "plus_space":               "tab_newline",
+    "or_first_space_to_newline": "tab_newline",
 
     # Hex encode / hex prefix
     "hex_chars":                "hex",
@@ -90,6 +100,15 @@ TRANSFORM_GROUPS = {
     "adv_hex_prefix":           "hex",
     "hex_encode":               "hex",
     "account_hex_prefix":       "hex",
+    "account_hex_prefix_waf_only": "hex",
+    "account_hex_x_waf_only":   "hex",
+    "account_hex_mysql_compat": "hex",
+    "pg_hex_literal":           "hex",
+    "pg_hex_literal_lower":     "hex",
+    "pg_bitstring_binary":      "hex",
+    "pg_hex_bitstring":         "hex",
+    "pg_hex_decode":            "hex",
+    "pg_bytea_escape":          "hex",
 
     # Unicode escape
     "unicode_esc":              "unicode",
@@ -98,6 +117,13 @@ TRANSFORM_GROUPS = {
     # Double quote escape
     "double_quote_esc":         "other_transform",
     "adv_double_quote_esc":     "other_transform",
+    "chr_pg":                   "other_transform",
+    "concat_pg":                "other_transform",
+    "or_pg_true":               "other_transform",
+    "pivot_union_case_mix":     "case_mix",
+    "pivot_union_random_case":  "case_mix",
+    "pivot_union_chr":          "other_transform",
+    "pivot_union_concat":       "other_transform",
 
     # Plus for space
     "plus_for_space":           "tab_newline",
@@ -179,7 +205,14 @@ def analyze():
     total_records = 0
     file_stats = {}
 
-    for filename, source_tag in DATA_FILES.items():
+    # Ưu tiên Master dataset aws_probe_results.jsonl nếu có để tránh đếm trùng
+    probe_results = BASE_DIR / "aws_probe_results.jsonl"
+    if probe_results.exists() and probe_results.stat().st_size > 0:
+        active_files = {"aws_probe_results.jsonl": "aws_probe"}
+    else:
+        active_files = DATA_FILES
+
+    for filename, source_tag in active_files.items():
         filepath = BASE_DIR / filename
         records = load_jsonl(filepath)
         file_total = len(records)

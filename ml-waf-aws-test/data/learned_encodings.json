@@ -1,71 +1,95 @@
 {
   "transforms": {
-    "other": {
-      "bypass": 82,
+    "encoded": {
+      "bypass": 0,
       "block": 7,
       "other": 0,
-      "reach": 82
+      "reach": 0
+    },
+    "hex": {
+      "bypass": 8,
+      "block": 7,
+      "other": 29,
+      "reach": 37
+    },
+    "tab": {
+      "bypass": 1,
+      "block": 6,
+      "other": 0,
+      "reach": 1
+    },
+    "other": {
+      "bypass": 92,
+      "block": 17,
+      "other": 0,
+      "reach": 92
+    },
+    "vtab": {
+      "bypass": 0,
+      "block": 1,
+      "other": 0,
+      "reach": 0
+    },
+    "comment_block": {
+      "bypass": 0,
+      "block": 10,
+      "other": 0,
+      "reach": 0
     },
     "cr": {
       "bypass": 0,
-      "block": 1,
+      "block": 2,
+      "other": 0,
+      "reach": 0
+    },
+    "url_encode": {
+      "bypass": 9158,
+      "block": 3512,
+      "other": 0,
+      "reach": 9158
+    },
+    "comment_inline": {
+      "bypass": 1,
+      "block": 9,
+      "other": 0,
+      "reach": 1
+    },
+    "newline": {
+      "bypass": 0,
+      "block": 3,
       "other": 0,
       "reach": 0
     },
     "ff": {
       "bypass": 0,
+      "block": 2,
+      "other": 0,
+      "reach": 0
+    },
+    "case_mix": {
+      "bypass": 101,
+      "block": 7,
+      "other": 1257,
+      "reach": 1358
+    },
+    "plus_space": {
+      "bypass": 0,
+      "block": 5,
+      "other": 0,
+      "reach": 0
+    },
+    "case_random": {
+      "bypass": 0,
       "block": 1,
       "other": 0,
       "reach": 0
     },
-    "hex": {
-      "bypass": 7,
-      "block": 2,
-      "other": 27,
-      "reach": 34
-    },
-    "case_mix": {
-      "bypass": 90,
-      "block": 6,
-      "other": 706,
-      "reach": 796
-    },
-    "comment_block": {
-      "bypass": 0,
-      "block": 8,
-      "other": 0,
-      "reach": 0
-    },
-    "url_encode": {
-      "bypass": 3845,
-      "block": 1506,
-      "other": 0,
-      "reach": 3845
-    },
-    "comment_inline": {
-      "bypass": 1,
-      "block": 8,
-      "other": 0,
-      "reach": 1
-    },
-    "plus_space": {
-      "bypass": 0,
-      "block": 4,
-      "other": 0,
-      "reach": 0
-    },
-    "tab": {
-      "bypass": 1,
-      "block": 3,
-      "other": 0,
-      "reach": 1
-    },
     "null_byte": {
-      "bypass": 3308,
+      "bypass": 7734,
       "block": 0,
       "other": 2,
-      "reach": 3310
+      "reach": 7736
     }
   },
-  "updated_ts": 1792770145.7276921
+  "updated_ts": 1792947735.005746
 }

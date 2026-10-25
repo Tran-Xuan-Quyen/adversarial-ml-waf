@@ -1,21 +1,9 @@
 {
-  "generated_at": "2026-06-29 23:13:36",
-  "total_records": 50118,
+  "generated_at": "2026-10-25 23:52:24",
+  "total_records": 20849,
   "files": {
-    "blocked_learned.jsonl": {
-      "total": 3917,
-      "source": "blocked"
-    },
-    "bypass_learned.jsonl": {
-      "total": 18851,
-      "source": "bypass"
-    },
-    "other_learned.jsonl": {
-      "total": 2259,
-      "source": "other"
-    },
     "aws_probe_results.jsonl": {
-      "total": 25091,
+      "total": 20849,
       "source": "aws_probe"
     }
   },
@@ -28,28 +16,28 @@
   "by_transform": {
     "url_encode": {
       "counts_by_status": {
-        "403": 7726,
-        "404": 4,
-        "200": 1025,
-        "500": 718
+        "403": 3312,
+        "200": 982,
+        "404": 2,
+        "500": 510
       },
-      "total": 9473,
-      "bypass_200": 1025,
-      "block_403": 7726,
-      "bypass_pct": 10.82,
-      "block_pct": 81.56
+      "total": 4806,
+      "bypass_200": 982,
+      "block_403": 3312,
+      "bypass_pct": 20.43,
+      "block_pct": 68.91
     },
     "double_url_encode": {
       "counts_by_status": {
-        "403": 12,
-        "200": 4939,
-        "500": 3429
+        "403": 6,
+        "500": 2430,
+        "200": 4731
       },
-      "total": 8380,
-      "bypass_200": 4939,
-      "block_403": 12,
-      "bypass_pct": 58.94,
-      "block_pct": 0.14
+      "total": 7167,
+      "bypass_200": 4731,
+      "block_403": 6,
+      "bypass_pct": 66.01,
+      "block_pct": 0.08
     },
     "triple_url_encode": {
       "counts_by_status": {
@@ -63,115 +51,114 @@
     },
     "null_byte": {
       "counts_by_status": {
-        "403": 8,
-        "404": 4,
-        "200": 4997,
-        "500": 3532
+        "403": 4,
+        "200": 4793,
+        "500": 2519,
+        "404": 2
       },
-      "total": 8541,
-      "bypass_200": 4997,
-      "block_403": 8,
-      "bypass_pct": 58.51,
-      "block_pct": 0.09
+      "total": 7318,
+      "bypass_200": 4793,
+      "block_403": 4,
+      "bypass_pct": 65.5,
+      "block_pct": 0.05
     },
     "case_mix": {
       "counts_by_status": {
-        "403": 6,
-        "404": 4448,
-        "200": 57,
-        "500": 141
+        "403": 5,
+        "200": 61,
+        "404": 1257,
+        "500": 127
       },
-      "total": 4652,
-      "bypass_200": 57,
-      "block_403": 6,
-      "bypass_pct": 1.23,
-      "block_pct": 0.13
+      "total": 1450,
+      "bypass_200": 61,
+      "block_403": 5,
+      "bypass_pct": 4.21,
+      "block_pct": 0.34
     },
     "comment_inline": {
       "counts_by_status": {
-        "403": 6,
-        "200": 1,
+        "403": 11,
         "500": 2
       },
-      "total": 9,
-      "bypass_200": 1,
-      "block_403": 6,
-      "bypass_pct": 11.11,
-      "block_pct": 66.67
+      "total": 13,
+      "bypass_200": 0,
+      "block_403": 11,
+      "bypass_pct": 0.0,
+      "block_pct": 84.62
     },
     "comment_slash": {
       "counts_by_status": {
-        "403": 10,
-        "200": 1,
+        "403": 13,
         "500": 1
       },
-      "total": 12,
-      "bypass_200": 1,
-      "block_403": 10,
-      "bypass_pct": 8.33,
-      "block_pct": 83.33
+      "total": 14,
+      "bypass_200": 0,
+      "block_403": 13,
+      "bypass_pct": 0.0,
+      "block_pct": 92.86
     },
     "tab_newline": {
       "counts_by_status": {
-        "403": 26,
+        "403": 13,
         "500": 2,
         "200": 1
       },
-      "total": 29,
+      "total": 16,
       "bypass_200": 1,
-      "block_403": 26,
-      "bypass_pct": 3.45,
-      "block_pct": 89.66
+      "block_403": 13,
+      "bypass_pct": 6.25,
+      "block_pct": 81.25
     },
     "hex": {
       "counts_by_status": {
-        "404": 60,
-        "200": 4
+        "403": 7,
+        "200": 4,
+        "404": 27
       },
-      "total": 64,
+      "total": 38,
       "bypass_200": 4,
-      "block_403": 0,
-      "bypass_pct": 6.25,
-      "block_pct": 0.0
+      "block_403": 7,
+      "bypass_pct": 10.53,
+      "block_pct": 18.42
     },
     "other_transform": {
       "counts_by_status": {
-        "404": 2
+        "403": 6
       },
-      "total": 2,
+      "total": 6,
       "bypass_200": 0,
-      "block_403": 0,
+      "block_403": 6,
       "bypass_pct": 0.0,
-      "block_pct": 0.0
+      "block_pct": 100.0
     },
     "original": {
       "counts_by_status": {
-        "403": 2
+        "403": 1
       },
-      "total": 2,
+      "total": 1,
       "bypass_200": 0,
-      "block_403": 2,
+      "block_403": 1,
       "bypass_pct": 0.0,
       "block_pct": 100.0
     },
     "__unknown__": {
       "counts_by_status": {
-        "403": 38
+        "403": 19
       },
-      "total": 38,
+      "total": 19,
       "bypass_200": 0,
-      "block_403": 38,
+      "block_403": 19,
       "bypass_pct": 0.0,
       "block_pct": 100.0
     }
   },
   "grand_total": {
-    "total": 31203,
+    "total": 20849,
     "by_status": {
-      "403": 7834,
-      "500": 7825,
-      "200": 11026,
-      "404": 4518
+      "403": 3397,
+      "200": 10573,
+      "404": 1288,
+      "500": 5591
     }
   }
 }
